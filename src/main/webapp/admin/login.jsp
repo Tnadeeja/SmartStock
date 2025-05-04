@@ -61,12 +61,15 @@
   <div class="relative z-10 bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl rounded-2xl p-10 w-full max-w-md">
     <form class="space-y-6">
       <div>
-        <label class="block text-sm text-white mb-1" for="username">Username</label>
-        <input id="username" type="text" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <label class="block text-sm text-white mb-1" for="email">Email</label>
+<input id="email" name="email" type="email" 
+       class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+       placeholder="Enter your email"/>
+        
       </div>
       <div>
         <label class="block text-sm text-white mb-1" for="password">Password</label>
-        <input id="password" type="password" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <input id="password" type="password" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your password"/>
       </div>
       <div>
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-full shadow-md transition-all duration-300">
