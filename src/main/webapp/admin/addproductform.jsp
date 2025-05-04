@@ -87,7 +87,7 @@
               </button>
               <button type="button" onclick="window.close()"
                       class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition-all">
-                Cancel
+                Discard
               </button>
             </div>
           </div>
