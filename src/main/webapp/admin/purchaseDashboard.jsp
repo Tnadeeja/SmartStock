@@ -101,7 +101,7 @@
 
 <script>
   function showAddForm() {
-    window.location.href = 'purchaseStock?action=add';
+    window.location.href = 'addproductform.jsp';
   }
 </script>
 <!-- End -->
