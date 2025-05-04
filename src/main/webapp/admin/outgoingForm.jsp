@@ -90,7 +90,7 @@
              class="w-full border border-gray-300 rounded px-4 py-2" />
     </div>
     <div>
-      <label class="block text-gray-700 font-medium mb-1">Customer Date</label>
+      <label class="block text-gray-700 font-medium mb-1">Outgoing Date</label>
       <input type="date" name="purchaseDate" value="${product.outgoingDate}" 
              class="w-full border border-gray-300 rounded px-4 py-2" />
     </div>
