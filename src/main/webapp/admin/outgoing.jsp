@@ -17,6 +17,7 @@
 
     <!-- Main content placeholder -->
     <main class="flex-1 p-6">
+      <h1 class="text-2xl font-bold text-gray-800">Outgoing Product</h1>
     
     <!-- Start -->
 <div class="mt-6 space-y-6">
