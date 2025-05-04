@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +63,7 @@
 
   <!-- Login Card -->
   <div class="relative z-10 bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl rounded-2xl p-10 w-full max-w-md">
-    <form class="space-y-6">
+    <form action= "${pageContext.request.contextPath}/admin/login" method= "POST" class="space-y-6">
       <div>
         <label class="block text-sm text-white mb-1" for="email">Email</label>
 <input id="email" name="email" type="email" 
@@ -72,6 +76,12 @@
         <input id="password" type="password" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your password"/>
       </div>
       <div>
+      
+      <c:if test="${not empty error}">
+    <div class="bg-red-500/20 text-red-400 border border-red-500 rounded-lg p-4 mb-4">
+       <p>${errorMessage}</p>
+    </div>
+	</c:if>
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-full shadow-md transition-all duration-300">
           Login
         </button>

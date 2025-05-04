@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +14,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <!-- Include header -->
-    <jsp:include page="header.jsp" />
+ <jsp:include page="partials/header.jsp" />
+ 
+ <div class="flex">
+  <jsp:include page="partials/slideBar.jsp" />
+
 
     <div class="flex">
         <!-- Include sidebar -->
@@ -45,9 +50,13 @@
                     <input type="date" class="border px-3 py-2 rounded" />
                     <input type="date" class="border px-3 py-2 rounded" />
 
-                    <!-- Apply button -->
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded">Apply</button>
-                </div>
+
+
+<!-- End -->
+    
+    
+    </main>
+
 
                 <!-- Action buttons for adding and exporting -->
                 <div class="flex gap-4 mt-6">
