@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>SmartStock Admin Dashboard</title>
+<title>Outgoing Product</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -55,54 +55,55 @@
 
   <!-- Purchase Stock Table -->
   <div class="bg-white shadow rounded overflow-x-auto mt-6">
-    <table class="min-w-full text-sm text-gray-700">
-      <thead class="bg-gray-100 text-left font-semibold">
-        <tr>
-          <th class="px-4 py-3">#</th>
-          <th class="px-4 py-3">Product Name</th>
-          <th class="px-4 py-3">Category</th>
-          <th class="px-4 py-3">Supplier</th>
-          <th class="px-4 py-3">Quantity</th>
-          <th class="px-4 py-3">Unit Price</th>
-          <th class="px-4 py-3">Total Amount</th>
-          <th class="px-4 py-3">MFG Date</th>
-          <th class="px-4 py-3">EXP Date</th>
-          <th class="px-4 py-3">Purchase Date</th>
-          <th class="px-4 py-3">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <c:forEach var="stock" items="${purchaseStockList}" varStatus="loop">
-          <tr class="border-t text-center hover:bg-gray-50">
-            <td class="px-4 py-3">${loop.index + 1}</td>
-            <td class="px-4 py-3">${stock.productName}</td>
-            <td class="px-4 py-3">${stock.categoryName}</td>
-            <td class="px-4 py-3">${stock.supplierName}</td>
-            <td class="px-4 py-3">${stock.quantity}</td>
-            <td class="px-4 py-3">${stock.unitPrice}</td>
-            <td class="px-4 py-3">${stock.totalAmount}</td>
-            <td class="px-4 py-3">${stock.manufactureDate}</td>
-            <td class="px-4 py-3">${stock.expireDate}</td>
-            <td class="px-4 py-3">${stock.purchaseDate}</td>
-            <td class="px-4 py-3">
-              <a href="purchaseStock?action=edit&id=${stock.id}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Update</a>
-              <a href="purchaseStock?action=delete&id=${stock.id}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition ml-2" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
-            </td>
-          </tr>
-        </c:forEach>
-        <c:if test="${empty purchaseStockList}">
-          <tr>
-            <td colspan="11" class="text-center text-gray-500 py-6">No purchase stock found.</td>
-          </tr>
-        </c:if>
-      </tbody>
-    </table>
+<table class="min-w-full text-sm text-gray-700">
+  <thead class="bg-gray-100 text-left font-semibold">
+    <tr>
+      <th class="px-4 py-3">Id</th>
+      <th class="px-4 py-3">Product Name</th>
+      <th class="px-4 py-3">Category</th>
+      <th class="px-4 py-3">Customer</th>
+      <th class="px-4 py-3">Quantity</th>
+      <th class="px-4 py-3">Sale Price</th>
+      <th class="px-4 py-3">Total Amount</th>
+      <th class="px-4 py-3">MFG Date</th>
+      <th class="px-4 py-3">EXP Date</th>
+      <th class="px-4 py-3">Sale Date</th>
+      <th class="px-4 py-3">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <c:forEach var="product" items="${outgoingList}" varStatus="loop">
+      <tr class="border-t text-center hover:bg-gray-50">
+        <td class="px-4 py-3">${product.outgoingId}</td>
+        <td class="px-4 py-3">${product.productName}</td>
+        <td class="px-4 py-3">${product.categoryName}</td>
+        <td class="px-4 py-3">${product.customerName}</td>
+        <td class="px-4 py-3">${product.quantity}</td>
+        <td class="px-4 py-3">${product.salePrice}</td>
+        <td class="px-4 py-3">${product.totalAmount}</td>
+        <td class="px-4 py-3">${product.manufactureDate}</td>
+        <td class="px-4 py-3">${product.expireDate}</td>
+        <td class="px-4 py-3">${product.outgoingDate}</td>
+        <td class="px-4 py-3">
+          <a href="outgoing?action=edit&id=${product.outgoingId}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Update</a>
+          <a href="outgoing?action=delete&id=${product.outgoingId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition ml-2" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+        </td>
+      </tr>
+    </c:forEach>
+    <c:if test="${empty outgoingList}">
+      <tr>
+        <td colspan="11" class="text-center text-gray-500 py-6">No outgoing stock found.</td>
+      </tr>
+    </c:if>
+  </tbody>
+</table>
+
   </div>
 </div>
 
 <script>
   function showAddForm() {
-    window.location.href = 'purchaseStock?action=add';
+    window.location.href = '<c:url value="outgoingForm.jsp?action=add" />';
   }
 </script>
 <!-- End -->
