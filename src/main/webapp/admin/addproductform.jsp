@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +10,10 @@
 </head>
 <body class="h-screen">
 
-  <jsp:include page="header.jsp" />
+  <jsp:include page="partials/header.jsp" />
 
   <div class="flex h-[calc(100vh-64px)]"> <!-- Assuming header is 64px high -->
-    <jsp:include page="slideBar.jsp" />
+    <jsp:include page="partials/slideBar.jsp" />
 
     <!-- Main content -->
     <main class="flex-1 p-6 flex flex-col"> <!-- ✅ Added 'flex flex-col' -->
@@ -67,7 +68,7 @@
                      class="w-full border border-gray-300 rounded px-4 py-2" />
             </div>
             <div>
-              <label class="block text-gray-700 font-medium mb-1">Expiry Date</label>
+              <label class="block text-gray-700 font-medium mb-1">Expire Date</label>
               <input type="date" name="expireDate"
                      class="w-full border border-gray-300 rounded px-4 py-2" />
             </div>

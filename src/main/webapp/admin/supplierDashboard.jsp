@@ -10,10 +10,10 @@
 </head>
 <body class="bg-gray-100 font-sans">
 
- <jsp:include page="header.jsp" />
+ <jsp:include page="partials/header.jsp" />
  
  <div class="flex">
-  <jsp:include page="slideBar.jsp" />
+  <jsp:include page="partials/slideBar.jsp" />
 
     <!-- Main content placeholder -->
     <main class="flex-2 p-6">

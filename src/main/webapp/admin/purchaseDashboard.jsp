@@ -15,11 +15,11 @@
 </head>
 <body>
     <!-- Include header -->
-    <jsp:include page="header.jsp" />
+    <jsp:include page="partials/header.jsp" />
 
     <div class="flex">
         <!-- Include sidebar -->
-        <jsp:include page="slideBar.jsp" />
+        <jsp:include page="partials/slideBar.jsp" />
 
         <!-- Main content section -->
         <main class="flex-1 p-6">

@@ -2,7 +2,7 @@
 <aside class="w-64 bg-gray-900 text-gray-300 min-h-screen p-4 space-y-4">
     <nav class="space-y-2">
       <!-- Dashboard -->
-      <a href="#" class="flex items-center px-3 py-2 rounded-lg bg-primary text-white">
+      <a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp" class="flex items-center px-3 py-2 rounded-lg bg-primary text-white">
         <i class="fas fa-tachometer-alt mr-3 text-white"></i>
         Dashboard
       </a>
@@ -38,7 +38,7 @@
       </a>
 
       <!-- Outgoing Product -->
-      <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white transition">
+      <a href ="${pageContext.request.contextPath}/admin/outgoing" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white transition">
         <i class="fas fa-truck-moving mr-3 text-gray-400"></i>
         Outgoing Product
       </a>
