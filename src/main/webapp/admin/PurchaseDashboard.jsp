@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +103,7 @@
                                     <td class="px-4 py-3">${product.totalAmount}</td>
                                     <td class="px-4 py-3">${product.manufactureDate}</td>
                                     <td class="px-4 py-3">${product.expireDate}</td>
-                                    <td class="px-4 py-3">${product.purchaseDate}</td>
+                                    <td class="px-4 py-3"><fmt:formatDate value="${product.purchaseDate}" pattern="yyyy-MM-dd" /></td>
                                     <td class="px-4 py-3">
                                         <a href="PurchaseDashboard?action=edit&id=${product.purchaseId}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Update</a>
                                         <a href="PurchaseDashboard?action=delete&id=${product.purchaseId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition ml-2" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
