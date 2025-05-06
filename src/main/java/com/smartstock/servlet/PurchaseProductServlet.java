@@ -35,7 +35,28 @@ public class PurchaseProductServlet extends HttpServlet {
                 response.sendRedirect("PurchaseDashboard");
 
             } else {
-                List<PurchaseProduct> purchaseList = productService.getAllPurchaseProducts();
+                // Filter parameters
+                String search = request.getParameter("search");
+                String category = request.getParameter("category");
+                String supplier = request.getParameter("supplier");
+                String startDateStr = request.getParameter("startDate");
+                String endDateStr = request.getParameter("endDate");
+
+                Date startDate = null;
+                Date endDate = null;
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                if (startDateStr != null && !startDateStr.isEmpty()) {
+                    startDate = sdf.parse(startDateStr);
+                }
+                if (endDateStr != null && !endDateStr.isEmpty()) {
+                    endDate = sdf.parse(endDateStr);
+                }
+
+                List<PurchaseProduct> purchaseList = productService.getFilteredPurchaseProducts(
+                        search, category, supplier, startDate, endDate
+                );
+
                 request.setAttribute("purchaseList", purchaseList);
                 request.getRequestDispatcher("/admin/PurchaseDashboard.jsp").forward(request, response);
             }
@@ -50,7 +71,6 @@ public class PurchaseProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Parse form fields
             int purchaseId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
                     ? Integer.parseInt(request.getParameter("id"))
                     : 0;
@@ -75,7 +95,6 @@ public class PurchaseProductServlet extends HttpServlet {
                 purchaseDate = formatter.parse(request.getParameter("purchaseDate"));
             }
 
-            // Create and populate model
             PurchaseProduct product = new PurchaseProduct();
             product.setPurchaseId(purchaseId);
             product.setProductName(productName);
@@ -90,10 +109,8 @@ public class PurchaseProductServlet extends HttpServlet {
 
             boolean success;
             if (purchaseId > 0) {
-                System.out.println("Updating product with ID: " + purchaseId);
                 success = productService.updatePurchaseProduct(product);
             } else {
-                System.out.println("Creating new product...");
                 success = productService.createPurchaseProduct(product);
             }
 
