@@ -32,7 +32,7 @@
       </a>
 
       <!-- Purchase Product -->
-      <a href="${pageContext.request.contextPath}/admin/PurchaseDashboard.jsp" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white transition">
+      <a href="${pageContext.request.contextPath}/admin/PurchaseDashboard" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white transition">
         <i class="fas fa-cart-plus mr-3 text-gray-400"></i>
         Purchase Product
       </a>
