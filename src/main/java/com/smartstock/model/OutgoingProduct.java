@@ -14,6 +14,7 @@ public class OutgoingProduct {
     public Date manufactureDate;
     public Date expireDate;
     public Date outgoingDate;
+    
 	public int getOutgoingId() {
 		return outgoingId;
 	}

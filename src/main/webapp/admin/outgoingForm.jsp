@@ -24,7 +24,7 @@
         <form action="${pageContext.request.contextPath}/admin/outgoing" method="post" class="flex-1 flex flex-col space-y-6">
   <!-- Hidden ID field for updates -->
   <c:if test="${not empty product}">
-    <input type="hidden" name="id" value="${product.purchaseId}" />
+    <input type="hidden" name="id" value="${product.outgoingId}" />
   </c:if>
 
   <!-- Product Info -->
