@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,7 +69,7 @@
                     <table class="min-w-full text-sm text-gray-700">
                         <thead class="bg-gray-100 text-left font-semibold">
                             <tr>
-                                <th class="px-4 py-3">#</th>
+                                <th class="px-4 py-3">ID</th>
                                 <th class="px-4 py-3">Product Name</th>
                                 <th class="px-4 py-3">Category</th>
                                 <th class="px-4 py-3">Supplier</th>
@@ -84,27 +84,27 @@
                         </thead>
                         <tbody>
                             <!-- Loop through purchase stock list -->
-                            <c:forEach var="stock" items="${purchaseStockList}" varStatus="loop">
+                            <c:forEach var="product" items="${purchaseList}" varStatus="loop">
                                 <tr class="border-t text-center hover:bg-gray-50">
-                                    <td class="px-4 py-3">${loop.index + 1}</td>
-                                    <td class="px-4 py-3">${stock.productName}</td>
-                                    <td class="px-4 py-3">${stock.categoryName}</td>
-                                    <td class="px-4 py-3">${stock.supplierName}</td>
-                                    <td class="px-4 py-3">${stock.quantity}</td>
-                                    <td class="px-4 py-3">${stock.unitPrice}</td>
-                                    <td class="px-4 py-3">${stock.totalAmount}</td>
-                                    <td class="px-4 py-3">${stock.manufactureDate}</td>
-                                    <td class="px-4 py-3">${stock.expireDate}</td>
-                                    <td class="px-4 py-3">${stock.purchaseDate}</td>
+                                    <td class="px-4 py-3">${product.purchaseId}</td>
+                                    <td class="px-4 py-3">${product.productName}</td>
+                                    <td class="px-4 py-3">${product.categoryName}</td>
+                                    <td class="px-4 py-3">${product.supplierName}</td>
+                                    <td class="px-4 py-3">${product.quantity}</td>
+                                    <td class="px-4 py-3">${product.unitPrice}</td>
+                                    <td class="px-4 py-3">${product.totalAmount}</td>
+                                    <td class="px-4 py-3">${product.manufactureDate}</td>
+                                    <td class="px-4 py-3">${product.expireDate}</td>
+                                    <td class="px-4 py-3">${product.purchaseDate}</td>
                                     <td class="px-4 py-3">
-                                        <a href="purchaseStock?action=edit&id=${stock.id}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Update</a>
-                                        <a href="purchaseStock?action=delete&id=${stock.id}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition ml-2" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                                        <a href="PurchaseDashboard?action=edit&id=${product.purchaseId}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Update</a>
+                                        <a href="PurchaseDashboard?action=delete&id=${product.purchaseId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition ml-2" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
                                     </td>
                                 </tr>
                             </c:forEach>
 
                             <!-- If no purchase stock available -->
-                            <c:if test="${empty purchaseStockList}">
+                            <c:if test="${empty purchaseList}">
                                 <tr>
                                     <td colspan="11" class="text-center text-gray-500 py-6">No purchase stock found.</td>
                                 </tr>
@@ -121,7 +121,7 @@
     <!-- Add Form redirect function -->
     <script>
         function showAddForm() {
-            window.location.href = 'addproductform.jsp';
+            window.location.href = 'PurchaseForm.jsp';
         }
     </script>
 </body>
