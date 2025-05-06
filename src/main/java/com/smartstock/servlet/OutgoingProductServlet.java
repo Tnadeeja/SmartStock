@@ -1,7 +1,10 @@
 package com.smartstock.servlet;
 
+
 import com.smartstock.model.OutgoingProduct;
+import com.smartstock.model.ReturnProduct;
 import com.smartstock.service.OutgoingProductService;
+import com.smartstock.service.ReturnProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,10 +34,29 @@ public class OutgoingProductServlet extends HttpServlet {
 
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                productService.deleteOutgoingProduct(id);
-                response.sendRedirect("outgoing");
 
-            } else {
+                // Step 1: Get the outgoing product before deleting
+                OutgoingProduct outgoingProduct = productService.getOutgoingProduct(id);
+
+                // Step 2: Delete the outgoing product
+                productService.deleteOutgoingProduct(id);
+
+                // Step 3: Insert into return_product table
+                if (outgoingProduct != null) {
+                    ReturnProduct returnProduct = new ReturnProduct();
+                    returnProduct.productName = outgoingProduct.productName;
+                    returnProduct.quantity = outgoingProduct.quantity;
+                    returnProduct.returnDate = new Date(); // current timestamp
+                    returnProduct.reason = ""; // leave empty for now
+
+                    // Save to return_product table
+                    ReturnProductService returnService = new ReturnProductService();
+                    returnService.createReturnProduct(returnProduct);
+                }
+
+                response.sendRedirect("outgoing");
+            }
+            else {
                 List<OutgoingProduct> outgoingList = productService.getAllOutgoingProducts();
                 request.setAttribute("outgoingList", outgoingList);
                 request.getRequestDispatcher("/admin/outgoing.jsp").forward(request, response);
