@@ -25,35 +25,40 @@
 
         <!-- Main content section -->
         <main class="flex-1 p-6">
-
             <!-- Start of content section -->
             <div class="mt-6 space-y-6">
 
-                <!-- Filter and Search Section -->
-                <div class="flex flex-wrap items-center gap-3">
-                    <input type="text" placeholder="Search by product or supplier..." class="border border-gray-300 rounded px-4 py-2 flex-1 min-w-[250px]" />
+                <!-- Filter Form -->
+                <form method="get" action="PurchaseDashboard" class="flex flex-wrap items-center gap-3">
+                    <input type="text" name="search" placeholder="Search by product or supplier..." value="${param.search}" class="border border-gray-300 rounded px-4 py-2 flex-1 min-w-[250px]" />
 
                     <!-- Category dropdown -->
-                    <select class="border px-3 py-2 rounded">
-                        <option>All Categories</option>
-                        <!-- Populate categories dynamically from backend -->
+                    <select name="category" class="border px-3 py-2 rounded">
+                        <option value="">All Categories</option>
+                        <c:forEach var="cat" items="${categoryList}">
+                            <option value="${cat}" <c:if test="${param.category == cat}">selected</c:if>>${cat}</option>
+                        </c:forEach>
                     </select>
 
                     <!-- Supplier dropdown -->
-                    <select class="border px-3 py-2 rounded">
-                        <option>All Suppliers</option>
-                        <!-- Populate suppliers dynamically from backend -->
+                    <select name="supplier" class="border px-3 py-2 rounded">
+                        <option value="">All Suppliers</option>
+                        <c:forEach var="sup" items="${supplierList}">
+                            <option value="${sup}" <c:if test="${param.supplier == sup}">selected</c:if>>${sup}</option>
+                        </c:forEach>
                     </select>
 
                     <!-- Date filter inputs -->
-                    <input type="date" class="border px-3 py-2 rounded" />
-                    <input type="date" class="border px-3 py-2 rounded" />
+                    <input type="date" name="startDate" value="${param.startDate}" class="border px-3 py-2 rounded" />
+                    <input type="date" name="endDate" value="${param.endDate}" class="border px-3 py-2 rounded" />
 
-                    <!-- Apply button -->
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded">Apply</button>
-                </div>
+                    <!-- Submit button -->
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Apply</button>
+                    <!-- Clear Filters -->
+    				<button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
+                </form>
 
-                <!-- Action buttons for adding and exporting -->
+                <!-- Action buttons -->
                 <div class="flex gap-4 mt-6">
                     <button onclick="showAddForm()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 flex items-center gap-2 transition">
                         <i class="fas fa-plus"></i> Add
@@ -66,7 +71,7 @@
                     </button>
                 </div>
 
-                <!-- Purchase stock table -->
+                <!-- Purchase Table -->
                 <div class="bg-white shadow rounded overflow-x-auto mt-6">
                     <table class="min-w-full text-sm text-gray-700">
                         <thead class="bg-gray-100 text-left font-semibold">
@@ -85,8 +90,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Loop through purchase stock list -->
-                            <c:forEach var="product" items="${purchaseList}" varStatus="loop">
+                            <c:forEach var="product" items="${purchaseList}">
                                 <tr class="border-t text-center hover:bg-gray-50">
                                     <td class="px-4 py-3">${product.purchaseId}</td>
                                     <td class="px-4 py-3">${product.productName}</td>
@@ -95,8 +99,8 @@
                                     <td class="px-4 py-3">${product.quantity}</td>
                                     <td class="px-4 py-3">${product.unitPrice}</td>
                                     <td class="px-4 py-3">${product.totalAmount}</td>
-                                    <td class="px-4 py-3">${product.manufactureDate}</td>
-                                    <td class="px-4 py-3">${product.expireDate}</td>
+                                    <td class="px-4 py-3"><fmt:formatDate value="${product.manufactureDate}" pattern="yyyy-MM-dd" /></td>
+                                    <td class="px-4 py-3"><fmt:formatDate value="${product.expireDate}" pattern="yyyy-MM-dd" /></td>
                                     <td class="px-4 py-3"><fmt:formatDate value="${product.purchaseDate}" pattern="yyyy-MM-dd" /></td>
                                     <td class="px-4 py-3">
                                         <a href="PurchaseDashboard?action=edit&id=${product.purchaseId}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Update</a>
@@ -105,7 +109,6 @@
                                 </tr>
                             </c:forEach>
 
-                            <!-- If no purchase stock available -->
                             <c:if test="${empty purchaseList}">
                                 <tr>
                                     <td colspan="11" class="text-center text-gray-500 py-6">No purchase stock found.</td>
@@ -115,12 +118,10 @@
                     </table>
                 </div>
             </div>
-            <!-- End of content section -->
-
+            <!-- End content section -->
         </main>
     </div>
 
-    <!-- Add Form redirect function -->
     <script>
         function showAddForm() {
             window.location.href = 'PurchaseForm.jsp';
