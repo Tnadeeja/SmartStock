@@ -1,6 +1,7 @@
 package com.smartstock.servlet;
 
 import com.smartstock.model.PurchaseProduct;
+
 import com.smartstock.service.PurchaseProductService;
 
 import javax.servlet.ServletException;

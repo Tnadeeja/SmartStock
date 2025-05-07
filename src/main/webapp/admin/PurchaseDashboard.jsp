@@ -10,15 +10,15 @@
 
     <!-- TailwindCSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body>
- <jsp:include page="partials/header.jsp" />
- 
- <div class="flex">
-  <jsp:include page="partials/slideBar.jsp" />
+
+<body class="bg-gray-100 text-dark-blue">
 
 
     <div class="flex">
@@ -27,61 +27,53 @@
 
         <!-- Main content section -->
         <main class="flex-1 p-6">
-            <!-- Start of content section -->
             <div class="mt-6 space-y-6">
 
                 <!-- Filter Form -->
                 <form method="get" action="PurchaseDashboard" class="flex flex-wrap items-center gap-3">
-                    <input type="text" name="search" placeholder="Search by product or supplier..." value="${param.search}" class="border border-gray-300 rounded px-4 py-2 flex-1 min-w-[250px]" />
+                    <input type="text" name="search" placeholder="Search by product or supplier..." value="${param.search}" class="border border-primary rounded px-4 py-2 flex-1 min-w-[250px] text-dark-blue" />
 
-                    <!-- Category dropdown -->
-                    <select name="category" class="border px-3 py-2 rounded">
+                    <select name="category" class="border border-primary px-3 py-2 rounded text-dark-blue">
                         <option value="">All Categories</option>
                         <c:forEach var="cat" items="${categoryList}">
                             <option value="${cat}" <c:if test="${param.category == cat}">selected</c:if>>${cat}</option>
                         </c:forEach>
                     </select>
 
-                    <!-- Supplier dropdown -->
-                    <select name="supplier" class="border px-3 py-2 rounded">
+                    <select name="supplier" class="border border-primary px-3 py-2 rounded text-dark-blue">
                         <option value="">All Suppliers</option>
                         <c:forEach var="sup" items="${supplierList}">
                             <option value="${sup}" <c:if test="${param.supplier == sup}">selected</c:if>>${sup}</option>
                         </c:forEach>
                     </select>
 
-                    <!-- Date filter inputs -->
-                    <input type="date" name="startDate" value="${param.startDate}" class="border px-3 py-2 rounded" />
-                    <input type="date" name="endDate" value="${param.endDate}" class="border px-3 py-2 rounded" />
+                    <input type="date" name="startDate" value="${param.startDate}" class="border border-primary px-3 py-2 rounded text-dark-blue" />
+                    <input type="date" name="endDate" value="${param.endDate}" class="border border-primary px-3 py-2 rounded text-dark-blue" />
 
+                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
+                    <button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
 
-
-
-
-                    <!-- Submit button -->
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Apply</button>
-                    <!-- Clear Filters -->
-    				<button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
                 </form>
 
 
                 <!-- Action buttons -->
                 <div class="flex gap-4 mt-6">
-                    <button onclick="showAddForm()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 flex items-center gap-2 transition">
+                    <button onclick="showAddForm()" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
                         <i class="fas fa-plus"></i> Add
                     </button>
-                    <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
-                        <i class="fas fa-file-pdf"></i> Export PDF
-                    </button>
-                    <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
-                        <i class="fas fa-file-excel"></i> Export Excel
-                    </button>
+                    <button onclick="exportTableToPDF()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
+    					<i class="fas fa-file-pdf"></i> Export PDF
+					</button>
+                    <button onclick="exportTableToExcel()" class="bg-yellow-500 text-dark-blue px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
+    					<i class="fas fa-file-excel"></i> Export Excel
+					</button>
+
                 </div>
 
                 <!-- Purchase Table -->
                 <div class="bg-white shadow rounded overflow-x-auto mt-6">
-                    <table class="min-w-full text-sm text-gray-700">
-                        <thead class="bg-gray-100 text-left font-semibold">
+                    <table class="min-w-full text-sm text-dark-blue">
+                        <thead class="bg-primary text-white text-left font-semibold">
                             <tr>
                                 <th class="px-4 py-3">ID</th>
                                 <th class="px-4 py-3">Product Name</th>
@@ -110,8 +102,10 @@
                                     <td class="px-4 py-3"><fmt:formatDate value="${product.expireDate}" pattern="yyyy-MM-dd" /></td>
                                     <td class="px-4 py-3"><fmt:formatDate value="${product.purchaseDate}" pattern="yyyy-MM-dd" /></td>
                                     <td class="px-4 py-3">
-                                        <a href="PurchaseDashboard?action=edit&id=${product.purchaseId}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Update</a>
-                                        <a href="PurchaseDashboard?action=delete&id=${product.purchaseId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition ml-2" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                                        <div class="flex justify-center gap-2">
+                                            <a href="PurchaseDashboard?action=edit&id=${product.purchaseId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
+                                            <a href="PurchaseDashboard?action=delete&id=${product.purchaseId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -125,7 +119,6 @@
                     </table>
                 </div>
             </div>
-            <!-- End content section -->
         </main>
     </div>
 
@@ -134,5 +127,30 @@
             window.location.href = 'PurchaseForm.jsp';
         }
     </script>
+    
+    <script>
+    	async function exportTableToPDF() {
+        	const { jsPDF } = window.jspdf;
+        	const doc = new jsPDF();
+
+        doc.autoTable({
+            html: 'table', // targets the first <table> in the DOM
+            theme: 'grid',
+            headStyles: { fillColor: [41, 85, 217] }, // match your Tailwind primary
+            styles: { fontSize: 8 },
+        });
+
+        	doc.save('purchase_data.pdf');
+    	}
+	</script>
+	
+	<script>
+    	function exportTableToExcel() {
+        	var table = document.querySelector('table');
+        	var wb = XLSX.utils.table_to_book(table, { sheet: "Purchase Data" });
+        	XLSX.writeFile(wb, 'purchase_data.xlsx');
+    	}
+	</script>
+	
 </body>
 </html>
