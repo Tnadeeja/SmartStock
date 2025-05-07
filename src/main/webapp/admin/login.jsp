@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login</title>
@@ -73,15 +74,16 @@
       </div>
       <div>
         <label class="block text-sm text-white mb-1" for="password">Password</label>
-        <input id="password" type="password" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your password"/>
+        <input id="password" type="password" name="password" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your password"/>
       </div>
       <div>
       
-      <c:if test="${not empty error}">
+     <c:if test="${not empty error}">
     <div class="bg-red-500/20 text-red-400 border border-red-500 rounded-lg p-4 mb-4">
-       <p>${errorMessage}</p>
+       <p>${error}</p>
     </div>
-	</c:if>
+</c:if>
+     
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-full shadow-md transition-all duration-300">
           Login
         </button>
