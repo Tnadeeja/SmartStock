@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Outgoing Product</title>
+<title>Category</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -41,10 +41,9 @@
 
   <!-- Action Buttons -->
   <div class="flex gap-4 mt-6">
-    <a href="outgoing?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
-  <i class="fas fa-plus"></i> Add
-</a>
-    
+    <button onclick="showAddForm()" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
+      <i class="fas fa-plus"></i> Add
+    </button>
     <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
       <i class="fas fa-file-pdf"></i> Export PDF
     </button>
@@ -59,42 +58,26 @@
   <thead class="bg-primary text-white text-left font-semibold">
     <tr>
       <th class="px-4 py-3">ID</th>
-      <th class="px-4 py-3">Product Name</th>
       <th class="px-4 py-3">Category</th>
-      <th class="px-4 py-3">Customer</th>
-      <th class="px-4 py-3">Quantity</th>
-      <th class="px-4 py-3">Sale Price</th>
-      <th class="px-4 py-3">Total Amount</th>
-     <th class="px-4 py-3">MFG Date</th>
-      <th class="px-4 py-3">EXP Date</th>
-      <th class="px-4 py-3">Sale Date</th>
       <th class="px-4 py-3">Action</th>
-    </tr>
+     </tr>
   </thead>
   <tbody>
-    <c:forEach var="product" items="${outgoingList}" varStatus="loop">
+    <c:forEach var="category" items="${categoryList}" varStatus="loop">
       <tr class="border-t text-center hover:bg-gray-50">
-        <td class="px-4 py-3">${product.outgoingId}</td>
-        <td class="px-4 py-3">${product.productName}</td>
-        <td class="px-4 py-3">${product.categoryName}</td>
-        <td class="px-4 py-3">${product.customerName}</td>
-        <td class="px-4 py-3">${product.quantity}</td>
-        <td class="px-4 py-3">${product.salePrice}</td>
-        <td class="px-4 py-3">${product.totalAmount}</td>
-        <td class="px-4 py-3">${product.manufactureDate}</td>
-        <td class="px-4 py-3">${product.expireDate}</td>
-        <td class="px-4 py-3">${product.outgoingDate}</td>
+        <td class="px-4 py-3">${category.categoryId}</td>
+        <td class="px-4 py-3">${category.categoryName}</td>
         <td class="px-4 py-3">
         	<div class="flex justify-center gap-2">
-          		<a href="outgoing?action=edit&id=${product.outgoingId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
-          		<a href="outgoing?action=delete&id=${product.outgoingId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+          		<a href="category?action=edit&id=${category.categoryId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
+          		<a href="category?action=delete&id=${category.categoryId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
         	</div>
         </td>
       </tr>
     </c:forEach>
-    <c:if test="${empty outgoingList}">
+    <c:if test="${empty categoryList}">
       <tr>
-        <td colspan="11" class="text-center text-gray-500 py-6">No outgoing stock found.</td>
+        <td colspan="11" class="text-center text-gray-500 py-6">No category found.</td>
       </tr>
     </c:if>
   </tbody>
@@ -105,7 +88,7 @@
 
 <script>
   function showAddForm() {
-    window.location.href = '<c:url value="outgoingForm.jsp?action=add" />';
+    window.location.href = '<c:url value="categoryForm.jsp?action=add" />';
   }
 </script>
 <!-- End -->

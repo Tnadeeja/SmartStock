@@ -1,10 +1,11 @@
 package com.smartstock.servlet;
 
-
 import com.smartstock.model.OutgoingProduct;
 import com.smartstock.model.ReturnProduct;
 import com.smartstock.service.OutgoingProductService;
 import com.smartstock.service.ReturnProductService;
+import com.smartstock.model.Category;
+import com.smartstock.service.CategoryService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,19 +30,22 @@ public class OutgoingProductServlet extends HttpServlet {
             if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 OutgoingProduct product = productService.getOutgoingProduct(id);
+
+                // ✅ Set category list BEFORE forwarding
+                List<Category> categoryList = new CategoryService().getAllcategory();
+
                 request.setAttribute("product", product);
+                request.setAttribute("categoryList", categoryList);
+
                 request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
 
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                // Step 1: Get the outgoing product before deleting
                 OutgoingProduct outgoingProduct = productService.getOutgoingProduct(id);
 
-                // Step 2: Delete the outgoing product
                 productService.deleteOutgoingProduct(id);
 
-                // Step 3: Insert into return_product table
                 if (outgoingProduct != null) {
                     ReturnProduct returnProduct = new ReturnProduct();
                     returnProduct.productName = outgoingProduct.productName;
@@ -49,14 +53,19 @@ public class OutgoingProductServlet extends HttpServlet {
                     returnProduct.returnDate = new Date(); // current timestamp
                     returnProduct.reason = ""; // leave empty for now
 
-                    // Save to return_product table
                     ReturnProductService returnService = new ReturnProductService();
                     returnService.createReturnProduct(returnProduct);
                 }
 
                 response.sendRedirect("outgoing");
-            }
-            else {
+
+            }else if ("add".equals(action)) {
+                // Load empty form with category list
+                List<Category> categoryList = new CategoryService().getAllcategory();
+                request.setAttribute("categoryList", categoryList);
+                request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
+
+            } else {
                 List<OutgoingProduct> outgoingList = productService.getAllOutgoingProducts();
                 request.setAttribute("outgoingList", outgoingList);
                 request.getRequestDispatcher("/admin/outgoing.jsp").forward(request, response);
@@ -72,7 +81,6 @@ public class OutgoingProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Parse ID for update case
             int outgoingId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
                     ? Integer.parseInt(request.getParameter("id"))
                     : 0;
@@ -124,9 +132,14 @@ public class OutgoingProductServlet extends HttpServlet {
             response.sendRedirect("outgoing");
 
         } catch (Exception e) {
-            System.err.println("Error in OutgoingProductServlet: " + e.getMessage());
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input or missing fields.");
+
+            List<Category> categoryList = new CategoryService().getAllcategory();
+            request.setAttribute("categoryList", categoryList);
+            request.setAttribute("error", "Invalid input or missing fields. Please check your form.");
+            request.setAttribute("product", request);  // optionally set previous form data
+
+            request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
         }
     }
 }
