@@ -11,8 +11,6 @@
 </head>
 <body class="h-screen">
 
-  <jsp:include page="partials/header.jsp" />
-
   <div class="flex h-[calc(100vh-64px)]">
     <jsp:include page="partials/slideBar.jsp" />
 
@@ -31,14 +29,14 @@
           <div>
             <label class="block text-gray-700 font-medium mb-1">Product Name</label>
             <input type="text" name="productName" value="${product.productName}" required
-                   class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                   class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
           </div>
 
           <!-- Category & Supplier -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-gray-700 font-medium mb-1">Category</label>
-              <select name="categoryName" class="w-full border border-gray-300 rounded px-4 py-2 bg-white">
+              <select name="categoryName" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white">
                 <option value="">-- Select Category --</option>
                 <c:forEach var="cat" items="${categoryList}">
                   <option value="${cat}" ${cat == product.categoryName ? 'selected' : ''}>${cat}</option>
@@ -47,7 +45,7 @@
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Supplier</label>
-              <select name="supplierName" class="w-full border border-gray-300 rounded px-4 py-2 bg-white">
+              <select name="supplierName" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white">
                 <option value="">-- Select Supplier --</option>
                 <c:forEach var="sup" items="${supplierList}">
                   <option value="${sup}" ${sup == product.supplierName ? 'selected' : ''}>${sup}</option>
@@ -61,17 +59,17 @@
             <div>
               <label class="block text-gray-700 font-medium mb-1">Quantity</label>
               <input type="number" name="quantity" id="quantity" value="${product.quantity}" required
-                     class="w-full border border-gray-300 rounded px-4 py-2" />
+                     class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Unit Price</label>
               <input type="number" step="0.01" name="unitPrice" id="unitPrice" value="${product.unitPrice}" required
-                     class="w-full border border-gray-300 rounded px-4 py-2" />
+                     class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Total Amount</label>
               <input type="text" id="totalAmountDisplay" value="${product.totalAmount}" readonly
-                     class="w-full border border-gray-300 bg-gray-100 rounded px-4 py-2" />
+                     class="w-full border border-[#2955D9] bg-gray-100 rounded px-4 py-2" />
             </div>
           </div>
 
@@ -86,25 +84,25 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label class="block text-gray-700 font-medium mb-1">Manufacture Date</label>
-              <input type="date" name="manufactureDate" value="${mfgDate}" class="w-full border border-gray-300 rounded px-4 py-2" />
+              <input type="date" name="manufactureDate" value="${mfgDate}" class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Expire Date</label>
-              <input type="date" name="expireDate" value="${expDate}" class="w-full border border-gray-300 rounded px-4 py-2" />
+              <input type="date" name="expireDate" value="${expDate}" class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Purchase Date</label>
-              <input type="date" name="purchaseDate" value="${purDate}" class="w-full border border-gray-300 rounded px-4 py-2" />
+              <input type="date" name="purchaseDate" value="${purDate}" class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
           </div>
 
           <!-- Buttons -->
           <div class="pt-4 mt-auto">
             <div class="flex justify-end space-x-4">
-              <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-all">
+              <button type="submit" class="bg-[#0A4DA6] text-white px-6 py-2 rounded hover:bg-[#0D448C] transition-all">
                 <i class="fas fa-save mr-2"></i>Save
               </button>
-              <button type="button" onclick="window.history.back()" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition-all">
+              <button type="button" onclick="window.history.back()" class="bg-[#142B59] text-white px-6 py-2 rounded hover:bg-[#0D448C] transition-all">
                 Discard
               </button>
             </div>
