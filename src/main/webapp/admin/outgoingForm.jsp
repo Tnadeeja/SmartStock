@@ -34,13 +34,18 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-gray-700 font-medium mb-1">Category</label>
-              <select name="categoryId" 
-                      class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white">
-                <option value="">-- Select Category --</option>
-                <c:forEach var="category" items="${categoryList}">
-                  <option value="${category}" ${product.categoryName == category ? 'selected' : ''}>${category}</option>
-                </c:forEach>
-              </select>
+				  <select name="categoryId" 
+            class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white" required>
+      <option value="">-- Select Category --</option>
+      <c:forEach var="category" items="${categoryList}">
+        <option value="${category.categoryName}"
+                <c:if test="${not empty product && product.categoryName == category.categoryName}">selected</c:if>>
+          ${category.categoryName}
+        </option>
+      </c:forEach>
+    </select>
+			
+
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Customer</label>
@@ -68,7 +73,7 @@
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Total Price</label>
-              <input type="number" step="0.01" name="totalPrice" value="${product.totalAmount}" required
+              <input type="number" step="0.01" id="totalPrice" name="totalPrice" value="${product.totalAmount}" required
                      class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
           </div>
@@ -113,7 +118,7 @@
   <script>
     const quantityInput = document.getElementById("quantity");
     const unitPriceInput = document.getElementById("unitPrice");
-    const totalAmountInput = document.getElementById("totalAmount");
+    const totalAmountInput = document.getElementById("totalPrice");
     const totalAmountDisplay = document.getElementById("totalAmountDisplay");
 
     function updateTotal() {
