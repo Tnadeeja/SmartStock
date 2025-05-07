@@ -87,7 +87,7 @@
         </a>
 
         <!-- System Users -->
-        <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-primary transition">
+        <a href="${pageContext.request.contextPath}/admin/systemUser" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-primary transition">
             <i class="fas fa-users-cog mr-3 text-gray-400"></i>
             System Users
         </a>
