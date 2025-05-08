@@ -49,7 +49,7 @@
         </a>
 
         <!-- Product -->
-        <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-primary transition">
+        <a href="${pageContext.request.contextPath}/admin/product" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-primary transition">
             <i class="fas fa-cogs mr-3 text-gray-400"></i>
             Product
         </a>
