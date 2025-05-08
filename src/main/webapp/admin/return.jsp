@@ -70,6 +70,7 @@
                                 <td class="px-4 py-3">${returnProduct.returnDate}</td>
                                 <td class="px-4 py-3">
                                     <a href="return?action=edit&id=${returnProduct.returnId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition ml-2">Add Reason</a>
+                                    <a href="return?action=delete&id=${returnProduct.returnId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
                                 </td>
                             </tr>
                         </c:forEach>
