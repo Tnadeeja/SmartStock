@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<% 
+    String picture = (String) session.getAttribute("filename"); 
+    if (picture == null) {
+        picture = "default.png";  // Fallback to a default image if no picture is set
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,32 +65,39 @@
   <div class="bg-white shadow rounded overflow-x-auto mt-6">
 <table class="min-w-full text-sm text-dark-blue">
   <thead class="bg-primary text-white text-left font-semibold">
-    <tr>
-      <th class="px-4 py-3">ID</th>
-      <th class="px-4 py-3">Email</th>
-      <th class="px-4 py-3">Password</th>
-      <th class="px-4 py-3">Picture</th>
-      <th class="px-4 py-3">User Role</th>
-      <th class="px-4 py-3">Created Date</th>
-      <th class="px-4 py-3">Action</th>
-    </tr>
-  </thead>
+  <tr>
+    <th class="px-4 py-3">ID</th>
+    <th class="px-4 py-3">Name</th>
+    <th class="px-4 py-3">Phone</th>
+    <th class="px-4 py-3">Address</th>
+    <th class="px-4 py-3">Email</th>
+    <th class="px-4 py-3">Password</th>
+    <th class="px-4 py-3">Picture</th>
+    <th class="px-4 py-3">User Role</th>
+    <th class="px-4 py-3">Created Date</th>
+    <th class="px-4 py-3">Action</th>
+  </tr>
+</thead>
   <tbody>
     <c:forEach var="user" items="${userList}" varStatus="loop">
       <tr class="border-t text-center hover:bg-gray-50">
-        <td class="px-4 py-3">${user.userId}</td>
-        <td class="px-4 py-3">${user.email}</td>
-        <td class="px-4 py-3">${user.password}</td>
-        <td class="px-4 py-3">${user.filename}</td>
-        <td class="px-4 py-3">${user.role}</td>
-        <td class="px-4 py-3">${user.createdAt}</td>
-        <td class="px-4 py-3">
-        	<div class="flex justify-center gap-2">
-          		<a href="systemUser?action=edit&id=${user.userId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
-          		<a href="systemUser?action=delete&id=${user.userId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
-        	</div>
-        </td>
-      </tr>
+  <td class="px-4 py-3">${user.userId}</td>
+  <td class="px-4 py-3">${user.name}</td>
+  <td class="px-4 py-3">${user.phone}</td>
+  <td class="px-4 py-3">${user.address}</td>
+  <td class="px-4 py-3">${user.email}</td>
+  <td class="px-4 py-3">${user.password}</td>
+  <td class="px-4 py-3"><img src="/SmartStock/admin/assets/picture/${user.filename}" width="40"></td>
+  <td class="px-4 py-3">${user.role}</td>
+  <td class="px-4 py-3">${user.createdAt}</td>
+  <td class="px-4 py-3">
+    <div class="flex justify-center gap-2">
+      <a href="systemUser?action=edit&id=${user.userId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
+      <a href="systemUser?action=delete&id=${user.userId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+    </div>
+  </td>
+</tr>
+      
     </c:forEach>
     <c:if test="${empty userList}">
       <tr>

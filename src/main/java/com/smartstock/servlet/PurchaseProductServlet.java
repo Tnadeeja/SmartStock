@@ -1,7 +1,6 @@
 package com.smartstock.servlet;
 
 import com.smartstock.model.PurchaseProduct;
-
 import com.smartstock.service.PurchaseProductService;
 
 import javax.servlet.ServletException;
@@ -15,13 +14,14 @@ import java.util.List;
 @WebServlet("/admin/PurchaseDashboard")
 public class PurchaseProductServlet extends HttpServlet {
 
-    private PurchaseProductService productService = new PurchaseProductService();
+    private final PurchaseProductService productService = new PurchaseProductService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        HttpSession session = request.getSession();
 
         try {
             if ("edit".equals(action)) {
@@ -32,26 +32,40 @@ public class PurchaseProductServlet extends HttpServlet {
 
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                productService.deletePurchaseProduct(id);
+                boolean deleted = productService.deletePurchaseProduct(id);
+
+                if (deleted) {
+                    session.setAttribute("message", "Item deleted successfully!");
+                    session.setAttribute("status", "success-delete");
+                } else {
+                    session.setAttribute("message", "Failed to delete item.");
+                    session.setAttribute("status", "error");
+                }
+
                 response.sendRedirect("PurchaseDashboard");
 
             } else {
-                // Filter parameters
+                // Handle filter parameters
                 String search = request.getParameter("search");
                 String category = request.getParameter("category");
                 String supplier = request.getParameter("supplier");
                 String startDateStr = request.getParameter("startDate");
                 String endDateStr = request.getParameter("endDate");
 
-                Date startDate = null;
-                Date endDate = null;
+                Date startDate = null, endDate = null;
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                if (startDateStr != null && !startDateStr.isEmpty()) {
+                if (startDateStr != null && !startDateStr.isEmpty())
                     startDate = sdf.parse(startDateStr);
-                }
-                if (endDateStr != null && !endDateStr.isEmpty()) {
+                if (endDateStr != null && !endDateStr.isEmpty())
                     endDate = sdf.parse(endDateStr);
+
+                // Flash messages (show once)
+                if (session.getAttribute("message") != null) {
+                    request.setAttribute("message", session.getAttribute("message"));
+                    request.setAttribute("status", session.getAttribute("status"));
+                    session.removeAttribute("message");
+                    session.removeAttribute("status");
                 }
 
                 List<PurchaseProduct> purchaseList = productService.getFilteredPurchaseProducts(
@@ -61,6 +75,7 @@ public class PurchaseProductServlet extends HttpServlet {
                 request.setAttribute("purchaseList", purchaseList);
                 request.getRequestDispatcher("/admin/PurchaseDashboard.jsp").forward(request, response);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred.");
@@ -70,6 +85,8 @@ public class PurchaseProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
 
         try {
             int purchaseId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
@@ -111,20 +128,32 @@ public class PurchaseProductServlet extends HttpServlet {
             boolean success;
             if (purchaseId > 0) {
                 success = productService.updatePurchaseProduct(product);
+                if (success) {
+                    session.setAttribute("message", "Item updated successfully!");
+                    session.setAttribute("status", "success-update");
+                } else {
+                    session.setAttribute("message", "Failed to update item.");
+                    session.setAttribute("status", "error");
+                }
             } else {
                 success = productService.createPurchaseProduct(product);
+                if (success) {
+                    session.setAttribute("message", "Item added successfully!");
+                    session.setAttribute("status", "success-add");
+                } else {
+                    session.setAttribute("message", "Failed to add item.");
+                    session.setAttribute("status", "error");
+                }
             }
 
-            if (success) {
-                response.sendRedirect("PurchaseDashboard");
-            } else {
-                throw new Exception("Database operation failed.");
-            }
+            response.sendRedirect("PurchaseDashboard");
 
         } catch (Exception e) {
             System.err.println("Error in PurchaseProductServlet: " + e.getMessage());
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input or missing fields.");
+            session.setAttribute("message", "Invalid input or error occurred.");
+            session.setAttribute("status", "error");
+            response.sendRedirect("PurchaseDashboard");
         }
     }
 }

@@ -1,3 +1,10 @@
+<%
+	String name = (String) session.getAttribute("name");
+	String role = (String) session.getAttribute("role");
+	String picture = (String) session.getAttribute("filename");
+%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,12 +26,12 @@
         <div class="flex items-center gap-3 p-4 bg-dark-blue rounded-lg shadow-sm border border-gray-700">
             <!-- Profile Picture -->
             <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-blue-400">
-                <img src="https://i.pravatar.cc/50?img=5" alt="User Profile" class="w-full h-full object-cover">
+                <img src="/SmartStock/admin/assets/picture/${user.filename}" width="100">
             </div>
             <!-- User Details -->
             <div class="flex flex-col">
-                <span class="text-xl font-bold text-white">John Doe</span>
-                <span class="text-sm text-blue-300">Sales Manager</span>
+                <span class="text-xl font-bold text-white"><%= name %></span>
+                <span class="text-sm text-blue-300"><%= role %></span>
             </div>
         </div>
     
