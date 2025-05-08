@@ -100,11 +100,7 @@ public class ReturnProductServlet extends HttpServlet {
             if (returnId > 0) {
                 success = returnProductService.updateReturnProduct(returnProduct);
                 if (success) {
-<<<<<<< Updated upstream
                     session.setAttribute("message", "Reason Update successfully!");
-=======
-                    session.setAttribute("message", "Item updated successfully!");
->>>>>>> Stashed changes
                     session.setAttribute("status", "success-update");
                 } else {
                     session.setAttribute("message", "Failed to update item.");
@@ -113,11 +109,7 @@ public class ReturnProductServlet extends HttpServlet {
             } else {
                 success = returnProductService.createReturnProduct(returnProduct);
                 if (success) {
-<<<<<<< Updated upstream
                     session.setAttribute("message", "Reason Added!");
-=======
-                    session.setAttribute("message", "Item added successfully!");
->>>>>>> Stashed changes
                     session.setAttribute("status", "success-add");
                 } else {
                     session.setAttribute("message", "Failed to add item.");
