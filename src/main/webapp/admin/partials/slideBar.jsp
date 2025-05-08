@@ -81,7 +81,7 @@
         <hr class="border-gray-700 my-3">
 
         <!-- Notification -->
-        <a href="${pageContext.request.contextPath}/admin/notification.jsp" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-primary transition">
+        <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-primary transition">
             <i class="fas fa-bell mr-3 text-gray-400"></i>
             Notification
         </a>
