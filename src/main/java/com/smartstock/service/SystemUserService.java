@@ -11,13 +11,16 @@ public class SystemUserService {
 
     // Create User
     public boolean createUser(SystemUser user) {
-        String query = "INSERT INTO system_users (email, password, filename, role) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO system_users (name, phone, address, email, password, filename, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getFilename());
-            stmt.setString(4, user.getRole());
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getPhone());
+            stmt.setString(3, user.getAddress());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getPassword());
+            stmt.setString(6, user.getFilename());
+            stmt.setString(7, user.getRole());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,6 +38,9 @@ public class SystemUserService {
             if (rs.next()) {
                 SystemUser user = new SystemUser();
                 user.setUserId(rs.getInt("user_id"));
+                user.setName(rs.getString("name"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setFilename(rs.getString("filename"));
@@ -59,6 +65,9 @@ public class SystemUserService {
             while (rs.next()) {
                 SystemUser user = new SystemUser();
                 user.setUserId(rs.getInt("user_id"));
+                user.setName(rs.getString("name"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setFilename(rs.getString("filename"));
@@ -75,14 +84,17 @@ public class SystemUserService {
 
     // Update User
     public boolean updateUser(SystemUser user) {
-        String query = "UPDATE system_users SET email = ?, password = ?, filename = ?, role = ? WHERE user_id = ?";
+        String query = "UPDATE system_users SET name = ?, phone = ?, address = ?, email = ?, password = ?, filename = ?, role = ? WHERE user_id = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getFilename());
-            stmt.setString(4, user.getRole());
-            stmt.setInt(5, user.getUserId());
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getPhone());
+            stmt.setString(3, user.getAddress());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getPassword());
+            stmt.setString(6, user.getFilename());
+            stmt.setString(7, user.getRole());
+            stmt.setInt(8, user.getUserId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

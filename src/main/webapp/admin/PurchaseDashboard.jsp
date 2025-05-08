@@ -20,6 +20,62 @@
 
 <body class="bg-gray-100 text-dark-blue">
 
+    <style>
+        @keyframes moveFromLeftToRight {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            80% {
+                opacity: 1;
+                transform: translateX(5%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        .animate-move-right {
+            animation: moveFromLeftToRight 1s ease-out forwards;
+        }
+
+        .animate-fade-out {
+            animation: fadeOut 1s ease-in forwards;
+        }
+    </style>
+
+    <div id="flashMessage" class="fixed bottom-0 left-0 z-50 flex items-center justify-center w-full bg-black bg-opacity-30 transition-opacity duration-300">
+        <div class="message-box max-w-full w-full px-5 py-3 rounded-lg shadow-md text-white text-base flex items-center gap-3 <%= bgColor %> animate-move-right">
+            <div><%= iconSVG %></div>
+            <span><%= message %></span>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const msg = document.getElementById("flashMessage");
+            if (msg) {
+                const box = msg.querySelector(".message-box");
+                box.classList.remove("animate-move-right");
+                box.classList.add("animate-fade-out");
+                setTimeout(() => msg.remove(), 1000); // Remove after fade-out
+            }
+        }, 3000);  // Message disappears after 3 seconds
+    </script>
+<%
+    }
+
 
     <div class="flex">
         <!-- Include sidebar -->

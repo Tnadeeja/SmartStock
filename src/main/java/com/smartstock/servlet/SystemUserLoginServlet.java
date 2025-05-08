@@ -36,9 +36,10 @@ public class SystemUserLoginServlet extends HttpServlet {
         if (user != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
+            session.setAttribute("name", user.getName());  // Use the name in the sidebar
             session.setAttribute("email", user.getEmail());
             session.setAttribute("role", user.getRole());
-            session.setAttribute("filename", user.getFilename());
+            session.setAttribute("filename", user.getFilename());  // For profile picture
             session.setMaxInactiveInterval(30 * 60); // 30 minutes
 
             redirectByRole(response, request.getContextPath(), user.getRole());

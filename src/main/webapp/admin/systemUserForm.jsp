@@ -38,6 +38,27 @@
            class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
   </div>
 
+  <!-- Name -->
+  <div>
+    <label class="block text-gray-700 font-medium mb-1">Name</label>
+    <input type="text" name="name" value="${not empty user ? user.name : ''}" required
+           class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <label class="block text-gray-700 font-medium mb-1">Phone</label>
+    <input type="text" name="phone" value="${not empty user ? user.phone : ''}" required
+           class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
+  </div>
+
+  <!-- Address -->
+  <div>
+    <label class="block text-gray-700 font-medium mb-1">Address</label>
+    <textarea name="address" rows="3" required
+              class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]">${not empty user ? user.address : ''}</textarea>
+  </div>
+
   <!-- Filename -->
   <div>
     <label class="block text-gray-700 font-medium mb-1">Filename</label>

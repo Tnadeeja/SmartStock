@@ -25,6 +25,7 @@ public class OutgoingProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        HttpSession session = request.getSession();
 
         try {
             if ("edit".equals(action)) {
@@ -44,8 +45,19 @@ public class OutgoingProductServlet extends HttpServlet {
 
                 OutgoingProduct outgoingProduct = productService.getOutgoingProduct(id);
 
-                productService.deleteOutgoingProduct(id);
+                // Delete the outgoing product
+                boolean deleted = productService.deleteOutgoingProduct(id);
 
+                // Handle success/failure message after delete
+                if (deleted) {
+                    session.setAttribute("message", "Item deleted successfully!");
+                    session.setAttribute("status", "success-delete");
+                } else {
+                    session.setAttribute("message", "Failed to delete item.");
+                    session.setAttribute("status", "error");
+                }
+
+                // Return product handling
                 if (outgoingProduct != null) {
                     ReturnProduct returnProduct = new ReturnProduct();
                     returnProduct.productName = outgoingProduct.productName;
@@ -59,7 +71,7 @@ public class OutgoingProductServlet extends HttpServlet {
 
                 response.sendRedirect("outgoing");
 
-            }else if ("add".equals(action)) {
+            } else if ("add".equals(action)) {
                 // Load empty form with category list
                 List<Category> categoryList = new CategoryService().getAllcategory();
                 request.setAttribute("categoryList", categoryList);
@@ -79,6 +91,8 @@ public class OutgoingProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
 
         try {
             int outgoingId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
@@ -123,12 +137,28 @@ public class OutgoingProductServlet extends HttpServlet {
             product.expireDate = expireDate;
             product.outgoingDate = outgoingDate;
 
+            boolean success;
             if (outgoingId > 0) {
-                productService.updateOutgoingProduct(product);
+                success = productService.updateOutgoingProduct(product);
+                if (success) {
+                    session.setAttribute("message", "Item updated successfully!");
+                    session.setAttribute("status", "success-update");
+                } else {
+                    session.setAttribute("message", "Failed to update item.");
+                    session.setAttribute("status", "error");
+                }
             } else {
-                productService.createOutgoingProduct(product);
+                success = productService.createOutgoingProduct(product);
+                if (success) {
+                    session.setAttribute("message", "Item added successfully!");
+                    session.setAttribute("status", "success-add");
+                } else {
+                    session.setAttribute("message", "Failed to add item.");
+                    session.setAttribute("status", "error");
+                }
             }
 
+            // Redirect to the "outgoing" page after add or update
             response.sendRedirect("outgoing");
 
         } catch (Exception e) {

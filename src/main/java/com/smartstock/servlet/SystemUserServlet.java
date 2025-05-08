@@ -21,11 +21,11 @@ public class SystemUserServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-        	if ("add".equals(action)) {
-        	    request.setAttribute("user", null); // ✅ Ensure empty form
-        	    request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
-        	    
-        	} else if ("edit".equals(action)) {
+            if ("add".equals(action)) {
+                request.setAttribute("user", null);
+                request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
+
+            } else if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 SystemUser user = userService.getUser(id);
                 request.setAttribute("user", user);
@@ -55,6 +55,9 @@ public class SystemUserServlet extends HttpServlet {
             int userId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
                     ? Integer.parseInt(request.getParameter("id")) : 0;
 
+            String name = request.getParameter("name");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String filename = request.getParameter("filename") != null ? request.getParameter("filename") : "default.png";
@@ -62,6 +65,9 @@ public class SystemUserServlet extends HttpServlet {
 
             SystemUser user = new SystemUser();
             user.setUserId(userId);
+            user.setName(name);
+            user.setPhone(phone);
+            user.setAddress(address);
             user.setEmail(email);
             user.setPassword(password);
             user.setFilename(filename);
