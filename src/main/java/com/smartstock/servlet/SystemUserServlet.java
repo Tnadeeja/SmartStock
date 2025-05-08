@@ -21,10 +21,11 @@ public class SystemUserServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-            if ("add".equals(action)) {
-                request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
-
-            } else if ("edit".equals(action)) {
+        	if ("add".equals(action)) {
+        	    request.setAttribute("user", null); // ✅ Ensure empty form
+        	    request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
+        	    
+        	} else if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 SystemUser user = userService.getUser(id);
                 request.setAttribute("user", user);
