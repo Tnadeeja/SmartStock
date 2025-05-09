@@ -57,7 +57,7 @@
         </a>
 
         <!-- Customer -->
-        <a href="#" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("customer") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
+        <a href="${pageContext.request.contextPath}/admin/customer" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("customer") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
             <i class="fas fa-users mr-3 text-white"></i>
             Customer
         </a>

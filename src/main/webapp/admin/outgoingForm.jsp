@@ -57,12 +57,15 @@
               </div>
               <div>
                   <label class="block text-gray-700 font-medium mb-1">Customer</label>
-                  <select name="supplierId" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white">
-                      <option value="">-- Select Customer --</option>
-                      <c:forEach var="customer" items="${customerList}">
-                          <option value="${customer}" ${product.customerName == customer ? 'selected' : ''}>${customer}</option>
-                      </c:forEach>
-                  </select>
+                 <select name="supplierId" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white">
+    <option value="">-- Select Customer --</option>
+    <c:forEach var="customer" items="${customerList}">
+        <option value="${customer.customerId}" ${product.customerName != null && product.customerName.equals(customer.name) ? 'selected' : ''}>
+            ${customer.name}
+        </option>
+    </c:forEach>
+</select>
+
               </div>
           </div>
 
