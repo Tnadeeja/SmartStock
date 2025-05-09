@@ -65,7 +65,6 @@ public class ProductServlet extends HttpServlet {
 
             String productName = request.getParameter("productName");
             String categoryName = request.getParameter("categoryId");
-            int quantityInStock = Integer.parseInt(request.getParameter("quantity"));
             double unitPrice = Double.parseDouble(request.getParameter("unitPrice"));
             double salePrice = Double.parseDouble(request.getParameter("salePrice"));
 
@@ -73,7 +72,6 @@ public class ProductServlet extends HttpServlet {
             product.setProductId(productId);
             product.setProductName(productName);
             product.setCategoryName(categoryName);
-            product.setQuantityInStock(quantityInStock);
             product.setUnitPrice(unitPrice);
             product.setSalePrice(salePrice);
 

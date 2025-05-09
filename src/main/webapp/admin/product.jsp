@@ -68,7 +68,6 @@
               <th class="px-4 py-3">ID</th>
               <th class="px-4 py-3">Product Name</th>
               <th class="px-4 py-3">Category</th>
-              <th class="px-4 py-3">Quantity</th>
               <th class="px-4 py-3">Unit Price</th>
               <th class="px-4 py-3">Sale Price</th>
               <th class="px-4 py-3">Action</th>
@@ -80,7 +79,6 @@
                 <td class="px-4 py-3">${product.productId}</td>
                 <td class="px-4 py-3">${product.productName}</td>
                 <td class="px-4 py-3">${product.categoryName}</td>
-                <td class="px-4 py-3">${product.quantityInStock}</td>
                 <td class="px-4 py-3">${product.unitPrice}</td>
                 <td class="px-4 py-3">${product.salePrice}</td>
                 <td class="px-4 py-3">
