@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,7 +110,7 @@
       </select>
 
       <input type="date" class="border border-primary px-3 py-2 rounded text-dark-blue" />
-      <input type="date" class="border border-primary px-3 py-2 rounded text-dark-blue" />
+      
 
     <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
     <button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
@@ -159,7 +160,7 @@
         <td class="px-4 py-3">${product.totalAmount}</td>
         <td class="px-4 py-3">${product.manufactureDate}</td>
         <td class="px-4 py-3">${product.expireDate}</td>
-        <td class="px-4 py-3">${product.outgoingDate}</td>
+        <td class="px-4 py-3"><fmt:formatDate value="${product.outgoingDate}" pattern="yyyy-MM-dd" /></td>
         <td class="px-4 py-3">
         	<div class="flex justify-center gap-2">
           		<a href="outgoing?action=edit&id=${product.outgoingId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>

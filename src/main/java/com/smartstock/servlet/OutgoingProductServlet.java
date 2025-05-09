@@ -1,11 +1,13 @@
 package com.smartstock.servlet;
 
+import com.smartstock.model.Product;
 import com.smartstock.model.OutgoingProduct;
 import com.smartstock.model.ReturnProduct;
 import com.smartstock.service.OutgoingProductService;
 import com.smartstock.service.ReturnProductService;
 import com.smartstock.model.Category;
 import com.smartstock.service.CategoryService;
+import com.smartstock.service.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +20,8 @@ import java.util.List;
 @WebServlet("/admin/outgoing")
 public class OutgoingProductServlet extends HttpServlet {
 
-    private OutgoingProductService productService = new OutgoingProductService();
+    private OutgoingProductService outgoingProductService = new OutgoingProductService(); // ✅ for outgoing product
+    private ProductService productService = new ProductService(); // ✅ for loading product list
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -28,27 +31,25 @@ public class OutgoingProductServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         try {
-            if ("edit".equals(action)) {
+        	if ("edit".equals(action)) {
+        	    int id = Integer.parseInt(request.getParameter("id"));
+        	    OutgoingProduct product = outgoingProductService.getOutgoingProduct(id);
+
+        	    List<Category> categoryList = new CategoryService().getAllcategory();
+        	    List<Product> productList = new ProductService().getAllProducts(); // ✅ fixed: use ProductService, not outgoingProductService
+
+        	    request.setAttribute("product", product);
+        	    request.setAttribute("categoryList", categoryList);
+        	    request.setAttribute("productList", productList); // ✅ needed for dropdown to populate
+
+        	    request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
+        	    
+        	}else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                OutgoingProduct product = productService.getOutgoingProduct(id);
 
-                // ✅ Set category list BEFORE forwarding
-                List<Category> categoryList = new CategoryService().getAllcategory();
+                OutgoingProduct outgoingProduct = outgoingProductService.getOutgoingProduct(id);
+                boolean deleted = outgoingProductService.deleteOutgoingProduct(id);
 
-                request.setAttribute("product", product);
-                request.setAttribute("categoryList", categoryList);
-
-                request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
-
-            } else if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-
-                OutgoingProduct outgoingProduct = productService.getOutgoingProduct(id);
-
-                // Delete the outgoing product
-                boolean deleted = productService.deleteOutgoingProduct(id);
-
-                // Handle success/failure message after delete
                 if (deleted) {
                     session.setAttribute("message", "Item deleted successfully!");
                     session.setAttribute("status", "success-delete");
@@ -57,13 +58,12 @@ public class OutgoingProductServlet extends HttpServlet {
                     session.setAttribute("status", "error");
                 }
 
-                // Return product handling
                 if (outgoingProduct != null) {
                     ReturnProduct returnProduct = new ReturnProduct();
                     returnProduct.productName = outgoingProduct.productName;
                     returnProduct.quantity = outgoingProduct.quantity;
-                    returnProduct.returnDate = new Date(); // current timestamp
-                    returnProduct.reason = ""; // leave empty for now
+                    returnProduct.returnDate = new Date();
+                    returnProduct.reason = "";
 
                     ReturnProductService returnService = new ReturnProductService();
                     returnService.createReturnProduct(returnProduct);
@@ -72,13 +72,16 @@ public class OutgoingProductServlet extends HttpServlet {
                 response.sendRedirect("outgoing");
 
             } else if ("add".equals(action)) {
-                // Load empty form with category list
                 List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Product> productList = productService.getAllProducts(); // ✅ fixed
+
                 request.setAttribute("categoryList", categoryList);
+                request.setAttribute("productList", productList); // ✅ set to request
+
                 request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
 
             } else {
-                List<OutgoingProduct> outgoingList = productService.getAllOutgoingProducts();
+                List<OutgoingProduct> outgoingList = outgoingProductService.getAllOutgoingProducts();
                 request.setAttribute("outgoingList", outgoingList);
                 request.getRequestDispatcher("/admin/outgoing.jsp").forward(request, response);
             }
@@ -121,8 +124,8 @@ public class OutgoingProductServlet extends HttpServlet {
                 expireDate = formatter.parse(request.getParameter("expireDate"));
             }
 
-            if (request.getParameter("purchaseDate") != null && !request.getParameter("purchaseDate").isEmpty()) {
-                outgoingDate = formatter.parse(request.getParameter("purchaseDate"));
+            if (request.getParameter("outgoingDate") != null && !request.getParameter("outgoingDate").isEmpty()) {
+                outgoingDate = formatter.parse(request.getParameter("outgoingDate"));
             }
 
             OutgoingProduct product = new OutgoingProduct();
@@ -139,7 +142,7 @@ public class OutgoingProductServlet extends HttpServlet {
 
             boolean success;
             if (outgoingId > 0) {
-                success = productService.updateOutgoingProduct(product);
+                success = outgoingProductService.updateOutgoingProduct(product);
                 if (success) {
                     session.setAttribute("message", "Item updated successfully!");
                     session.setAttribute("status", "success-update");
@@ -148,7 +151,7 @@ public class OutgoingProductServlet extends HttpServlet {
                     session.setAttribute("status", "error");
                 }
             } else {
-                success = productService.createOutgoingProduct(product);
+                success = outgoingProductService.createOutgoingProduct(product);
                 if (success) {
                     session.setAttribute("message", "Item added successfully!");
                     session.setAttribute("status", "success-add");
@@ -158,16 +161,18 @@ public class OutgoingProductServlet extends HttpServlet {
                 }
             }
 
-            // Redirect to the "outgoing" page after add or update
             response.sendRedirect("outgoing");
 
         } catch (Exception e) {
             e.printStackTrace();
 
             List<Category> categoryList = new CategoryService().getAllcategory();
+            List<Product> productList = productService.getAllProducts(); // ✅ include again for form re-render
+
             request.setAttribute("categoryList", categoryList);
+            request.setAttribute("productList", productList);
             request.setAttribute("error", "Invalid input or missing fields. Please check your form.");
-            request.setAttribute("product", request);  // optionally set previous form data
+            request.setAttribute("product", request);
 
             request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
         }

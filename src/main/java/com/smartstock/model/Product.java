@@ -5,7 +5,6 @@ public class Product {
     private int productId;
     private String productName;
     private String categoryName;
-    private int quantityInStock;
     private double unitPrice;
     private double salePrice;
 
@@ -18,9 +17,6 @@ public class Product {
     }
     public String getCategoryName() {
         return categoryName;
-    }
-    public int getQuantityInStock() {
-        return quantityInStock;
     }
     public double getUnitPrice() {
         return unitPrice;
@@ -38,9 +34,6 @@ public class Product {
     }
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-    public void setQuantityInStock(int quantityInStock) {
-        this.quantityInStock = quantityInStock;
     }
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;

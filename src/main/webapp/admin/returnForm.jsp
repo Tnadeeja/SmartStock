@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +28,7 @@
           <div>
             <label class="block text-gray-700 font-medium mb-1">Product Name</label>
             <input type="text" name="productName" value="${returnProduct.productName}" required
-                   class="w-full border border-primary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                   class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
           </div>
 
           <!-- Quantity and Return Date -->
@@ -36,14 +37,15 @@
             <div>
               <label class="block text-gray-700 font-medium mb-1">Quantity</label>
               <input type="number" name="quantity" value="${returnProduct.quantity}" required
-                     class="w-full border border-primary rounded px-4 py-2" />
+                     class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
 
             <!-- Return Date -->
             <div>
               <label class="block text-gray-700 font-medium mb-1">Return Date</label>
-              <input type="date" name="returnDate" value="${returnProduct.returnDate}" 
-                     class="w-full border border-primary rounded px-4 py-2" />
+              <input type="date" name="returnDate"
+                     value="<fmt:formatDate value='${returnProduct.returnDate}' pattern='yyyy-MM-dd' />"
+                     class="w-full border border-[#2955D9] rounded px-4 py-2" />
             </div>
           </div>
 
@@ -51,19 +53,18 @@
           <div>
             <label class="block text-gray-700 font-medium mb-1">Reason</label>
             <textarea name="reason" rows="3"
-                      class="w-full border border-primary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      placeholder="Enter reason for outgoing (if any)">${returnProduct.reason}</textarea>
+                      class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      placeholder="Enter reason for return (if any)">${returnProduct.reason}</textarea>
           </div>
 
           <!-- Buttons -->
           <div class="pt-4 mt-auto">
             <div class="flex justify-end space-x-4">
               <button type="submit"
-                      class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition-all">
+                      class="bg-[#0A4DA6] text-white px-6 py-2 rounded hover:bg-[#0D448C] transition-all">
                 <i class="fas fa-save mr-2"></i>Save
               </button>
-              <button type="button" onclick="window.close()"
-                      class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition-all">
+              <button type="button" onclick="window.history.back()" class="bg-[#142B59] text-white px-6 py-2 rounded hover:bg-[#0D448C] transition-all">
                 Discard
               </button>
             </div>

@@ -11,12 +11,11 @@ public class ProductService {
 
     // Create Product
     public boolean createProduct(Product product) {
-        String query = "INSERT INTO product (product_name, category_name, quantity_in_stock, unit_price, sale_price) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO product (product_name, category_name, unit_price, sale_price) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, product.getProductName());
             stmt.setString(2, product.getCategoryName());
-            stmt.setInt(3, product.getQuantityInStock());
             stmt.setDouble(4, product.getUnitPrice());
             stmt.setDouble(5, product.getSalePrice());
             return stmt.executeUpdate() > 0;
@@ -38,7 +37,6 @@ public class ProductService {
                 product.setProductId(rs.getInt("product_id"));
                 product.setProductName(rs.getString("product_name"));
                 product.setCategoryName(rs.getString("category_name"));
-                product.setQuantityInStock(rs.getInt("quantity_in_stock"));
                 product.setUnitPrice(rs.getDouble("unit_price"));
                 product.setSalePrice(rs.getDouble("sale_price"));
                 return product;
@@ -61,7 +59,6 @@ public class ProductService {
                 product.setProductId(rs.getInt("product_id"));
                 product.setProductName(rs.getString("product_name"));
                 product.setCategoryName(rs.getString("category_name"));
-                product.setQuantityInStock(rs.getInt("quantity_in_stock"));
                 product.setUnitPrice(rs.getDouble("unit_price"));
                 product.setSalePrice(rs.getDouble("sale_price"));
                 products.add(product);
@@ -74,12 +71,11 @@ public class ProductService {
 
     // Update Product
     public boolean updateProduct(Product product) {
-        String query = "UPDATE product SET product_name = ?, category_name = ?, quantity_in_stock = ?, unit_price = ?, sale_price = ? WHERE product_id = ?";
+        String query = "UPDATE product SET product_name = ?, category_name = ?, unit_price = ?, sale_price = ? WHERE product_id = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, product.getProductName());
             stmt.setString(2, product.getCategoryName());
-            stmt.setInt(3, product.getQuantityInStock());
             stmt.setDouble(4, product.getUnitPrice());
             stmt.setDouble(5, product.getSalePrice());
             stmt.setInt(6, product.getProductId());

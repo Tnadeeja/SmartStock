@@ -21,24 +21,31 @@ public class SystemUserServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
+            // Handling 'add' action: Display an empty form
             if ("add".equals(action)) {
-                request.setAttribute("user", null);
+                request.setAttribute("user", null); // Empty user for add
                 request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
 
-            } else if ("edit".equals(action)) {
+            } 
+            // Handling 'edit' action: Fetch user details for editing
+            else if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                SystemUser user = userService.getUser(id);
-                request.setAttribute("user", user);
+                SystemUser user = userService.getUser(id);  // Retrieve the user by ID
+                request.setAttribute("user", user);  // Set user in request for editing
                 request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
 
-            } else if ("delete".equals(action)) {
+            } 
+            // Handling 'delete' action: Delete a user by ID
+            else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                userService.deleteUser(id);
-                response.sendRedirect("systemUser");
+                userService.deleteUser(id);  // Delete user by ID
+                response.sendRedirect("systemUser");  // Redirect to user listing page
 
-            } else {
-                List<SystemUser> users = userService.getAllUsers();
-                request.setAttribute("userList", users);
+            } 
+            // Default case: Display the list of all users
+            else {
+                List<SystemUser> users = userService.getAllUsers();  // Get all users
+                request.setAttribute("userList", users);  // Set users in request for display
                 request.getRequestDispatcher("/admin/systemUser.jsp").forward(request, response);
             }
         } catch (Exception e) {
@@ -52,6 +59,7 @@ public class SystemUserServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            // Extract form data
             int userId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
                     ? Integer.parseInt(request.getParameter("id")) : 0;
 
@@ -63,6 +71,14 @@ public class SystemUserServlet extends HttpServlet {
             String filename = request.getParameter("filename") != null ? request.getParameter("filename") : "default.png";
             String role = request.getParameter("role");
 
+            // Validate the form fields (optional but recommended)
+            if (name == null || email == null || password == null || role == null) {
+                request.setAttribute("error", "Please fill all fields correctly.");
+                request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
+                return;
+            }
+
+            // Create SystemUser object and set values
             SystemUser user = new SystemUser();
             user.setUserId(userId);
             user.setName(name);
@@ -73,17 +89,19 @@ public class SystemUserServlet extends HttpServlet {
             user.setFilename(filename);
             user.setRole(role);
 
+            // Check if userId > 0 (Edit existing user), else create new user
             if (userId > 0) {
-                userService.updateUser(user);
+                userService.updateUser(user);  // Update user if it's an edit
             } else {
-                userService.createUser(user);
+                userService.createUser(user);  // Create new user
             }
 
+            // Redirect to user list after add/edit
             response.sendRedirect("systemUser");
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Please fill all fields correctly.");
+            request.setAttribute("error", "Error occurred while processing the data. Please try again.");
             request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
         }
     }
