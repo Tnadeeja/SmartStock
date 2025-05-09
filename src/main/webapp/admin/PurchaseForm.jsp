@@ -36,12 +36,15 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-gray-700 font-medium mb-1">Category</label>
-              <select name="categoryName" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white">
-                <option value="">-- Select Category --</option>
-                <c:forEach var="cat" items="${categoryList}">
-                  <option value="${cat}" ${cat == product.categoryName ? 'selected' : ''}>${cat}</option>
-                </c:forEach>
-              </select>
+               <select name="categoryId" id="categoryId" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white" required>
+                      <option value="">-- Select Category --</option>
+                      <c:forEach var="category" items="${categoryList}">
+                          <option value="${category.categoryName}"
+                                  <c:if test="${not empty product && product.categoryName == category.categoryName}">selected</c:if>>
+                              ${category.categoryName}
+                          </option>
+                      </c:forEach>
+                  </select>
             </div>
             <div>
               <label class="block text-gray-700 font-medium mb-1">Supplier</label>
