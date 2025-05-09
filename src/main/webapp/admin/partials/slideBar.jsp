@@ -90,10 +90,10 @@
         <hr class="border-gray-700 my-3">
 
         <!-- Notification -->
-        <a href="#" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("notification") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
-            <i class="fas fa-bell mr-3 text-white"></i>
-            Notification
-        </a>
+        <a href="${pageContext.request.contextPath}/admin/alert" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("alert") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
+   			 <i class="fas fa-bell mr-3 text-white"></i>
+    		Alert
+		</a>
 
         <!-- System Users -->
         <a href="${pageContext.request.contextPath}/admin/systemUser" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("systemUser") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
@@ -102,10 +102,11 @@
         </a>
 
         <!-- Support -->
-        <a href="${pageContext.request.contextPath}/admin/supportHandler" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("supportHandler") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
-            <i class="fas fa-life-ring mr-3 text-white"></i>
-            Support
-        </a>
+        <a href="${pageContext.request.contextPath}/admin/supportHandler" 
+   			class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("supportHandler") || currentPage.contains("support") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
+   			<i class="fas fa-life-ring mr-3 text-white"></i>
+  			Support
+		</a>
 
         <!-- Log Out -->
         <a href="${pageContext.request.contextPath}/admin/login.jsp" class="flex items-center px-3 py-2 rounded-lg hover:bg-red-600 hover:text-white transition">
