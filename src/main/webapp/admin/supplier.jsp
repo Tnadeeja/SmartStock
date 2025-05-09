@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -102,11 +103,10 @@
 
       <select class="border border-primary px-3 py-2 rounded text-dark-blue">
         <option>All Categories</option>
-        
         <!-- Populate from backend -->
       </select>
       <select class="border border-primary px-3 py-2 rounded text-dark-blue">
-        <option>All Customers</option>
+        <option>All Suppliers</option>
         <!-- Populate from backend -->
       </select>
 
@@ -119,7 +119,7 @@
 
   <!-- Action Buttons -->
   <div class="flex gap-4 mt-6">
-    <a href="outgoing?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
+    <a href="supplier?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
   <i class="fas fa-plus"></i> Add
 </a>
     
@@ -131,62 +131,47 @@
     </button>
   </div>
 
-  <!-- Purchase Stock Table -->
-  <div class="bg-white shadow rounded overflow-x-auto mt-6">
-<table class="min-w-full text-sm text-dark-blue">
-  <thead class="bg-primary text-white text-left font-semibold">
-    <tr>
-      <th class="px-4 py-3">ID</th>
-      <th class="px-4 py-3">Product Name</th>
-      <th class="px-4 py-3">Category</th>
-      <th class="px-4 py-3">Customer</th>
-      <th class="px-4 py-3">Quantity</th>
-      <th class="px-4 py-3">Sale Price</th>
-      <th class="px-4 py-3">Total Amount</th>
-     <th class="px-4 py-3">MFG Date</th>
-      <th class="px-4 py-3">EXP Date</th>
-      <th class="px-4 py-3">Sale Date</th>
-      <th class="px-4 py-3">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <c:forEach var="product" items="${outgoingList}" varStatus="loop">
-      <tr class="border-t text-center hover:bg-gray-50">
-        <td class="px-4 py-3">${product.outgoingId}</td>
-        <td class="px-4 py-3">${product.productName}</td>
-        <td class="px-4 py-3">${product.categoryName}</td>
-        <td class="px-4 py-3">${product.customerName}</td>
-        <td class="px-4 py-3">${product.quantity}</td>
-        <td class="px-4 py-3">${product.salePrice}</td>
-        <td class="px-4 py-3">${product.totalAmount}</td>
-        <td class="px-4 py-3">${product.manufactureDate}</td>
-        <td class="px-4 py-3">${product.expireDate}</td>
-        <td class="px-4 py-3"><fmt:formatDate value="${product.outgoingDate}" pattern="yyyy-MM-dd" /></td>
-        <td class="px-4 py-3">
-        	<div class="flex justify-center gap-2">
-          		<a href="outgoing?action=edit&id=${product.outgoingId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
-          		<a href="outgoing?action=delete&id=${product.outgoingId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
-        	</div>
-        </td>
-      </tr>
-    </c:forEach>
-    <c:if test="${empty outgoingList}">
-      <tr>
-        <td colspan="11" class="text-center text-gray-500 py-6">No outgoing stock found.</td>
-      </tr>
-    </c:if>
-  </tbody>
+     <!-- Customer Table -->
+            <div class="bg-white shadow rounded overflow-x-auto mt-4">
+            <table class="min-w-full text-sm text-dark-blue">
+    <thead class="bg-primary text-white text-left font-semibold">
+        <tr>
+            <th class="px-4 py-3">ID</th>
+            <th class="px-4 py-3">Name</th>
+            <th class="px-4 py-3">Email</th>
+            <th class="px-4 py-3">Phone</th>
+            <th class="px-4 py-3">Address</th>
+            <th class="px-4 py-3 text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="supplier" items="${supplierList}">
+            <tr class="border-t text-center hover:bg-gray-50">
+                <td class="px-4 py-3">${supplier.supplierId}</td>
+                <td class="px-4 py-3">${supplier.name}</td>
+                <td class="px-4 py-3">${supplier.email}</td>
+                <td class="px-4 py-3">${supplier.phone}</td>
+                <td class="px-4 py-3">${supplier.address}</td>
+                <td class="px-4 py-3">
+                    <div class="flex justify-center gap-2">
+                        <a href="supplier?action=edit&id=${supplier.supplierId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
+                        <a href="supplier?action=delete&id=${supplier.supplierId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        </c:forEach>
+        <c:if test="${empty supplierList}">
+            <tr>
+                <td colspan="6" class="text-center text-gray-500 py-6">No suppliers found.</td>
+            </tr>
+        </c:if>
+    </tbody>
 </table>
+            
+            </div>
+        </div>
 
-  </div>
-</div>
 
-<script>
-  function showAddForm() {
-    window.location.href = '<c:url value="outgoingForm.jsp?action=add" />';
-  }
-</script>
-<!-- End -->
     
     
     </main>
