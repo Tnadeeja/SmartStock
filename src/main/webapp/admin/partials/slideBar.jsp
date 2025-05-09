@@ -63,7 +63,7 @@
         </a>
 
         <!-- Supplier -->
-        <a href="#" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("supplier") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
+        <a href="${pageContext.request.contextPath}/admin/supplier" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("supplier") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
             <i class="fas fa-truck mr-3 text-white"></i>
             Supplier
         </a>
