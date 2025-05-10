@@ -23,7 +23,11 @@ public class SystemUserServlet extends HttpServlet {
         try {
             // Handling 'add' action: Display an empty form
             if ("add".equals(action)) {
-                request.setAttribute("user", null); // Empty user for add
+                // Ensure that the user attribute is an empty object with only email and password fields pre-filled
+                SystemUser user = new SystemUser();
+                user.setEmail(""); // Default empty email for new user
+                user.setPassword(""); // Default empty password for new user
+                request.setAttribute("user", user); // Set the empty user for the form
                 request.getRequestDispatcher("/admin/systemUserForm.jsp").forward(request, response);
 
             } 
