@@ -139,9 +139,9 @@
 
                 <!-- Action buttons -->
                 <div class="flex gap-4 mt-6">
-                    <button onclick="showAddForm()" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
-                        <i class="fas fa-plus"></i> Add
-                    </button>
+                      <a href="PurchaseDashboard?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
+  <i class="fas fa-plus"></i> Add
+</a>
                     <button onclick="exportTableToPDF()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
     					<i class="fas fa-file-pdf"></i> Export PDF
 					</button>

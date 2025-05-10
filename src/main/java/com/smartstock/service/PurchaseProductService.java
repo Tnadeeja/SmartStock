@@ -10,25 +10,45 @@ import java.util.List;
 
 public class PurchaseProductService {
 
-    public boolean createPurchaseProduct(PurchaseProduct product) {
-        String query = "INSERT INTO purchase_product (product_name, category_name, supplier_name, quantity, unit_price, total_amount, manufacture_date, expire_date, purchase_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, product.productName);
-            stmt.setString(2, product.categoryName);
-            stmt.setString(3, product.supplierName);
-            stmt.setInt(4, product.quantity);
-            stmt.setDouble(5, product.unitPrice);
-            stmt.setDouble(6, product.totalAmount);
-            stmt.setDate(7, new java.sql.Date(product.manufactureDate.getTime()));
-            stmt.setDate(8, new java.sql.Date(product.expireDate.getTime()));
-            stmt.setTimestamp(9, new java.sql.Timestamp(product.purchaseDate.getTime()));
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+	public boolean createPurchaseProduct(PurchaseProduct product) {
+	    String query = "INSERT INTO purchase_product (product_name, category_name, supplier_name, quantity, unit_price, total_amount, manufacture_date, expire_date, purchase_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    try (Connection connection = DBConnection.getConnection();
+	         PreparedStatement stmt = connection.prepareStatement(query)) {
+
+	        stmt.setString(1, product.productName);
+	        stmt.setString(2, product.categoryName);
+	        stmt.setString(3, product.supplierName);
+	        stmt.setInt(4, product.quantity);
+	        stmt.setDouble(5, product.unitPrice);
+	        stmt.setDouble(6, product.totalAmount);
+
+	        // ✅ Null-safe date setting
+	        if (product.manufactureDate != null) {
+	            stmt.setDate(7, new java.sql.Date(product.manufactureDate.getTime()));
+	        } else {
+	            stmt.setNull(7, java.sql.Types.DATE);
+	        }
+
+	        if (product.expireDate != null) {
+	            stmt.setDate(8, new java.sql.Date(product.expireDate.getTime()));
+	        } else {
+	            stmt.setNull(8, java.sql.Types.DATE);
+	        }
+
+	        if (product.purchaseDate != null) {
+	            stmt.setTimestamp(9, new java.sql.Timestamp(product.purchaseDate.getTime()));
+	        } else {
+	            stmt.setNull(9, java.sql.Types.TIMESTAMP);
+	        }
+
+	        return stmt.executeUpdate() > 0;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();  // optional: log or rethrow
+	        return false;
+	    }
+	}
+
 
     public PurchaseProduct getPurchaseProduct(int id) {
         String query = "SELECT * FROM purchase_product WHERE purchase_id = ?";

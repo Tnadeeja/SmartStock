@@ -1,7 +1,13 @@
 package com.smartstock.servlet;
 
+import com.smartstock.model.Category;
+import com.smartstock.model.Product;
 import com.smartstock.model.PurchaseProduct;
+import com.smartstock.model.Supplier;
+import com.smartstock.service.CategoryService;
+import com.smartstock.service.ProductService;
 import com.smartstock.service.PurchaseProductService;
+import com.smartstock.service.SupplierService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +20,10 @@ import java.util.List;
 @WebServlet("/admin/PurchaseDashboard")
 public class PurchaseProductServlet extends HttpServlet {
 
-    private final PurchaseProductService productService = new PurchaseProductService();
-
+    private final PurchaseProductService PurchaseProductService = new PurchaseProductService();
+    private ProductService productService = new ProductService(); // ✅ for loading product list
+    private SupplierService supplierService = new SupplierService(); // ✅ for loading supplier list
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,13 +34,25 @@ public class PurchaseProductServlet extends HttpServlet {
         try {
             if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                PurchaseProduct product = productService.getPurchaseProduct(id);
+                PurchaseProduct product = PurchaseProductService.getPurchaseProduct(id);
                 request.setAttribute("product", product);
-                request.getRequestDispatcher("/admin/PurchaseForm.jsp").forward(request, response);
+                
+                // Load necessary data
+                List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Product> productList = productService.getAllProducts();
+                List<Supplier> supplierList = supplierService.getAllSuppliers(); // Get suppliers for dropdown
+                
+             // Set attributes for the JSP
+                request.setAttribute("product", product);
+                request.setAttribute("categoryList", categoryList);
+                request.setAttribute("productList", productList);
+                request.setAttribute("supplierList", supplierList); // Pass supplier list for dropdown
 
+                request.getRequestDispatcher("/admin/PurchaseForm.jsp").forward(request, response);
+                
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                boolean deleted = productService.deletePurchaseProduct(id);
+                boolean deleted = PurchaseProductService.deletePurchaseProduct(id);
 
                 if (deleted) {
                     session.setAttribute("message", "Item deleted successfully!");
@@ -43,6 +63,19 @@ public class PurchaseProductServlet extends HttpServlet {
                 }
 
                 response.sendRedirect("PurchaseDashboard");
+
+            } else if ("add".equals(action)) {
+                // Load necessary data for add page
+                List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Product> productList = productService.getAllProducts();
+                List<Supplier> supplierList = supplierService.getAllSuppliers(); // Get suppliers for dropdown
+
+                // Set attributes for the JSP
+                request.setAttribute("categoryList", categoryList);
+                request.setAttribute("productList", productList);
+                request.setAttribute("supplierList", supplierList); // Pass supplier list for dropdown
+
+                request.getRequestDispatcher("/admin/PurchaseForm.jsp").forward(request, response);
 
             } else {
                 // Handle filter parameters
@@ -68,7 +101,7 @@ public class PurchaseProductServlet extends HttpServlet {
                     session.removeAttribute("status");
                 }
 
-                List<PurchaseProduct> purchaseList = productService.getFilteredPurchaseProducts(
+                List<PurchaseProduct> purchaseList = PurchaseProductService.getFilteredPurchaseProducts(
                         search, category, supplier, startDate, endDate
                 );
 
@@ -94,8 +127,9 @@ public class PurchaseProductServlet extends HttpServlet {
                     : 0;
 
             String productName = request.getParameter("productName");
-            String categoryName = request.getParameter("categoryName");
+            String categoryName = request.getParameter("categoryId");
             String supplierName = request.getParameter("supplierName");
+            
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             double unitPrice = Double.parseDouble(request.getParameter("unitPrice"));
             double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
@@ -127,7 +161,7 @@ public class PurchaseProductServlet extends HttpServlet {
 
             boolean success;
             if (purchaseId > 0) {
-                success = productService.updatePurchaseProduct(product);
+                success = PurchaseProductService.updatePurchaseProduct(product);
                 if (success) {
                     session.setAttribute("message", "Item updated successfully!");
                     session.setAttribute("status", "success-update");
@@ -136,7 +170,7 @@ public class PurchaseProductServlet extends HttpServlet {
                     session.setAttribute("status", "error");
                 }
             } else {
-                success = productService.createPurchaseProduct(product);
+                success = PurchaseProductService.createPurchaseProduct(product);
                 if (success) {
                     session.setAttribute("message", "Item added successfully!");
                     session.setAttribute("status", "success-add");
@@ -149,6 +183,15 @@ public class PurchaseProductServlet extends HttpServlet {
             response.sendRedirect("PurchaseDashboard");
 
         } catch (Exception e) {
+            // Reload the page with necessary data if error occurs
+            List<Category> categoryList = new CategoryService().getAllcategory();
+            List<Product> productList = productService.getAllProducts();
+            List<Supplier> supplierList = supplierService.getAllSuppliers(); // Get suppliers for dropdown
+
+            request.setAttribute("categoryList", categoryList);
+            request.setAttribute("productList", productList);
+            request.setAttribute("supplierList", supplierList); // Pass supplier list for dropdown
+            
             System.err.println("Error in PurchaseProductServlet: " + e.getMessage());
             e.printStackTrace();
             session.setAttribute("message", "Invalid input or error occurred.");
