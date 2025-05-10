@@ -9,6 +9,11 @@
 <title>Product</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- jsPDF and AutoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <!-- SheetJS for Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="bg-gray-100 text-dark-blue">
  
@@ -52,10 +57,10 @@
   <i class="fas fa-plus"></i> Add
 </a>
     
-    <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
+    <button onclick="exportTableToPDF()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
       <i class="fas fa-file-pdf"></i> Export PDF
     </button>
-    <button class="bg-yellow-500 text-dark-blue px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
+    <button onclick="exportTableToExcel()" class="bg-yellow-500 text-dark-blue px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
       <i class="fas fa-file-excel"></i> Export Excel
     </button>
   </div>
@@ -65,12 +70,12 @@
         <table class="min-w-full text-sm text-dark-blue">
           <thead class="bg-primary text-white text-left font-semibold">
             <tr>
-              <th class="px-4 py-3">ID</th>
-              <th class="px-4 py-3">Product Name</th>
-              <th class="px-4 py-3">Category</th>
-              <th class="px-4 py-3">Unit Price</th>
-              <th class="px-4 py-3">Sale Price</th>
-              <th class="px-4 py-3">Action</th>
+              <th class="px-4 py-3 text-center">ID</th>
+              <th class="px-4 py-3 text-center">Product Name</th>
+              <th class="px-4 py-3 text-center">Category</th>
+              <th class="px-4 py-3 text-center">Unit Price</th>
+              <th class="px-4 py-3 text-center">Sale Price</th>
+              <th class="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -97,13 +102,57 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Hidden table for export (without 'Action' column) -->
+      <table id="exportTable" class="hidden">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Unit Price</th>
+            <th>Sale Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:forEach var="product" items="${productList}">
+            <tr>
+              <td>${product.productId}</td>
+              <td>${product.productName}</td>
+              <td>${product.categoryName}</td>
+              <td>${product.unitPrice}</td>
+              <td>${product.salePrice}</td>
+            </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+
 </div>
-
-
     
     
     </main>
 
   </div>
+
+  <script>
+    async function exportTableToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.autoTable({
+        html: '#exportTable',
+        theme: 'grid',
+        headStyles: { fillColor: [41, 85, 217] },
+        styles: { fontSize: 9 }
+      });
+      doc.save('product_data.pdf');
+    }
+
+    function exportTableToExcel() {
+      var table = document.getElementById('exportTable');
+      var wb = XLSX.utils.table_to_book(table, { sheet: "Products" });
+      XLSX.writeFile(wb, 'product_data.xlsx');
+    }
+  </script>
+
 </body>
 </html>
