@@ -25,18 +25,27 @@
             <input type="hidden" name="id" value="${product.purchaseId}" />
           </c:if>
 
-          <!-- Product Name -->
-          <div>
+         <!-- Product Info -->
+       <div>
             <label class="block text-gray-700 font-medium mb-1">Product Name</label>
-            <input type="text" name="productName" value="${product.productName}" required
-                   class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
+            <select name="productName" id="productName" required
+                    class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]"
+                    onchange="updateProductInfo()">
+                <option value="">-- Select Product --</option>
+                <c:forEach var="p" items="${productList}">
+                    <option value="${p.productName}"
+                        <c:if test="${product != null and product.productName == p.productName}">selected</c:if>>
+                        ${p.productName}
+                    </option>
+                </c:forEach>
+            </select>
           </div>
 
-          <!-- Category & Supplier -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-gray-700 font-medium mb-1">Category</label>
-               <select name="categoryId" id="categoryId" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white" required>
+    <!-- Category & Supplier -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                  <label class="block text-gray-700 font-medium mb-1">Category</label>
+                  <select name="categoryId" id="categoryId" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white" required>
                       <option value="">-- Select Category --</option>
                       <c:forEach var="category" items="${categoryList}">
                           <option value="${category.categoryName}"
@@ -45,16 +54,19 @@
                           </option>
                       </c:forEach>
                   </select>
-            </div>
-            <div>
-              <label class="block text-gray-700 font-medium mb-1">Supplier</label>
-              <select name="supplierName" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white">
-                <option value="">-- Select Supplier --</option>
-                <c:forEach var="sup" items="${supplierList}">
-                  <option value="${sup}" ${sup == product.supplierName ? 'selected' : ''}>${sup}</option>
-                </c:forEach>
-              </select>
-            </div>
+              </div>
+              <div>
+	   <label class="block text-gray-700 font-medium mb-1">Supplier</label>
+                  <select name="supplierName" id="supplierName" class="w-full border border-[#2955D9] rounded px-4 py-2 bg-white" required>
+                      <option value="">-- Select Supplier --</option>
+                      <c:forEach var="supplier" items="${supplierList}">
+                          <option value="${supplier.name}"
+                                  <c:if test="${product != null && product.supplierName == supplier.name}">selected</c:if>>
+                              ${supplier.name}
+                          </option>
+                      </c:forEach>
+                  </select>
+              </div>
           </div>
 
           <!-- Quantity, Unit Price & Total -->
