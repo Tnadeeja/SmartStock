@@ -120,7 +120,7 @@ public class OutgoingProductServlet extends HttpServlet {
 
             String productName = request.getParameter("productName");
             String categoryName = request.getParameter("categoryId");
-            String customerName = request.getParameter("supplierId"); // The customer ID from the dropdown
+            String customerName = request.getParameter("customerName"); // The customer ID from the dropdown
 
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             double salePrice = Double.parseDouble(request.getParameter("unitPrice"));

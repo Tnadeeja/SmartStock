@@ -8,98 +8,102 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body class="h-screen">
+<body class="h-screen bg-[#f9fafb] text-gray-800 font-sans">
 
-  <div class="flex h-[calc(100vh-64px)]">
+  <div class="flex h-full">
     <jsp:include page="partials/slideBar.jsp" />
 
     <!-- Main content -->
-    <main class="flex-1 p-6 flex flex-col">
-      <div class="flex-1 flex flex-col">
+    <main class="flex-1 flex flex-col items-center justify-start overflow-auto px-6 py-12">
+      
+      <!-- Page Header -->
+      <h1 class="text-3xl font-semibold text-[#142B59] border-b-2 border-[#2955D9] pb-3 text-center mb-4">
+        Add New User
+      </h1>
 
-<form action="${pageContext.request.contextPath}/admin/systemUser" method="post" class="flex-1 flex flex-col space-y-6">
+      <div class="w-full max-w-8xl space-y-8">
 
-  <!-- Hidden ID field for updates -->
-  <c:if test="${not empty user}">
-    <input type="hidden" name="id" value="${user.userId}" />
-  </c:if>
+        <form action="${pageContext.request.contextPath}/admin/systemUser" method="post" class="space-y-8">
+          <c:if test="${not empty user}">
+              <input type="hidden" name="id" value="${user.userId}" />
+          </c:if>
 
-  <!-- Email -->
-  <div>
-    <label class="block text-gray-700 font-medium mb-1">Email</label>
-    <input type="email" name="email" value="${not empty user ? user.email : ''}" required
-           class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
-  </div>
+          <!-- First Row: Name, Email, Password -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Name</label>
+              <input type="text" name="name" value="${not empty user ? user.name : ''}" required
+                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+            </div>
 
-  <!-- Password -->
-  <div>
-    <label class="block text-gray-700 font-medium mb-1">Password</label>
-    <input type="password" name="password" value="${not empty user ? user.password : ''}" required
-           class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
-  </div>
+            <div>
+              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Email</label>
+              <input type="email" name="email" value="${not empty user ? user.email : ''}" required
+                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+            </div>
 
-  <!-- Name -->
-  <div>
-    <label class="block text-gray-700 font-medium mb-1">Name</label>
-    <input type="text" name="name" value="${not empty user ? user.name : ''}" required
-           class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
-  </div>
+            <div>
+              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Password</label>
+              <input type="password" name="password" value="${not empty user ? user.password : ''}" required
+                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+            </div>
+          </div>
 
-  <!-- Phone -->
-  <div>
-    <label class="block text-gray-700 font-medium mb-1">Phone</label>
-    <input type="text" name="phone" value="${not empty user ? user.phone : ''}" required
-           class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
-  </div>
+          <!-- Second Row: Role, Phone, Filename -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Role</label>
+              <select name="role" required
+                      class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm">
+                <option value="">-- Select Role --</option>
+                <option value="Admin" ${not empty user && user.role == 'Admin' ? 'selected' : ''}>Admin</option>
+                <option value="Stock Manager" ${not empty user && user.role == 'Stock Manager' ? 'selected' : ''}>Stock Manager</option>
+                <option value="Sales Manager" ${not empty user && user.role == 'Sales Manager' ? 'selected' : ''}>Sales Manager</option>
+              </select>
+            </div>
 
-  <!-- Address -->
-  <div>
-    <label class="block text-gray-700 font-medium mb-1">Address</label>
-    <textarea name="address" rows="3" required
-              class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]">${not empty user ? user.address : ''}</textarea>
-  </div>
+            <div>
+              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Phone</label>
+              <input type="text" name="phone" value="${not empty user ? user.phone : ''}" required
+                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+            </div>
 
-  <!-- Filename -->
-  <div>
-    <label class="block text-gray-700 font-medium mb-1">Filename</label>
-    <input type="text" name="filename" value="${not empty user ? user.filename : ''}"
-           class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]" />
-  </div>
+            <div>
+              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Filename</label>
+              <input type="text" name="filename" value="${not empty user ? user.filename : ''}"
+                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+            </div>
+          </div>
 
-  <!-- Role -->
-  <div>
-    <label class="block text-gray-700 font-medium mb-1">Role</label>
-    <select name="role" required
-            class="w-full border border-[#2955D9] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A4DA6]">
-      <option value="">-- Select Role --</option>
-      <option value="Admin" ${not empty user && user.role == 'Admin' ? 'selected' : ''}>Admin</option>
-      <option value="Stock Manager" ${not empty user && user.role == 'Stock Manager' ? 'selected' : ''}>Stock Manager</option>
-      <option value="Sales Manager" ${not empty user && user.role == 'Sales Manager' ? 'selected' : ''}>Sales Manager</option>
-    </select>
-  </div>
+          <!-- Address (on its own line) -->
+          <div>
+            <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Address</label>
+            <textarea name="address" rows="4" required
+                      class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm">${not empty user ? user.address : ''}</textarea>
+          </div>
 
-  <!-- Created At (Read-only, only shown on edit) -->
-  <c:if test="${not empty user.createdAt}">
-    <div>
-      <label class="block text-gray-700 font-medium mb-1">Created At</label>
-      <input type="text" value="${user.createdAt}" readonly
-             class="w-full bg-gray-100 border border-[#2955D9] rounded px-4 py-2" />
-    </div>
-  </c:if>
+          <!-- Created At (Read-only, only shown on edit) -->
+          <c:if test="${not empty user.createdAt}">
+            <div>
+              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Created At</label>
+              <input type="text" value="${user.createdAt}" readonly
+                     class="w-full bg-gray-100 border border-[#2955D9] rounded-lg px-4 py-3 text-sm" />
+            </div>
+          </c:if>
 
-  <!-- Buttons -->
-  <div class="pt-4 mt-auto">
-    <div class="flex justify-end space-x-4">
-      <button type="submit" class="bg-[#0A4DA6] text-white px-6 py-2 rounded hover:bg-[#0D448C] transition-all">
-        <i class="fas fa-save mr-2"></i>Save
-      </button>
-      <button type="button" onclick="window.history.back()" class="bg-[#142B59] text-white px-6 py-2 rounded hover:bg-[#0D448C] transition-all">
-        Discard
-      </button>
-    </div>
-  </div>
-</form>
+          <!-- Action Buttons -->
+          <div class="flex justify-end space-x-8 pt-6">
+            <button type="submit"
+                    class="bg-[#0A4DA6] hover:bg-[#0D448C] text-white font-medium px-8 py-3 rounded-full shadow transition">
+              <i class="fas fa-save mr-2"></i>Save
+            </button>
+            <button type="button" onclick="window.history.back()"
+                    class="border border-[#142B59] text-[#142B59] hover:bg-[#142B59] hover:text-white font-medium px-8 py-3 rounded-full transition">
+              Discard
+            </button>
+          </div>
 
+        </form>
       </div>
     </main>
   </div>
