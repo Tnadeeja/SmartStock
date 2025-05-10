@@ -9,6 +9,10 @@
 <title>Return Product</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="bg-gray-100 text-dark-blue">
 
@@ -124,25 +128,25 @@
 
             <!-- Action Buttons -->
             <div class="flex gap-4 mt-6">
-                <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
-                    <i class="fas fa-file-pdf"></i> Export PDF
-                </button>
-                <button class="bg-yellow-500 text-dark-blue px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
-                    <i class="fas fa-file-excel"></i> Export Excel
-                </button>
+                <button onclick="exportTableToPDF()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
+      <i class="fas fa-file-pdf"></i> Export PDF
+    </button>
+    <button onclick="exportTableToExcel()" class="bg-yellow-500 text-dark-blue px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
+      <i class="fas fa-file-excel"></i> Export Excel
+    </button>
             </div>
 
             <!-- Purchase Stock Table -->
             <div class="bg-white shadow rounded overflow-x-auto mt-6">
-                <table class="min-w-full text-sm text-dark-blue">
+                <table class="min-w-full text-sm text-dark-blue" id="return-table">
                     <thead class="bg-primary text-white text-left font-semibold">
                         <tr>
-                            <th class="px-4 py-3">ID</th>
-                            <th class="px-4 py-3">Product Name</th>
-                            <th class="px-4 py-3">Quantity</th>
-                            <th class="px-4 py-3">Reason</th>
-                            <th class="px-4 py-3">Return Date</th>
-                            <th class="px-4 py-3">Action</th>
+                            <th class="px-4 py-3 text-center">ID</th>
+                            <th class="px-4 py-3 text-center">Product Name</th>
+                            <th class="px-4 py-3 text-center">Quantity</th>
+                            <th class="px-4 py-3 text-center">Reason</th>
+                            <th class="px-4 py-3 text-center">Return Date</th>
+                            <th class="px-4 py-3 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -176,5 +180,58 @@
         </script>
     </main>
 </div>
+
+        <script>
+    async function exportTableToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const table = document.getElementById('return-table');
+
+        const headers = [];
+        const data = [];
+
+        // Get headers (excluding last column)
+        const headerCells = table.querySelectorAll('thead tr th');
+        headerCells.forEach((th, index) => {
+          if (index < headerCells.length - 1) { // exclude last column
+            headers.push(th.innerText.trim());
+          }
+        });
+
+        // Get rows
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+          const rowData = [];
+          const cells = row.querySelectorAll('td');
+          cells.forEach((td, index) => {
+            if (index < cells.length - 1) { // exclude last column
+              rowData.push(td.innerText.trim());
+            }
+          });
+          if (rowData.length > 0) {
+            data.push(rowData);
+          }
+        });
+
+        // Generate PDF
+        doc.autoTable({
+          head: [headers],
+          body: data,
+          theme: 'grid',
+          headStyles: { fillColor: [10, 77, 166] },
+          styles: { fontSize: 9 }
+        });
+
+        doc.save('customer_data.pdf');
+      }
+
+    	function exportTableToExcel() {
+    	  var table = document.getElementById('return-table');
+    	  var wb = XLSX.utils.table_to_book(table, { sheet: "Customers" });
+    	  XLSX.writeFile(wb, 'customer_data.xlsx');
+    	}
+  </script>
+
 </body>
 </html>
