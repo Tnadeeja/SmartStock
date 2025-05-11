@@ -9,21 +9,22 @@ import java.util.List;
 
 public class ProductService {
 
-    // Create Product
-    public boolean createProduct(Product product) {
-        String query = "INSERT INTO product (product_name, category_name, unit_price, sale_price) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, product.getProductName());
-            stmt.setString(2, product.getCategoryName());
-            stmt.setDouble(4, product.getUnitPrice());
-            stmt.setDouble(5, product.getSalePrice());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+	// Create Product
+	public boolean createProduct(Product product) {
+	    String query = "INSERT INTO product (product_name, category_name, unit_price, sale_price) VALUES (?, ?, ?, ?)";
+	    try (Connection connection = DBConnection.getConnection();
+	         PreparedStatement stmt = connection.prepareStatement(query)) {
+	        stmt.setString(1, product.getProductName());
+	        stmt.setString(2, product.getCategoryName());
+	        stmt.setDouble(3, product.getUnitPrice());
+	        stmt.setDouble(4, product.getSalePrice());
+	        return stmt.executeUpdate() > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
 
     // Get Product by ID
     public Product getProduct(int id) {
@@ -76,15 +77,16 @@ public class ProductService {
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, product.getProductName());
             stmt.setString(2, product.getCategoryName());
-            stmt.setDouble(4, product.getUnitPrice());
-            stmt.setDouble(5, product.getSalePrice());
-            stmt.setInt(6, product.getProductId());
+            stmt.setDouble(3, product.getUnitPrice());
+            stmt.setDouble(4, product.getSalePrice());
+            stmt.setInt(5, product.getProductId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
 
     // Delete Product
     public boolean deleteProduct(int id) {

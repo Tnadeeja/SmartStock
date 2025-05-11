@@ -1,10 +1,4 @@
-<%
-    String name = (String) session.getAttribute("name");
-    String role = (String) session.getAttribute("role");
-    String picture = (String) session.getAttribute("filename");
-    String email = (String) session.getAttribute("email");
-    String currentPage = request.getRequestURI(); // Get the current page URI
-%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>

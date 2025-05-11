@@ -33,8 +33,11 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Supplier Name</label>
-              <input type="text" name="name" value="${supplier.name}" required
-                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+<input type="text" name="name" value="${supplier.name}" required
+       pattern="[A-Za-z\s]{2,50}"
+       title="Enter only letters (2 to 50 characters)"
+       class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+              
             </div>
 
             <div>
@@ -48,8 +51,11 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Supplier Phone</label>
-              <input type="text" name="phone" value="${supplier.phone}" required
-                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+<input type="text" name="phone" value="${supplier.phone}" required
+       pattern="\d{7,15}"
+       title="Enter only digits (7 to 15 numbers)"
+       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+       class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
             </div>
 
             <div>
@@ -82,6 +88,12 @@
       </div>
     </main>
   </div>
+  <script>
+    document.querySelector('input[name="name"]').addEventListener('input', function () {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
+</script>
+  
 
 </body>
 </html>
