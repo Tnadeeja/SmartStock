@@ -48,8 +48,11 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Customer Phone</label>
-              <input type="text" name="phone" value="${customer.phone}" required
-                     class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+             <input type="tel" name="phone" value="${customer.phone}" required
+       pattern="[0-9]{7,15}"
+       title="Enter a valid phone number (7 to 15 digits)"
+       class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+             
             </div>
 			<div>
             <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Created At</label>
@@ -81,6 +84,12 @@
       </div>
     </main>
   </div>
+  <script>
+    document.querySelector('input[name="phone"]').addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+    });
+</script>
+  
 
 </body>
 </html>

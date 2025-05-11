@@ -27,8 +27,11 @@ public class ProductServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Product product = productService.getProduct(id);
                 List<Category> categoryList = new CategoryService().getAllcategory();
-
+                
+                List<Product> productList = productService.getAllProducts();
+                
                 request.setAttribute("product", product);
+                request.setAttribute("productList", productList);
                 request.setAttribute("categoryList", categoryList);
                 request.getRequestDispatcher("/admin/productForm.jsp").forward(request, response);
 
@@ -39,6 +42,9 @@ public class ProductServlet extends HttpServlet {
 
             } else if ("add".equals(action)) {
                 List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Product> productList = productService.getAllProducts();
+                
+                request.setAttribute("productList", productList);
                 request.setAttribute("categoryList", categoryList);
                 request.getRequestDispatcher("/admin/productForm.jsp").forward(request, response);
 
@@ -87,6 +93,9 @@ public class ProductServlet extends HttpServlet {
             e.printStackTrace();
 
             List<Category> categoryList = new CategoryService().getAllcategory();
+            List<Product> productList = productService.getAllProducts();
+            
+            request.setAttribute("productList", productList);
             request.setAttribute("categoryList", categoryList);
             request.setAttribute("error", "Invalid input or missing fields. Please check your form.");
             request.setAttribute("product", request); // optional for pre-filling form on error
