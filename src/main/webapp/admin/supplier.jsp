@@ -122,6 +122,7 @@
   </div>  
 
   <!-- Action Buttons -->
+   <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'stock manager'}">
   <div class="flex gap-4 mt-6">
     <a href="supplier?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
   <i class="fas fa-plus"></i> Add
@@ -134,7 +135,7 @@
       <i class="fas fa-file-excel"></i> Export Excel
     </button>
   </div>
-
+</c:if>
      <!-- Customer Table -->
             <div class="bg-white shadow rounded overflow-x-auto mt-4">
             <table class="min-w-full text-sm text-dark-blue" id="supplier-table">
@@ -145,7 +146,9 @@
             <th class="px-4 py-3 text-center">Email</th>
             <th class="px-4 py-3 text-center">Phone</th>
             <th class="px-4 py-3 text-center">Address</th>
+            <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'stock manager'}">
             <th class="px-4 py-3 text-center">Action</th>
+            </c:if>
         </tr>
     </thead>
     <tbody>
@@ -156,12 +159,16 @@
                 <td class="px-4 py-3">${supplier.email}</td>
                 <td class="px-4 py-3">${supplier.phone}</td>
                 <td class="px-4 py-3">${supplier.address}</td>
+                 <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'stock manager'}">
                 <td class="px-4 py-3">
+               
                     <div class="flex justify-center gap-2">
                         <a href="supplier?action=edit&id=${supplier.supplierId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
                         <a href="supplier?action=delete&id=${supplier.supplierId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
                     </div>
+                   
                 </td>
+                 </c:if>
             </tr>
         </c:forEach>
         <c:if test="${empty supplierList}">

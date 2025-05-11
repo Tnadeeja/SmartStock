@@ -55,10 +55,10 @@ public class SystemUserLoginServlet extends HttpServlet {
                 response.sendRedirect(contextPath + "/admin/dashboard.jsp");
                 break;
             case "stock manager":
-                response.sendRedirect(contextPath + "/stock/dashboard.jsp");
+                response.sendRedirect(contextPath + "/admin/dashboard.jsp");
                 break;
             case "sales manager":
-                response.sendRedirect(contextPath + "/sales/dashboard.jsp");
+                response.sendRedirect(contextPath + "/admin/dashboard.jsp");
                 break;
             default:
                 response.sendRedirect(contextPath + "/admin/unauthorized.jsp");

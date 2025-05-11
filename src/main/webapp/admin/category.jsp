@@ -36,6 +36,7 @@
         </div>
 
         <!-- Action Buttons -->
+        <c:if test="${sessionScope.role == 'admin'}">
         <div class="flex gap-4 mt-6">
           <button onclick="showAddForm()" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
             <i class="fas fa-plus"></i> Add
@@ -47,7 +48,7 @@
     		<i class="fas fa-file-excel"></i> Export Excel
 		  </button>
         </div>
-
+		</c:if>
         <!-- Responsive 4-Column Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
           <c:forEach var="category" items="${categoryList}">
@@ -63,11 +64,14 @@
               <div class="text-center">
                 <p class="text-lg font-semibold text-dark-blue mb-2">${category.categoryName}</p>
               </div>
+              <c:if test="${sessionScope.role == 'admin'}">
               <div class="flex justify-center gap-2 mt-4">
                 <a href="category?action=edit&id=${category.categoryId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition text-sm">Update</a>
                 <a href="category?action=delete&id=${category.categoryId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition text-sm" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
               </div>
+              </c:if>
             </div>
+          
           </c:forEach>
 
           <c:if test="${empty categoryList}">

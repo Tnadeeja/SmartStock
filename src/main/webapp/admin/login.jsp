@@ -91,7 +91,7 @@
     </form>
   </div>
 
-  <!-- Footer -->
+  <!-- Footerr -->
   <div class="absolute bottom-6 text-center w-full text-white text-xs z-10">Privacy Policy</div>
 
 </body>

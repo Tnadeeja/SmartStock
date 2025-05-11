@@ -1,32 +1,37 @@
 <%
     String role = (String) session.getAttribute("role");
-    if (role == null || !role.equals("admin")) {
+    if (role == null || !(role.equals("admin") || role.equals("sales manager") || role.equals("stock manager"))) {
         response.sendRedirect(request.getContextPath() + "/admin/unauthorized.jsp");
         return;
     }
+
+    // Fetch values from the request attributes set by the servlet
+    Integer totalCategories = (Integer) request.getAttribute("totalCategories");
+    Integer totalProducts = (Integer) request.getAttribute("totalProducts");
+    Integer totalCustomers = (Integer) request.getAttribute("totalCustomers");
+    Integer totalSuppliers = (Integer) request.getAttribute("totalSuppliers");
+    Integer totalAlerts = (Integer) request.getAttribute("totalAlerts");
+    Integer totalUsers = (Integer) request.getAttribute("totalUsers");
+    Integer currentStock = (Integer) request.getAttribute("currentStock");
+    String mostOutgoingProduct = (String) request.getAttribute("mostOutgoingProduct");
+    Integer currentReturns = (Integer) request.getAttribute("currentReturns");
+    Double totalProfit = (Double) request.getAttribute("totalProfit");
+    Double profitMargin = (Double) request.getAttribute("profitMargin");
+
+    // Set default values if any are null
+    totalCategories = totalCategories != null ? totalCategories : 0;
+    totalProducts = totalProducts != null ? totalProducts : 0;
+    totalCustomers = totalCustomers != null ? totalCustomers : 0;
+    totalSuppliers = totalSuppliers != null ? totalSuppliers : 0;
+    totalAlerts = totalAlerts != null ? totalAlerts : 0;
+    totalUsers = totalUsers != null ? totalUsers : 0;
+    currentStock = currentStock != null ? currentStock : 0;
+    mostOutgoingProduct = mostOutgoingProduct != null ? mostOutgoingProduct : "N/A";
+    currentReturns = currentReturns != null ? currentReturns : 0;
+    totalProfit = totalProfit != null ? totalProfit : 0.0;
+    profitMargin = profitMargin != null ? profitMargin : 0.0;
 %>
 
-<%
-    // Dummy sample data - replace with real DAO queries
-    int totalCategories = 10;
-    int totalProducts = 120;
-    int totalCustomers = 35;
-    int totalSuppliers = 8;
-    int totalAlerts = 4;
-    int totalUsers = 5;
-
-    int currentStock = 356; // example
-    String mostOutgoingProduct = "Product A (120 units)";
-    int currentReturns = 6;
-
-    // Profit Data - Replace with real calculation
-    double totalSales = 15000.00;  // Total revenue from sales
-    double totalCost = 9000.00;    // Total cost of purchases
-    double totalProfit = totalSales - totalCost; // Profit = Sales - Cost
-    double profitMargin = (totalProfit / totalSales) * 100; // Profit Margin % (Sales-based)
-%>
-
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +89,7 @@
           <p class="text-2xl font-bold text-green-600"><%= String.format("%.2f", profitMargin) %>%</p>
         </div>
       </div>
+    </section>
 
     <!-- Inventory Info -->
     <section>
