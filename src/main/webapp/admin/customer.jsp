@@ -122,6 +122,7 @@
   </div>  
 
   <!-- Action Buttons -->
+  <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
   <div class="flex gap-4 mt-6">
     <a href="customer?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
   <i class="fas fa-plus"></i> Add
@@ -135,6 +136,7 @@
     </button>
     
   </div>
+  </c:if>
 
      <!-- Customer Table -->
             <div class="bg-white shadow rounded overflow-x-auto mt-4">
@@ -146,7 +148,9 @@
                             <th class="px-4 py-3 text-center">Email</th>
                             <th class="px-4 py-3 text-center">Phone</th>
                             <th class="px-4 py-3 text-center">Address</th>
+                            <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
                             <th class="px-4 py-3 text-center">Action</th>
+                            </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -157,12 +161,14 @@
                                 <td class="px-4 py-3">${customer.email}</td>
                                 <td class="px-4 py-3">${customer.phone}</td>
                                 <td class="px-4 py-3">${customer.address}</td>
+                                <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
                                 <td class="px-4 py-3">
                                     <div class="flex justify-center gap-2">
                                         <a href="customer?action=edit&id=${customer.customerId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
                                         <a href="customer?action=delete&id=${customer.customerId}"  class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
                                     </div>
                                 </td>
+                                </c:if>
                             </tr>
                         </c:forEach>
                         <c:if test="${empty customerList}">

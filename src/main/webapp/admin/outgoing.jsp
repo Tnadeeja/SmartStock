@@ -122,6 +122,7 @@
   </div>  
 
   <!-- Action Buttons -->
+  <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
   <div class="flex gap-4 mt-6">
     <a href="outgoing?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
   <i class="fas fa-plus"></i> Add
@@ -134,7 +135,8 @@
       <i class="fas fa-file-excel"></i> Export Excel
     </button>
   </div>
-
+	</c:if>
+	
   <!-- Purchase Stock Table -->
   <div class="bg-white shadow rounded overflow-x-auto mt-6">
 <table class="min-w-full text-sm text-dark-blue" id="outgoing-table">
@@ -150,7 +152,9 @@
      <th class="px-4 py-3 text-center">MFG Date</th>
       <th class="px-4 py-3 text-center">EXP Date</th>
       <th class="px-4 py-3 text-center">Sale Date</th>
+      <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
       <th class="px-4 py-3 text-center">Action</th>
+      </c:if>
     </tr>
   </thead>
   <tbody>
@@ -166,12 +170,14 @@
         <td class="px-4 py-3">${product.manufactureDate}</td>
         <td class="px-4 py-3">${product.expireDate}</td>
         <td class="px-4 py-3"><fmt:formatDate value="${product.outgoingDate}" pattern="yyyy-MM-dd" /></td>
+        <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
         <td class="px-4 py-3">
         	<div class="flex justify-center gap-2">
           		<a href="outgoing?action=edit&id=${product.outgoingId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
           		<a href="outgoing?action=delete&id=${product.outgoingId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
         	</div>
         </td>
+        </c:if>
       </tr>
     </c:forEach>
     <c:if test="${empty outgoingList}">

@@ -52,6 +52,7 @@
                 </form> 
 
   <!-- Action Buttons -->
+  <c:if test="${sessionScope.role == 'admin'}">
   <div class="flex gap-4 mt-6">
  <a href="product?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
   <i class="fas fa-plus"></i> Add
@@ -64,7 +65,8 @@
       <i class="fas fa-file-excel"></i> Export Excel
     </button>
   </div>
-
+	</c:if>
+	
   <!-- Product Table -->
       <div class="bg-white shadow rounded overflow-x-auto mt-6">
         <table class="min-w-full text-sm text-dark-blue">
@@ -75,7 +77,9 @@
               <th class="px-4 py-3 text-center">Category</th>
               <th class="px-4 py-3 text-center">Unit Price</th>
               <th class="px-4 py-3 text-center">Sale Price</th>
+              <c:if test="${sessionScope.role == 'admin'}">
               <th class="px-4 py-3 text-center">Action</th>
+              </c:if>
             </tr>
           </thead>
           <tbody>
@@ -86,12 +90,14 @@
                 <td class="px-4 py-3">${product.categoryName}</td>
                 <td class="px-4 py-3">${product.unitPrice}</td>
                 <td class="px-4 py-3">${product.salePrice}</td>
+                <c:if test="${sessionScope.role == 'admin'}">
                 <td class="px-4 py-3">
                   <div class="flex justify-center gap-2">
                     <a href="product?action=edit&id=${product.productId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Update</a>
                     <a href="product?action=delete&id=${product.productId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
                   </div>
                 </td>
+                </c:if>
               </tr>
             </c:forEach>
             <c:if test="${empty productList}">

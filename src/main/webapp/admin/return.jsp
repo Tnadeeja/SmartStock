@@ -127,6 +127,7 @@
             </div>
 
             <!-- Action Buttons -->
+            <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
             <div class="flex gap-4 mt-6">
                 <button onclick="exportTableToPDF()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
       <i class="fas fa-file-pdf"></i> Export PDF
@@ -135,6 +136,7 @@
       <i class="fas fa-file-excel"></i> Export Excel
     </button>
             </div>
+            </c:if>
 
             <!-- Purchase Stock Table -->
             <div class="bg-white shadow rounded overflow-x-auto mt-6">
@@ -146,7 +148,9 @@
                             <th class="px-4 py-3 text-center">Quantity</th>
                             <th class="px-4 py-3 text-center">Reason</th>
                             <th class="px-4 py-3 text-center">Return Date</th>
+                            <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
                             <th class="px-4 py-3 text-center">Action</th>
+                            </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -157,10 +161,13 @@
                                 <td class="px-4 py-3">${returnProduct.quantity}</td>
                                 <td class="px-4 py-3">${returnProduct.reason}</td>
                                 <td class="px-4 py-3"><fmt:formatDate value="${returnProduct.returnDate}" pattern="yyyy-MM-dd" /></td>
+                                <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
                                 <td class="px-4 py-3">
                                     <a href="return?action=edit&id=${returnProduct.returnId}" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition ml-2">Add Reason</a>
                                     <a href="return?action=delete&id=${returnProduct.returnId}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
                                 </td>
+                                </c:if>
+                                
                             </tr>
                         </c:forEach>
                         <c:if test="${empty returnProductList}">

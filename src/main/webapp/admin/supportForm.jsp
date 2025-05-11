@@ -60,11 +60,13 @@
                 </div>
             </div>
 
+			 <c:if test="${sessionScope.role == 'admin'}">
             <div class="flex justify-end mt-6">
                 <button onclick="toggleEditForm()" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-500 flex items-center gap-2 transition">
                     <i class="fas fa-edit mr-2"></i>Edit Contact Information
                 </button>
             </div>
+            </c:if>
         </div>
 
 		<!-- Edit Contact Modal -->
