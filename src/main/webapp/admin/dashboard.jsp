@@ -5,33 +5,11 @@
         return;
     }
 
-    // Fetch values from the request attributes set by the servlet
-    Integer totalCategories = (Integer) request.getAttribute("totalCategories");
-    Integer totalProducts = (Integer) request.getAttribute("totalProducts");
-    Integer totalCustomers = (Integer) request.getAttribute("totalCustomers");
-    Integer totalSuppliers = (Integer) request.getAttribute("totalSuppliers");
-    Integer totalAlerts = (Integer) request.getAttribute("totalAlerts");
-    Integer totalUsers = (Integer) request.getAttribute("totalUsers");
-    Integer currentStock = (Integer) request.getAttribute("currentStock");
-    String mostOutgoingProduct = (String) request.getAttribute("mostOutgoingProduct");
-    Integer currentReturns = (Integer) request.getAttribute("currentReturns");
-    Double totalProfit = (Double) request.getAttribute("totalProfit");
-    Double profitMargin = (Double) request.getAttribute("profitMargin");
-
-    // Set default values if any are null
-    totalCategories = totalCategories != null ? totalCategories : 0;
-    totalProducts = totalProducts != null ? totalProducts : 0;
-    totalCustomers = totalCustomers != null ? totalCustomers : 0;
-    totalSuppliers = totalSuppliers != null ? totalSuppliers : 0;
-    totalAlerts = totalAlerts != null ? totalAlerts : 0;
-    totalUsers = totalUsers != null ? totalUsers : 0;
-    currentStock = currentStock != null ? currentStock : 0;
-    mostOutgoingProduct = mostOutgoingProduct != null ? mostOutgoingProduct : "N/A";
-    currentReturns = currentReturns != null ? currentReturns : 0;
-    totalProfit = totalProfit != null ? totalProfit : 0.0;
-    profitMargin = profitMargin != null ? profitMargin : 0.0;
+    com.smartstock.model.DashboardData dashboardData =
+        (com.smartstock.model.DashboardData) request.getAttribute("dashboardData");
 %>
 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,79 +23,110 @@
 <div class="flex">
   <jsp:include page="partials/slideBar.jsp" />
 
-  <main class="flex-1 p-6 space-y-8">
-    <h1 class="text-2xl font-bold">SmartStock Dashboard</h1>
+  <main class="flex-1 p-4 space-y-6">
+    <h1 class="text-xl font-semibold text-[#142B59]">SmartStock</h1>
+
+<% if (dashboardData != null) { %>
 
     <!-- Summary Cards -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white p-4 rounded shadow">
-        <h3 class="font-semibold">Total Categories</h3>
-        <p class="text-2xl font-bold text-indigo-600"><%= totalCategories %></p>
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-3 rounded shadow-sm">
+        <h3 class="font-semibold text-sm text-[#0D448C]">Total Categories</h3>
+        <p class="text-xl font-bold text-[#2955D9]">
+          <%= dashboardData.getTotalCategories() %>
+        </p>
       </div>
-      <div class="bg-white p-4 rounded shadow">
-        <h3 class="font-semibold">Total Products</h3>
-        <p class="text-2xl font-bold text-indigo-600"><%= totalProducts %></p>
+      <div class="bg-white p-3 rounded shadow-sm">
+        <h3 class="font-semibold text-sm text-[#0D448C]">Total Products</h3>
+        <p class="text-xl font-bold text-[#2955D9]">
+          <%= dashboardData.getTotalProducts() %>
+        </p>
       </div>
-      <div class="bg-white p-4 rounded shadow">
-        <h3 class="font-semibold">Total Customers</h3>
-        <p class="text-2xl font-bold text-indigo-600"><%= totalCustomers %></p>
+      <div class="bg-white p-3 rounded shadow-sm">
+        <h3 class="font-semibold text-sm text-[#0D448C]">Total Customers</h3>
+        <p class="text-xl font-bold text-[#2955D9]">
+          <%= dashboardData.getTotalCustomers() %>
+        </p>
       </div>
-      <div class="bg-white p-4 rounded shadow">
-        <h3 class="font-semibold">Total Suppliers</h3>
-        <p class="text-2xl font-bold text-indigo-600"><%= totalSuppliers %></p>
+      <div class="bg-white p-3 rounded shadow-sm">
+        <h3 class="font-semibold text-sm text-[#0D448C]">Total Suppliers</h3>
+        <p class="text-xl font-bold text-[#2955D9]">
+          <%= dashboardData.getTotalSuppliers() %>
+        </p>
       </div>
-      <div class="bg-white p-4 rounded shadow">
-        <h3 class="font-semibold">Total Alerts</h3>
-        <p class="text-2xl font-bold text-red-500"><%= totalAlerts %></p>
+      <div class="bg-white p-3 rounded shadow-sm">
+        <h3 class="font-semibold text-sm text-[#0D448C]">Total Alerts</h3>
+        <p class="text-xl font-bold text-red-500">
+          <%= dashboardData.getTotalAlerts() %>
+        </p>
       </div>
-      <div class="bg-white p-4 rounded shadow">
-        <h3 class="font-semibold">System Users</h3>
-        <p class="text-2xl font-bold text-indigo-600"><%= totalUsers %></p>
+      <div class="bg-white p-3 rounded shadow-sm">
+        <h3 class="font-semibold text-sm text-[#0D448C]">System Users</h3>
+        <p class="text-xl font-bold text-[#2955D9]">
+          <%= dashboardData.getTotalUsers() %>
+        </p>
       </div>
     </section>
 
     <!-- Profit Info Section -->
     <section>
-      <h2 class="text-xl font-semibold mb-4">Profit Overview</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold">Total Profit</h3>
-          <p class="text-2xl font-bold text-green-600">$<%= String.format("%.2f", totalProfit) %></p>
+      <h2 class="text-lg font-semibold mb-3 text-[#142B59]">Profit Overview</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-3 rounded shadow-sm">
+          <h3 class="font-semibold text-sm text-[#0D448C]">Total Profit</h3>
+          <p class="text-xl font-bold text-green-600">
+            $<%= String.format("%.2f", dashboardData.getTotalProfit()) %>
+          </p>
         </div>
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold">Profit Margin</h3>
-          <p class="text-2xl font-bold text-green-600"><%= String.format("%.2f", profitMargin) %>%</p>
+        <div class="bg-white p-3 rounded shadow-sm">
+          <h3 class="font-semibold text-sm text-[#0D448C]">Profit Margin</h3>
+          <p class="text-xl font-bold text-green-600">
+            <%= String.format("%.2f", dashboardData.getProfitMargin()) %>%
+          </p>
         </div>
       </div>
     </section>
 
     <!-- Inventory Info -->
     <section>
-      <h2 class="text-xl font-semibold mb-4">Inventory Summary</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold">Current Stock</h3>
-          <p class="text-xl font-bold text-green-600"><%= currentStock %> items</p>
+      <h2 class="text-lg font-semibold mb-3 text-[#142B59]">Inventory Summary</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-3 rounded shadow-sm">
+          <h3 class="font-semibold text-sm text-[#0D448C]">Current Stock</h3>
+          <p class="text-lg font-bold text-green-600">
+            <%= dashboardData.getCurrentStock() %> items
+          </p>
         </div>
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold">Most Outgoing Product</h3>
-          <p class="text-sm text-gray-700"><%= mostOutgoingProduct %></p>
+        <div class="bg-white p-3 rounded shadow-sm">
+          <h3 class="font-semibold text-sm text-[#0D448C]">Most Outgoing Product</h3>
+          <p class="text-sm text-gray-700">
+            <%= dashboardData.getMostOutgoingProduct() %>
+          </p>
         </div>
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold">Current Returns</h3>
-          <p class="text-xl font-bold text-orange-500"><%= currentReturns %> returns</p>
+        <div class="bg-white p-3 rounded shadow-sm">
+          <h3 class="font-semibold text-sm text-[#0D448C]">Current Returns</h3>
+          <p class="text-lg font-bold text-orange-500">
+            <%= dashboardData.getCurrentReturns() %> returns
+          </p>
         </div>
       </div>
     </section>
 
+<% } else { %>
+    <div class="bg-white p-4 rounded shadow text-red-600 font-semibold">
+      Error loading dashboard data.
+    </div>
+<% } %>
+
     <!-- Support Link -->
     <section>
-      <h2 class="text-xl font-semibold mb-4">Support</h2>
-      <div class="bg-white p-4 rounded shadow flex justify-between items-center">
-        <p class="text-gray-800">Need help or have issues?</p>
-        <a href="support.jsp" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Go to Support</a>
+      <h2 class="text-lg font-semibold mb-3 text-[#142B59]">Support</h2>
+      <div class="bg-white p-3 rounded shadow-sm flex justify-between items-center">
+        <p class="text-sm text-gray-800">Need help or have issues?</p>
+        <a href="/admin/supportForm.jsp" class="bg-[#2964D9] text-white px-3 py-1 rounded hover:bg-[#2955D9] transition text-sm">Go to Support</a>
       </div>
     </section>
+    
   </main>
 </div>
 
