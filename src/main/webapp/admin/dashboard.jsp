@@ -75,7 +75,7 @@
         <div class="bg-white p-3 rounded shadow-sm">
           <h3 class="font-semibold text-sm text-[#0D448C]">Total Profit</h3>
           <p class="text-xl font-bold text-green-600">
-            $<%= String.format("%.2f", dashboardData.getTotalProfit()) %>
+            LKR<%= String.format("%.2f", dashboardData.getTotalProfit()) %>
           </p>
         </div>
         <div class="bg-white p-3 rounded shadow-sm">
