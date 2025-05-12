@@ -52,13 +52,13 @@ public class SystemUserLoginServlet extends HttpServlet {
     private void redirectByRole(HttpServletResponse response, String contextPath, String role) throws IOException {
         switch (role.toLowerCase()) {
             case "admin":
-                response.sendRedirect(contextPath + "/admin/dashboard.jsp");
+                response.sendRedirect(contextPath + "/admin/dashboard");
                 break;
             case "stock manager":
-                response.sendRedirect(contextPath + "/admin/dashboard.jsp");
+                response.sendRedirect(contextPath + "/admin/dashboard");
                 break;
             case "sales manager":
-                response.sendRedirect(contextPath + "/admin/dashboard.jsp");
+                response.sendRedirect(contextPath + "/admin/dashboard");
                 break;
             default:
                 response.sendRedirect(contextPath + "/admin/unauthorized.jsp");

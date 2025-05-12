@@ -39,7 +39,7 @@
     
     <nav class="space-y-2">
         <!-- Dashboard -->
-        <a href="${pageContext.request.contextPath}/admin/dashboard.jsp" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("dashboard") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
+        <a href="${pageContext.request.contextPath}/admin/dashboard" class="flex items-center px-3 py-2 rounded-lg <%= currentPage.contains("dashboard") ? "active-tab" : "hover:bg-gray-800 hover:text-primary" %>">
             <i class="fas fa-tachometer-alt mr-3 text-white"></i>
             Dashboard
         </a>

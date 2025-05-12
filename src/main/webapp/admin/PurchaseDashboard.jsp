@@ -129,7 +129,7 @@
 				</c:if>
                 <!-- Purchase Table -->
                 <div class="bg-white shadow rounded overflow-x-auto mt-6">
-                    <table class="min-w-full text-sm text-dark-blue">
+                    <table class="min-w-full text-sm text-dark-blue" id="purchase-table">
                         <thead class="bg-primary text-white text-left font-semibold">
                             <tr>
                                 <th class="px-4 py-3">ID</th>
@@ -192,28 +192,56 @@
     </script>
     
     <script>
-    	async function exportTableToPDF() {
-        	const { jsPDF } = window.jspdf;
-        	const doc = new jsPDF();
+    async function exportTableToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
 
-        doc.autoTable({
-            html: 'table', // targets the first <table> in the DOM
-            theme: 'grid',
-            headStyles: { fillColor: [41, 85, 217] }, // match your Tailwind primary
-            styles: { fontSize: 8 },
+        const table = document.getElementById('purchase-table');
+
+        const headers = [];
+        const data = [];
+
+        // Get headers (excluding last column)
+        const headerCells = table.querySelectorAll('thead tr th');
+        headerCells.forEach((th, index) => {
+          if (index < headerCells.length - 1) { // exclude last column
+            headers.push(th.innerText.trim());
+          }
         });
 
-        	doc.save('purchase_data.pdf');
-    	}
-	</script>
-	
-	<script>
+        // Get rows
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+          const rowData = [];
+          const cells = row.querySelectorAll('td');
+          cells.forEach((td, index) => {
+            if (index < cells.length - 1) { // exclude last column
+              rowData.push(td.innerText.trim());
+            }
+          });
+          if (rowData.length > 0) {
+            data.push(rowData);
+          }
+        });
+
+        // Generate PDF
+        doc.autoTable({
+          head: [headers],
+          body: data,
+          theme: 'grid',
+          headStyles: { fillColor: [10, 77, 166] },
+          styles: { fontSize: 9 }
+        });
+
+        doc.save('customer_data.pdf');
+      }
+
     	function exportTableToExcel() {
-        	var table = document.querySelector('table');
-        	var wb = XLSX.utils.table_to_book(table, { sheet: "Purchase Data" });
-        	XLSX.writeFile(wb, 'purchase_data.xlsx');
+    	  var table = document.getElementById('purchase-table');
+    	  var wb = XLSX.utils.table_to_book(table, { sheet: "Customers" });
+    	  XLSX.writeFile(wb, 'customer_data.xlsx');
     	}
-	</script>
+  </script>
 	
 </body>
 </html>
