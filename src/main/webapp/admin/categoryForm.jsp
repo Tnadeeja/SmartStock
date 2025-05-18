@@ -31,10 +31,10 @@
 
           <!-- Category Name -->
           <div>
-            <label class="block text-sm font-semibold text-[#0A4DA6] mb-2">Category Name</label>
-            <input type="text" name="categoryName" value="${category.categoryName}" required
-                   class="w-full border-b-2 border-[#2955D9] bg-transparent text-lg px-2 py-2 focus:outline-none focus:ring-0 focus:border-[#0A4DA6] transition-all" />
-          </div>
+  <label class="block text-sm font-semibold text-[#0A4DA6] mb-2">Category Name</label>
+  <input type="text" name="categoryName" value="${category.categoryName}" required
+         class="w-full border-b-2 border-[#2955D9] bg-transparent text-lg px-2 py-2 focus:outline-none focus:ring-0 focus:border-[#0A4DA6] transition-all" />
+</div>
 
           <!-- Buttons -->
           <div class="pt-6 flex justify-center space-x-4">
@@ -52,6 +52,23 @@
       </div>
     </main>
   </div>
+
+<script>
+  // Function to allow only letters and spaces in the input fields
+  function allowOnlyLetters(event) {
+    const char = String.fromCharCode(event.which || event.keyCode); // Get the character pressed
+    const regex = /^[A-Za-z\s]*$/; // Regex that allows only letters and spaces
+    if (!regex.test(char)) {
+      event.preventDefault(); // Prevent the input if it's not a letter or space
+    }
+  }
+
+  // Attach the event listeners to the input fields
+  window.onload = function() {
+    // Category Name input
+    document.querySelector('[name="categoryName"]').addEventListener('keypress', allowOnlyLetters);
+  };
+</script>
 
 </body>
 </html>

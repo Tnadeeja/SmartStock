@@ -33,13 +33,12 @@
           <!-- Supplier Info: Name & Email -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Supplier Name</label>
-<input type="text" name="name" value="${supplier.name}" required
-       pattern="[A-Za-z\s]{2,50}"
-       title="Enter only letters (2 to 50 characters)"
-       class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
-              
-            </div>
+  <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Supplier Name</label>
+  <input type="text" name="name" value="${supplier.name}" required
+         pattern="[A-Za-z\s]{2,50}"
+         title="Enter only letters (2 to 50 characters)"
+         class="w-full border border-[#2955D9] rounded-lg bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#0A4DA6] shadow-sm" />
+</div>
 
             <div>
               <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Supplier Email</label>
@@ -95,6 +94,23 @@
     });
 </script>
   
+  
+  <script>
+  // Function to allow only letters and spaces in the input fields
+  function allowOnlyLetters(event) {
+    const char = String.fromCharCode(event.which || event.keyCode); // Get the character pressed
+    const regex = /^[A-Za-z\s]*$/; // Regex that allows only letters and spaces
+    if (!regex.test(char)) {
+      event.preventDefault(); // Prevent the input if it's not a letter or space
+    }
+  }
+
+  // Attach the event listeners to the input fields
+  window.onload = function() {
+    // Supplier Name input
+    document.querySelector('[name="name"][value="${supplier.name}"]').addEventListener('keypress', allowOnlyLetters);
+  };
+</script>
 
 </body>
 </html>

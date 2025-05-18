@@ -109,5 +109,34 @@
     </main>
   </div>
 
+<script>
+  // Function to allow only letters and spaces in the Name input field
+  function allowOnlyLetters(event) {
+    const char = String.fromCharCode(event.which || event.keyCode); // Get the character pressed
+    const regex = /^[A-Za-z\s]*$/; // Regex that allows only letters and spaces
+    if (!regex.test(char)) {
+      event.preventDefault(); // Prevent the input if it's not a letter or space
+    }
+  }
+
+  // Function to allow only numbers, spaces, and common phone symbols in the Phone input field
+  function allowOnlyPhoneChars(event) {
+    const char = String.fromCharCode(event.which || event.keyCode); // Get the character pressed
+    const regex = /^[0-9\s\+\-\(\)]*$/; // Regex to allow numbers, spaces, +, -, (, and )
+    if (!regex.test(char)) {
+      event.preventDefault(); // Prevent the input if it's not allowed
+    }
+  }
+
+  // Attach the event listeners to the input fields
+  window.onload = function() {
+    // Name input field (letters and spaces only)
+    document.querySelector('[name="name"]').addEventListener('keypress', allowOnlyLetters);
+
+    // Phone input field (numbers, spaces, and phone symbols only)
+    document.querySelector('[name="phone"]').addEventListener('keypress', allowOnlyPhoneChars);
+  };
+</script>
+
 </body>
 </html>
