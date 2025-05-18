@@ -6,7 +6,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Purchase Product</title>
+  <title>purchase form</title>
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/admin/assets/picture/favicon-white.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>

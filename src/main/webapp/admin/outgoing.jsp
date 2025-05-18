@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Outgoing Product</title>
+    <title>outgoing</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/admin/assets/picture/favicon-white.png" type="image/png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
@@ -95,47 +97,76 @@
   <jsp:include page="partials/slideBar.jsp" />
 
     <!-- Main content placeholder -->
-    <main class="flex-1 p-6">
-    
-    <!-- Start -->
-<div class="mt-6 space-y-6">
+    <main class="flex-1 p-4 flex flex-col min-h-screen">
 
-  <!-- Filter and Search Section in Single Column -->
-  <div class="flex flex-wrap items-center gap-3">
-    <input type="text" placeholder="Search by product or supplier..." class="border border-primary rounded px-4 py-2 flex-1 min-w-[250px] text-dark-blue" />
+      <div class="mt-6 space-y-6 flex-grow">
 
-      <select class="border border-primary px-3 py-2 rounded text-dark-blue">
-        <option>All Categories</option>
-        
-        <!-- Populate from backend -->
-      </select>
-      <select class="border border-primary px-3 py-2 rounded text-dark-blue">
-        <option>All Customers</option>
-        <!-- Populate from backend -->
-      </select>
+  <div class="flex flex-wrap items-center gap-3 justify-between">
+    <!-- Left Section: Add Button -->
+    <a href="outgoing?action=add" class="bg-primary text-white px-3 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
+      <i class="fas fa-plus"></i>
+    </a>
 
-      <input type="date" class="border border-primary px-3 py-2 rounded text-dark-blue" />
-      
+    <!-- Center Section: Filter Form -->
+    <form method="get" action="outgoing" class="flex flex-wrap items-center gap-3 flex-grow">
+  <input type="text" name="search" placeholder="Search by product or customer..." value="${param.search}"
+         class="border border-primary rounded px-4 py-2 text-dark-blue flex-grow min-w-[150px]" />
 
-    <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
-    <button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
-  </div>  
+<select name="category" class="border border-primary px-3 py-2 rounded text-dark-blue">
+    <option value="">All Categories</option>
+    <c:forEach var="cat" items="${categoryList}">
+      <option value="${cat.categoryName}" <c:if test="${param.category == cat.categoryName}">selected</c:if>>
+        ${cat.categoryName}
+      </option>
+    </c:forEach>
+</select>
 
-  <!-- Action Buttons -->
-  <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
-  <div class="flex gap-4 mt-6">
-    <a href="outgoing?action=add" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
-  <i class="fas fa-plus"></i> Add
-</a>
-    
-    <button onclick="exportTableToPDF()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
-      <i class="fas fa-file-pdf"></i> Export PDF
+<select name="customer" class="border border-primary px-3 py-2 rounded text-dark-blue">
+    <option value="">All Customers</option>
+    <c:forEach var="customer" items="${customerList}">
+      <option value="${customer.name}" <c:if test="${param.customer == customer.name}">selected</c:if>>
+        ${customer.name}
+      </option>
+    </c:forEach>
+</select>
+
+
+  <label class="flex items-center gap-1 text-dark-blue">
+    From:
+    <input type="date" name="startDate" value="${param.startDate}" class="border border-primary rounded px-2 py-1 text-dark-blue" />
+  </label>
+
+  <label class="flex items-center gap-1 text-dark-blue">
+    To:
+    <input type="date" name="endDate" value="${param.endDate}" class="border border-primary rounded px-2 py-1 text-dark-blue" />
+  </label>
+
+  <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
+  <button type="button" onclick="window.location.href='outgoing'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
+</form>
+
+    <!-- Export Dropdown -->
+  <div class="relative">
+    <button onclick="toggleExportDropdown()" class="bg-gray-600 text-white px-3 py-2 rounded hover:bg-gray-700 transition">
+      <i class="fas fa-print"></i>
     </button>
-    <button onclick="exportTableToExcel()" class="bg-yellow-500 text-dark-blue px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
-      <i class="fas fa-file-excel"></i> Export Excel
-    </button>
+    <div id="exportDropdown" class="absolute right-0 mt-2 w-36 bg-white border rounded shadow-lg hidden z-10">
+      <button onclick="exportTableToPDF()" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">
+        <i class="fas fa-file-pdf text-red-600 mr-2"></i> Export PDF
+      </button>
+      <button onclick="exportTableToExcel()" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">
+        <i class="fas fa-file-excel text-green-600 mr-2"></i> Export Excel
+      </button>
+    </div>
   </div>
-	</c:if>
+</div>
+
+<script>
+  function toggleExportDropdown() {
+    const dropdown = document.getElementById("exportDropdown");
+    dropdown.classList.toggle("hidden");
+  }
+</script>
 	
   <!-- Purchase Stock Table -->
   <div class="bg-white shadow rounded overflow-x-auto mt-6">
@@ -158,7 +189,13 @@
     </tr>
   </thead>
   <tbody>
-    <c:forEach var="product" items="${outgoingList}" varStatus="loop">
+  <c:set var="pageSize" value="9" />
+						<c:set var="currentPage" value="${param.page != null ? param.page + 0 : 1}" />
+						<c:set var="start" value="${(currentPage - 1) * pageSize}" />
+						<c:set var="end" value="${start + pageSize}" />
+						
+    <c:forEach var="product" items="${outgoingList}" varStatus="status"><!-- varStatus="loop" have removed-->
+    <c:if test="${status.index ge start and status.index lt end}">
       <tr class="border-t text-center hover:bg-gray-50">
         <td class="px-4 py-3">${product.outgoingId}</td>
         <td class="px-4 py-3">${product.productName}</td>
@@ -179,6 +216,7 @@
         </td>
         </c:if>
       </tr>
+      </c:if>
     </c:forEach>
     <c:if test="${empty outgoingList}">
       <tr>
@@ -198,6 +236,18 @@
 </script>
 <!-- End -->
     
+    <div class="mt-auto flex justify-center space-x-2">
+  <c:set var="totalItems" value="${fn:length(outgoingList)}" />
+  <c:set var="totalPages" value="${(totalItems / pageSize) + (totalItems % pageSize > 0 ? 1 : 0)}" />
+  <c:forEach var="i" begin="1" end="${totalPages}">
+    <a href="?page=${i}&search=${param.search}&category=${param.category}&supplier=${param.supplier}&startDate=${param.startDate}&endDate=${param.endDate}"
+       class="px-3 py-1 rounded border
+              ${i == currentPage ? 'bg-primary text-white border-primary' : 'bg-white text-dark-blue border-gray-300'}
+              hover:bg-primary hover:text-white hover:border-primary transition">
+      ${i}
+    </a>
+  </c:forEach>
+</div>
     
     </main>
 

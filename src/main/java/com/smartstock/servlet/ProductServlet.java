@@ -21,15 +21,16 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        String search = request.getParameter("search");
+        String categoryFilter = request.getParameter("category");
 
         try {
             if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Product product = productService.getProduct(id);
                 List<Category> categoryList = new CategoryService().getAllcategory();
-                
                 List<Product> productList = productService.getAllProducts();
-                
+
                 request.setAttribute("product", product);
                 request.setAttribute("productList", productList);
                 request.setAttribute("categoryList", categoryList);
@@ -43,14 +44,34 @@ public class ProductServlet extends HttpServlet {
             } else if ("add".equals(action)) {
                 List<Category> categoryList = new CategoryService().getAllcategory();
                 List<Product> productList = productService.getAllProducts();
-                
+
                 request.setAttribute("productList", productList);
                 request.setAttribute("categoryList", categoryList);
                 request.getRequestDispatcher("/admin/productForm.jsp").forward(request, response);
 
             } else {
+                // Get all products first
                 List<Product> productList = productService.getAllProducts();
+
+                // Filter by search text if present
+                if (search != null && !search.trim().isEmpty()) {
+                    String searchLower = search.toLowerCase();
+                    productList = productList.stream()
+                            .filter(p -> p.getProductName().toLowerCase().contains(searchLower))
+                            .toList();
+                }
+
+                // Filter by category if selected
+                if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
+                    productList = productList.stream()
+                            .filter(p -> p.getCategoryName().equalsIgnoreCase(categoryFilter))
+                            .toList();
+                }
+
+                List<Category> categoryList = new CategoryService().getAllcategory();
+
                 request.setAttribute("productList", productList);
+                request.setAttribute("categoryList", categoryList);
                 request.getRequestDispatcher("/admin/product.jsp").forward(request, response);
             }
 

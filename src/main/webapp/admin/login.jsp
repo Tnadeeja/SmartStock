@@ -8,7 +8,8 @@
 	
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
+  <title>login</title>
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/admin/assets/picture/favicon-white.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -49,8 +50,11 @@
   <div class="absolute w-[500px] h-[500px] bg-purple-700 rounded-full bottom-[-150px] right-[-150px] opacity-30 blur-3xl shadow-2xl"></div>
   <div class="absolute w-full h-full bg-gradient-to-br from-transparent via-blue-800/20 to-transparent mix-blend-overlay pointer-events-none"></div>
 
-  <!-- Logo -->
-  <div class="absolute top-6 left-6 text-white text-sm font-semibold z-10">SmartStock</div>
+  <div class="absolute top-6 left-6 flex items-center gap-3 z-10">
+  <img src="${pageContext.request.contextPath}/admin/assets/picture/favicon-white.png" alt="SmartStock Logo" class="h-8 w-auto">
+  <span class="text-white text-xl font-semibold">SmartStock</span>
+</div>
+
 
   <!-- Left Welcome text -->
   <div class="absolute left-10 top-1/2 transform -translate-y-1/2 text-4xl font-bold text-white z-10 animate-slide-fade-left">
@@ -89,10 +93,8 @@
         </button>
       </div>
     </form>
+	<p class="text-center text-xs text-gray-300 mt-4">By logging in, you agree to our <a href="#" class="underline hover:text-white">Privacy Policy</a>.</p>
   </div>
-
-  <!-- Footerr -->
-  <div class="absolute bottom-6 text-center w-full text-white text-xs z-10">Privacy Policy</div>
 
 </body>
 </html>

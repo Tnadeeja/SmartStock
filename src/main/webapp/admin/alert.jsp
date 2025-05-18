@@ -6,7 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alerts</title>
+    <title>alerts</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/admin/assets/picture/favicon-white.png" type="image/png" />
 
     <!-- TailwindCSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -86,7 +87,7 @@
     <main class="flex-1 p-6">
 
         <!-- Wrap all alerts in a space-y-6 container to add spacing between each alert -->
-<div class="space-y-3">
+<div id="alert-container" class="space-y-3">
     <c:forEach var="alert" items="${alerts}">
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-start gap-4">
             <!-- Icon with dynamic color based on post -->
@@ -117,10 +118,25 @@
         </div>
     </c:forEach>
 </div>
-        
-
+<!-- Hidden No Alerts Message -->
+<div id="no-alerts-message" class="text-center text-gray-500 mt-10 text-lg hidden">
+    No alerts available at the moment.
+</div>
     </main>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertContainer = document.getElementById("alert-container");
+        const noAlertsMessage = document.getElementById("no-alerts-message");
+
+        // Check if the container has any children (i.e., any alert boxes)
+        if (!alertContainer.hasChildNodes() || alertContainer.children.length === 0) {
+            noAlertsMessage.classList.remove("hidden");
+        }
+    });
+</script>
+
 
 </body>
 </html>

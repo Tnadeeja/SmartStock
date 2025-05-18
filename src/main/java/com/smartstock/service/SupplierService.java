@@ -100,5 +100,64 @@ public class SupplierService {
         }
         return false;
     }
-}
 
+    // Search Suppliers by name and address
+    public List<Supplier> searchSuppliers(String nameFilter, String addressFilter) {
+        List<Supplier> suppliers = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM supplier WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (nameFilter != null && !nameFilter.trim().isEmpty()) {
+            query.append(" AND name LIKE ?");
+            params.add("%" + nameFilter.trim() + "%");
+        }
+
+        if (addressFilter != null && !addressFilter.trim().isEmpty()) {
+            query.append(" AND address = ?");
+            params.add(addressFilter.trim());
+        }
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Supplier supplier = new Supplier();
+                supplier.setSupplierId(rs.getInt("supplier_id"));
+                supplier.setName(rs.getString("name"));
+                supplier.setEmail(rs.getString("email"));
+                supplier.setPhone(rs.getString("phone"));
+                supplier.setAddress(rs.getString("address"));
+                supplier.setCreatedAt(rs.getTimestamp("created_at"));
+                suppliers.add(supplier);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return suppliers;
+    }
+
+    // Get all distinct addresses
+    public List<String> getAllAddresses() {
+        List<String> addresses = new ArrayList<>();
+        String query = "SELECT DISTINCT address FROM supplier ORDER BY address";
+
+        try (Connection connection = DBConnection.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                addresses.add(rs.getString("address"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return addresses;
+    }
+}

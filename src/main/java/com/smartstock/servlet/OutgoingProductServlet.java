@@ -22,9 +22,9 @@ import java.util.List;
 @WebServlet("/admin/outgoing")
 public class OutgoingProductServlet extends HttpServlet {
 
-    private OutgoingProductService outgoingProductService = new OutgoingProductService(); // ✅ for outgoing product
-    private ProductService productService = new ProductService(); // ✅ for loading product list
-    private CustomerService customerService = new CustomerService(); // ✅ for loading customer list
+    private OutgoingProductService outgoingProductService = new OutgoingProductService();
+    private ProductService productService = new ProductService();
+    private CustomerService customerService = new CustomerService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -38,23 +38,19 @@ public class OutgoingProductServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 OutgoingProduct product = outgoingProductService.getOutgoingProduct(id);
 
-                // Load necessary data
                 List<Category> categoryList = new CategoryService().getAllcategory();
                 List<Product> productList = productService.getAllProducts();
-                List<Customer> customerList = customerService.getAllCustomers(); // Get customers for dropdown
+                List<Customer> customerList = customerService.getAllCustomers();
 
-                // Set attributes for the JSP
                 request.setAttribute("product", product);
                 request.setAttribute("categoryList", categoryList);
                 request.setAttribute("productList", productList);
-                request.setAttribute("customerList", customerList); // Pass customer list for dropdown
-
+                request.setAttribute("customerList", customerList);
                 request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
 
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                // Handle deletion
                 OutgoingProduct outgoingProduct = outgoingProductService.getOutgoingProduct(id);
                 boolean deleted = outgoingProductService.deleteOutgoingProduct(id);
 
@@ -66,7 +62,6 @@ public class OutgoingProductServlet extends HttpServlet {
                     session.setAttribute("status", "error");
                 }
 
-                // Handling the return product logic
                 if (outgoingProduct != null) {
                     ReturnProduct returnProduct = new ReturnProduct();
                     returnProduct.productName = outgoingProduct.productName;
@@ -81,22 +76,55 @@ public class OutgoingProductServlet extends HttpServlet {
                 response.sendRedirect("outgoing");
 
             } else if ("add".equals(action)) {
-                // Load necessary data for add page
                 List<Category> categoryList = new CategoryService().getAllcategory();
                 List<Product> productList = productService.getAllProducts();
-                List<Customer> customerList = customerService.getAllCustomers(); // Get customers for dropdown
+                List<Customer> customerList = customerService.getAllCustomers();
 
-                // Set attributes for the JSP
                 request.setAttribute("categoryList", categoryList);
                 request.setAttribute("productList", productList);
-                request.setAttribute("customerList", customerList); // Pass customer list for dropdown
-
+                request.setAttribute("customerList", customerList);
                 request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
 
             } else {
-                // Load the list of outgoing products
-                List<OutgoingProduct> outgoingList = outgoingProductService.getAllOutgoingProducts();
+                // 🔍 Filtering logic
+                String search = request.getParameter("search");
+                String category = request.getParameter("category");
+                String customer = request.getParameter("customer"); // ✅ Get customer
+                String fromDateStr = request.getParameter("fromDate");
+                String toDateStr = request.getParameter("toDate");
+
+                Date fromDate = null;
+                Date toDate = null;
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                if (fromDateStr != null && !fromDateStr.isEmpty()) {
+                    fromDate = sdf.parse(fromDateStr);
+                }
+                if (toDateStr != null && !toDateStr.isEmpty()) {
+                    toDate = sdf.parse(toDateStr);
+                }
+
+                // ✅ Filtered outgoing products
+                List<OutgoingProduct> outgoingList = outgoingProductService.getFilteredOutgoingProducts(search, category, customer, fromDate, toDate);
+
+                // ✅ Fetch supporting lists
+                List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Product> productList = productService.getAllProducts();
+                List<Customer> customerList = customerService.getAllCustomers();
+
+                // ✅ Set all attributes needed in JSP
                 request.setAttribute("outgoingList", outgoingList);
+                request.setAttribute("categoryList", categoryList);
+                request.setAttribute("productList", productList);
+                request.setAttribute("customerList", customerList);
+
+                // ✅ Preserve filter values
+                request.setAttribute("search", search);
+                request.setAttribute("selectedCategory", category);
+                request.setAttribute("selectedCustomer", customer);
+                request.setAttribute("fromDate", fromDateStr);
+                request.setAttribute("toDate", toDateStr);
+
                 request.getRequestDispatcher("/admin/outgoing.jsp").forward(request, response);
             }
 
@@ -113,20 +141,18 @@ public class OutgoingProductServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         try {
-            // Parse incoming form data
             int outgoingId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
                     ? Integer.parseInt(request.getParameter("id"))
                     : 0;
 
             String productName = request.getParameter("productName");
             String categoryName = request.getParameter("categoryId");
-            String customerName = request.getParameter("customerName"); // The customer ID from the dropdown
+            String customerName = request.getParameter("customerName");
 
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             double salePrice = Double.parseDouble(request.getParameter("unitPrice"));
             double totalAmount = Double.parseDouble(request.getParameter("totalPrice"));
 
-            // Parse date fields
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
             Date manufactureDate = null;
@@ -136,21 +162,18 @@ public class OutgoingProductServlet extends HttpServlet {
             if (request.getParameter("manufactureDate") != null && !request.getParameter("manufactureDate").isEmpty()) {
                 manufactureDate = formatter.parse(request.getParameter("manufactureDate"));
             }
-
             if (request.getParameter("expireDate") != null && !request.getParameter("expireDate").isEmpty()) {
                 expireDate = formatter.parse(request.getParameter("expireDate"));
             }
-
             if (request.getParameter("outgoingDate") != null && !request.getParameter("outgoingDate").isEmpty()) {
                 outgoingDate = formatter.parse(request.getParameter("outgoingDate"));
             }
 
-            // Create the outgoing product object
             OutgoingProduct product = new OutgoingProduct();
             product.outgoingId = outgoingId;
             product.productName = productName;
             product.categoryName = categoryName;
-            product.customerName = customerName; // Set the selected customer name
+            product.customerName = customerName;
             product.quantity = quantity;
             product.salePrice = salePrice;
             product.totalAmount = totalAmount;
@@ -158,42 +181,29 @@ public class OutgoingProductServlet extends HttpServlet {
             product.expireDate = expireDate;
             product.outgoingDate = outgoingDate;
 
-            // Handle create or update
             boolean success;
             if (outgoingId > 0) {
                 success = outgoingProductService.updateOutgoingProduct(product);
-                if (success) {
-                    session.setAttribute("message", "Item updated successfully!");
-                    session.setAttribute("status", "success-update");
-                } else {
-                    session.setAttribute("message", "Failed to update item.");
-                    session.setAttribute("status", "error");
-                }
+                session.setAttribute("message", success ? "Item updated successfully!" : "Failed to update item.");
+                session.setAttribute("status", success ? "success-update" : "error");
             } else {
                 success = outgoingProductService.createOutgoingProduct(product);
-                if (success) {
-                    session.setAttribute("message", "Item added successfully!");
-                    session.setAttribute("status", "success-add");
-                } else {
-                    session.setAttribute("message", "Failed to add item.");
-                    session.setAttribute("status", "error");
-                }
+                session.setAttribute("message", success ? "Item added successfully!" : "Failed to add item.");
+                session.setAttribute("status", success ? "success-add" : "error");
             }
 
-            // Redirect after success
             response.sendRedirect("outgoing");
 
         } catch (Exception e) {
             e.printStackTrace();
 
-            // Reload the page with the necessary data if an error occurs
             List<Category> categoryList = new CategoryService().getAllcategory();
             List<Product> productList = productService.getAllProducts();
-            List<Customer> customerList = customerService.getAllCustomers(); // Get customers for dropdown
+            List<Customer> customerList = customerService.getAllCustomers();
 
             request.setAttribute("categoryList", categoryList);
             request.setAttribute("productList", productList);
-            request.setAttribute("customerList", customerList); // Pass customer list for dropdown
+            request.setAttribute("customerList", customerList);
             request.setAttribute("error", "Invalid input or missing fields. Please check your form.");
             request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
         }
