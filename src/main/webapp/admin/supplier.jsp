@@ -103,9 +103,11 @@
 
   <div class="flex flex-wrap items-center gap-3 justify-between">
     <!-- Left Section: Add Button -->
+    <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'stock manager'}">
     <a href="supplier?action=add" class="bg-primary text-white px-3 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
       <i class="fas fa-plus"></i>
     </a>
+    </c:if>
 
     <!-- Center Section: Filter Form -->
     <form method="get" action="supplier" class="flex flex-wrap items-center gap-3 flex-grow">

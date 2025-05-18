@@ -105,13 +105,14 @@
   <!-- Filter and Search Section in Single Column -->
   <div class="flex flex-wrap items-center gap-3 justify-between">
     <!-- Left Section: Add Button -->
+     <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
     <a href="customer?action=add" class="bg-primary text-white px-3 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
       <i class="fas fa-plus"></i>
     </a>
-
+</c:if>
     <!-- Center Section: Filter Form -->
     <form method="get" action="customer" class="flex flex-wrap items-center gap-3 flex-grow">
-      <input type="text" name="searchName" placeholder="Search by name..." value="${param.searchName}"
+      <input type="text" name="searchName" placeholder="Search by customer..." value="${param.searchName}"
              class="border border-primary rounded px-4 py-2 text-dark-blue flex-grow min-w-[150px]" />
 
       <select name="filterAddress" class="border border-primary px-3 py-2 rounded text-dark-blue">

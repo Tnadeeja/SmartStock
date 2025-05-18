@@ -143,7 +143,7 @@
       <h2 class="text-lg font-semibold mb-3 text-[#142B59]">Support</h2>
       <div class="bg-white p-3 rounded shadow-sm flex justify-between items-center">
         <p class="text-sm text-gray-800">Need help or have issues?</p>
-        <a href="/admin/supportForm.jsp" class="bg-[#2964D9] text-white px-3 py-1 rounded hover:bg-[#2955D9] transition text-sm">Go to Support</a>
+        <a href="${pageContext.request.contextPath}/admin/supportHandler" class="bg-[#2964D9] text-white px-3 py-1 rounded hover:bg-[#2955D9] transition text-sm">Go to Support</a>
       </div>
     </section>
     
