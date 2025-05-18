@@ -112,7 +112,7 @@
 
     <!-- Center Section: Filter Form -->
     <form method="get" action="return" class="flex flex-wrap items-center gap-3 flex-grow">
-  <input type="text" name="search" placeholder="Search by product or customer..." value="${param.search}"
+  <input type="text" name="search" placeholder="Search by product..." value="${param.search}"
          class="border border-primary rounded px-4 py-2 text-dark-blue flex-grow min-w-[150px]" />
 
   <label class="flex items-center gap-1 text-dark-blue">

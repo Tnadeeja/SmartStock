@@ -117,13 +117,14 @@
 
   <div class="flex flex-wrap items-center gap-3 justify-between">
     <!-- Left Section: Add Button -->
+    <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'stock manager'}">
     <a href="PurchaseDashboard?action=add" class="bg-primary text-white px-3 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
       <i class="fas fa-plus"></i>
     </a>
-
+</c:if>
     <!-- Center Section: Filter Form -->
     <form method="get" action="PurchaseDashboard" class="flex flex-wrap items-center gap-3 flex-grow">
-  <input type="text" name="search" placeholder="Search by product or customer..." value="${param.search}"
+  <input type="text" name="search" placeholder="Search by product or supplier..." value="${param.search}"
          class="border border-primary rounded px-4 py-2 text-dark-blue flex-grow min-w-[150px]" />
 
   <select name="category" class="border border-primary px-3 py-2 rounded text-dark-blue">
