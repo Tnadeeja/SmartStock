@@ -19,7 +19,7 @@ import java.util.List;
 
 @WebServlet("/admin/PurchaseDashboard")
 public class PurchaseProductServlet extends HttpServlet {
-
+	
     private final PurchaseProductService PurchaseProductService = new PurchaseProductService();
     private final ProductService productService = new ProductService();
     private final SupplierService supplierService = new SupplierService();
