@@ -10,33 +10,35 @@ import java.io.IOException;
 
 @WebServlet("/admin/dashboard")
 public class DashboardServlet extends HttpServlet {
-private DashboardService dashboardService;
+    private DashboardService dashboardService;
 
-@Override
-public void init() throws ServletException {
-    super.init();
-    dashboardService = new DashboardService();
-}
-
-@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    // Get user role from the session
-    String role = (String) request.getSession().getAttribute("role");
-
-    // Check if the user is an admin
-    if (role == null || !role.equals("admin")) {
-        response.sendRedirect(request.getContextPath() + "/admin/unauthorized.jsp");
-        return;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        dashboardService = new DashboardService();
     }
 
-    // Fetch the dashboard data from the service
-    DashboardData dashboardData = dashboardService.getDashboardData();
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get user role from the session
+        String role = (String) request.getSession().getAttribute("role");
 
-    // Set the dashboard data as a request attribute
-    request.setAttribute("dashboardData", dashboardData);
+        // Allow access only for specific roles
+        if (role == null || 
+           !(role.equalsIgnoreCase("admin") || 
+             role.equalsIgnoreCase("stock manager") || 
+             role.equalsIgnoreCase("sales manager"))) {
+            response.sendRedirect(request.getContextPath() + "/admin/unauthorized.jsp");
+            return;
+        }
 
-    // Forward the request to the dashboard.jsp
-    request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
-}
+        // Fetch the dashboard data
+        DashboardData dashboardData = dashboardService.getDashboardData();
 
+        // Set the data to request
+        request.setAttribute("dashboardData", dashboardData);
+
+        // Forward to JSP
+        request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
+    }
 }

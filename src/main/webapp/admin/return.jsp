@@ -1,12 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Return Product</title>
+<title>return</title>
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/admin/assets/picture/favicon-white.png" type="image/png" />
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -103,40 +104,53 @@
 <div class="flex">
     <jsp:include page="partials/slideBar.jsp" />
 
-    <main class="flex-1 p-6">
-        
-        <!-- Start -->
-        <div class="mt-6 space-y-6">
+    <main class="flex-1 p-4 flex flex-col min-h-screen">
 
-            <!-- Filter and Search Section -->
-            <div class="flex flex-wrap items-center gap-3">
-                <input type="text" placeholder="Search by product or supplier..." class="border border-primary rounded px-4 py-2 flex-1 min-w-[250px] text-dark-blue" />
+      <div class="mt-6 space-y-6 flex-grow">
 
-                <select class="border border-primary px-3 py-2 rounded text-dark-blue">
-                    <option>All Categories</option>
-                </select>
-                <select class="border border-primary px-3 py-2 rounded text-dark-blue">
-                    <option>All Suppliers</option>
-                </select>
+  <div class="flex flex-wrap items-center gap-3 justify-between">
 
-                <input type="date" class="border border-primary px-3 py-2 rounded text-dark-blue" />
-                <input type="date" class="border border-primary px-3 py-2 rounded text-dark-blue" />
+    <!-- Center Section: Filter Form -->
+    <form method="get" action="return" class="flex flex-wrap items-center gap-3 flex-grow">
+  <input type="text" name="search" placeholder="Search by product or customer..." value="${param.search}"
+         class="border border-primary rounded px-4 py-2 text-dark-blue flex-grow min-w-[150px]" />
 
-                <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
-                <button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
-            </div>
+  <label class="flex items-center gap-1 text-dark-blue">
+    From:
+    <input type="date" name="startDate" value="${param.startDate}" class="border border-primary rounded px-2 py-1 text-dark-blue" />
+  </label>
 
-            <!-- Action Buttons -->
-            <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'sales manager'}">
-            <div class="flex gap-4 mt-6">
-                <button onclick="exportTableToPDF()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2 transition">
-      <i class="fas fa-file-pdf"></i> Export PDF
+  <label class="flex items-center gap-1 text-dark-blue">
+    To:
+    <input type="date" name="endDate" value="${param.endDate}" class="border border-primary rounded px-2 py-1 text-dark-blue" />
+  </label>
+
+  <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
+  <button type="button" onclick="window.location.href='return'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
+</form>
+
+    <!-- Export Dropdown -->
+  <div class="relative">
+    <button onclick="toggleExportDropdown()" class="bg-gray-600 text-white px-3 py-2 rounded hover:bg-gray-700 transition">
+      <i class="fas fa-print"></i>
     </button>
-    <button onclick="exportTableToExcel()" class="bg-yellow-500 text-dark-blue px-4 py-2 rounded hover:bg-yellow-600 flex items-center gap-2 transition">
-      <i class="fas fa-file-excel"></i> Export Excel
-    </button>
-            </div>
-            </c:if>
+    <div id="exportDropdown" class="absolute right-0 mt-2 w-36 bg-white border rounded shadow-lg hidden z-10">
+      <button onclick="exportTableToPDF()" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">
+        <i class="fas fa-file-pdf text-red-600 mr-2"></i> Export PDF
+      </button>
+      <button onclick="exportTableToExcel()" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">
+        <i class="fas fa-file-excel text-green-600 mr-2"></i> Export Excel
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleExportDropdown() {
+    const dropdown = document.getElementById("exportDropdown");
+    dropdown.classList.toggle("hidden");
+  }
+</script>
 
             <!-- Purchase Stock Table -->
             <div class="bg-white shadow rounded overflow-x-auto mt-6">
@@ -154,7 +168,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="returnProduct" items="${returnProductList}" varStatus="loop">
+                    
+                    <c:set var="pageSize" value="9" />
+						<c:set var="currentPage" value="${param.page != null ? param.page + 0 : 1}" />
+						<c:set var="start" value="${(currentPage - 1) * pageSize}" />
+						<c:set var="end" value="${start + pageSize}" />
+                    
+                        <c:forEach var="returnProduct" items="${returnProductList}" varStatus="status"><!-- varStatus="loop" has been remove -->
+                        <c:if test="${status.index ge start and status.index lt end}">
                             <tr class="border-t text-center hover:bg-gray-50">
                                 <td class="px-4 py-3">${returnProduct.returnId}</td>
                                 <td class="px-4 py-3">${returnProduct.productName}</td>
@@ -169,6 +190,7 @@
                                 </c:if>
                                 
                             </tr>
+                            </c:if>
                         </c:forEach>
                         <c:if test="${empty returnProductList}">
                             <tr>
@@ -185,6 +207,20 @@
                 window.location.href = '<c:url value="outgoingForm.jsp?action=add" />';
             }
         </script>
+        
+        <div class="mt-auto flex justify-center space-x-2">
+  <c:set var="totalItems" value="${fn:length(returnProductList)}" />
+  <c:set var="totalPages" value="${(totalItems / pageSize) + (totalItems % pageSize > 0 ? 1 : 0)}" />
+  <c:forEach var="i" begin="1" end="${totalPages}">
+    <a href="?page=${i}&search=${param.search}&category=${param.category}&supplier=${param.supplier}&startDate=${param.startDate}&endDate=${param.endDate}"
+       class="px-3 py-1 rounded border
+              ${i == currentPage ? 'bg-primary text-white border-primary' : 'bg-white text-dark-blue border-gray-300'}
+              hover:bg-primary hover:text-white hover:border-primary transition">
+      ${i}
+    </a>
+  </c:forEach>
+</div>
+        
     </main>
 </div>
 
@@ -238,6 +274,56 @@
     	  var wb = XLSX.utils.table_to_book(table, { sheet: "Customers" });
     	  XLSX.writeFile(wb, 'customer_data.xlsx');
     	}
+  </script>
+  
+  <script>
+//This script filters the return product table based on search and date inputs
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form[action='return']");
+    const searchInput = form.querySelector("input[name='search']");
+    const startDateInput = form.querySelector("input[name='startDate']");
+    const endDateInput = form.querySelector("input[name='endDate']");
+    const applyButton = form.querySelector("button[type='submit']");
+    const clearButton = form.querySelector("button[type='button']");
+    const tableRows = document.querySelectorAll("#return-table tbody tr");
+
+    applyButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      filterTable();
+    });
+
+    clearButton.addEventListener("click", () => {
+      searchInput.value = "";
+      startDateInput.value = "";
+      endDateInput.value = "";
+      filterTable();
+    });
+
+    function filterTable() {
+      const searchValue = searchInput.value.toLowerCase();
+      const startDate = new Date(startDateInput.value);
+      const endDate = new Date(endDateInput.value);
+
+      tableRows.forEach((row) => {
+        const productName = row.cells[1]?.innerText.toLowerCase();
+        const returnDateStr = row.cells[4]?.innerText;
+        const returnDate = new Date(returnDateStr);
+
+        const matchSearch =
+          !searchValue || (productName && productName.includes(searchValue));
+
+        const matchStart = !startDateInput.value || returnDate >= startDate;
+        const matchEnd = !endDateInput.value || returnDate <= endDate;
+
+        if (matchSearch && matchStart && matchEnd) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+  });
   </script>
 
 </body>

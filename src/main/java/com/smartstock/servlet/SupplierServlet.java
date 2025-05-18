@@ -46,8 +46,17 @@ public class SupplierServlet extends HttpServlet {
                 request.getRequestDispatcher("/admin/supplierForm.jsp").forward(request, response);
 
             } else {
-                List<Supplier> supplierList = supplierService.getAllSuppliers();
+                String nameFilter = request.getParameter("search");
+                String addressFilter = request.getParameter("address");
+
+                List<Supplier> supplierList = supplierService.searchSuppliers(nameFilter, addressFilter);
+                List<String> addressList = supplierService.getAllAddresses();
+
                 request.setAttribute("supplierList", supplierList);
+                request.setAttribute("addressList", addressList);
+                request.setAttribute("selectedName", nameFilter);
+                request.setAttribute("selectedAddress", addressFilter);
+
                 request.getRequestDispatcher("/admin/supplier.jsp").forward(request, response);
             }
 

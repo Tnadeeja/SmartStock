@@ -46,8 +46,26 @@ public class CustomerServlet extends HttpServlet {
                 request.getRequestDispatcher("/admin/customerForm.jsp").forward(request, response);
 
             } else {
-                List<Customer> customerList = customerService.getAllCustomers();
+                // Retrieve search parameters for filtering
+                String searchName = request.getParameter("searchName");
+                String filterAddress = request.getParameter("filterAddress");
+
+                List<Customer> customerList;
+
+                if ((searchName != null && !searchName.trim().isEmpty()) ||
+                    (filterAddress != null && !filterAddress.trim().isEmpty())) {
+                    customerList = customerService.getFilteredCustomers(searchName, filterAddress);
+                } else {
+                    customerList = customerService.getAllCustomers();
+                }
+
+                List<String> addressList = customerService.getAllAddresses();
+
                 request.setAttribute("customerList", customerList);
+                request.setAttribute("addressList", addressList);
+                request.setAttribute("searchName", searchName);
+                request.setAttribute("filterAddress", filterAddress);
+
                 request.getRequestDispatcher("/admin/customer.jsp").forward(request, response);
             }
 

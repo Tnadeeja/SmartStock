@@ -5,6 +5,7 @@ import com.smartstock.util.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OutgoingProductService {
@@ -117,5 +118,70 @@ public class OutgoingProductService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    // Get Filtered Outgoing Products
+    public List<OutgoingProduct> getFilteredOutgoingProducts(String search, String category, String customer, Date fromDate, Date toDate) {
+        List<OutgoingProduct> products = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM outgoing_product WHERE 1=1");
+
+        // Dynamic conditions
+        if (search != null && !search.trim().isEmpty()) {
+            query.append(" AND product_name LIKE ?");
+        }
+        if (category != null && !category.trim().isEmpty()) {
+            query.append(" AND category_name = ?");
+        }
+        if (customer != null && !customer.trim().isEmpty()) {
+            query.append(" AND customer_name = ?");
+        }
+        if (fromDate != null) {
+            query.append(" AND outgoing_date >= ?");
+        }
+        if (toDate != null) {
+            query.append(" AND outgoing_date <= ?");
+        }
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query.toString())) {
+
+            int index = 1;
+
+            if (search != null && !search.trim().isEmpty()) {
+                stmt.setString(index++, "%" + search + "%");
+            }
+            if (category != null && !category.trim().isEmpty()) {
+                stmt.setString(index++, category);
+            }
+            if (customer != null && !customer.trim().isEmpty()) {
+                stmt.setString(index++, customer);
+            }
+            if (fromDate != null) {
+                stmt.setTimestamp(index++, new java.sql.Timestamp(fromDate.getTime()));
+            }
+            if (toDate != null) {
+                stmt.setTimestamp(index++, new java.sql.Timestamp(toDate.getTime()));
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                OutgoingProduct product = new OutgoingProduct();
+                product.outgoingId = rs.getInt("outgoing_id");
+                product.productName = rs.getString("product_name");
+                product.categoryName = rs.getString("category_name");
+                product.customerName = rs.getString("customer_name");
+                product.quantity = rs.getInt("quantity");
+                product.salePrice = rs.getDouble("sale_price");
+                product.totalAmount = rs.getDouble("total_amount");
+                product.manufactureDate = rs.getDate("manufacture_date");
+                product.expireDate = rs.getDate("expire_date");
+                product.outgoingDate = rs.getTimestamp("outgoing_date");
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return products;
     }
 }
