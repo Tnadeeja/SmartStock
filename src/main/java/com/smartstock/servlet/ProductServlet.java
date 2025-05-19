@@ -15,6 +15,7 @@ import java.util.List;
 public class ProductServlet extends HttpServlet {
 
     private ProductService productService = new ProductService();
+    private CategoryService categoryService = new CategoryService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -28,7 +29,7 @@ public class ProductServlet extends HttpServlet {
             if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Product product = productService.getProduct(id);
-                List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Category> categoryList = categoryService.getAllcategory();
                 List<Product> productList = productService.getAllProducts();
 
                 request.setAttribute("product", product);
@@ -42,7 +43,7 @@ public class ProductServlet extends HttpServlet {
                 response.sendRedirect("product");
 
             } else if ("add".equals(action)) {
-                List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Category> categoryList = categoryService.getAllcategory();
                 List<Product> productList = productService.getAllProducts();
 
                 request.setAttribute("productList", productList);
@@ -50,7 +51,7 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher("/admin/productForm.jsp").forward(request, response);
 
             } else {
-                // Get all products first
+                // Get all products with stock info
                 List<Product> productList = productService.getAllProducts();
 
                 // Filter by search text if present
@@ -68,7 +69,7 @@ public class ProductServlet extends HttpServlet {
                             .toList();
                 }
 
-                List<Category> categoryList = new CategoryService().getAllcategory();
+                List<Category> categoryList = categoryService.getAllcategory();
 
                 request.setAttribute("productList", productList);
                 request.setAttribute("categoryList", categoryList);
@@ -113,13 +114,12 @@ public class ProductServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
 
-            List<Category> categoryList = new CategoryService().getAllcategory();
+            List<Category> categoryList = categoryService.getAllcategory();
             List<Product> productList = productService.getAllProducts();
-            
+
             request.setAttribute("productList", productList);
             request.setAttribute("categoryList", categoryList);
             request.setAttribute("error", "Invalid input or missing fields. Please check your form.");
-            request.setAttribute("product", request); // optional for pre-filling form on error
 
             request.getRequestDispatcher("/admin/productForm.jsp").forward(request, response);
         }

@@ -8,6 +8,10 @@ public class Product {
     private double unitPrice;
     private double salePrice;
 
+    // New fields for stock info
+    private int stockQuantity;
+    private double stockValue;
+
     // Getters
     public int getProductId() {
         return productId;
@@ -24,8 +28,13 @@ public class Product {
     public double getSalePrice() {
         return salePrice;
     }
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+    public double getStockValue() {
+        return stockValue;
+    }
 
-    // Setters
     public void setProductId(int productId) {
         this.productId = productId;
     }
@@ -40,5 +49,11 @@ public class Product {
     }
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
+    }
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+    public void setStockValue(double stockValue) {
+        this.stockValue = stockValue;
     }
 }

@@ -1,5 +1,6 @@
 package com.smartstock.service;
 
+import com.smartstock.dao.StockDAO;
 import com.smartstock.model.Product;
 import com.smartstock.util.DBConnection;
 
@@ -9,24 +10,25 @@ import java.util.List;
 
 public class ProductService {
 
-	// Create Product
-	public boolean createProduct(Product product) {
-	    String query = "INSERT INTO product (product_name, category_name, unit_price, sale_price) VALUES (?, ?, ?, ?)";
-	    try (Connection connection = DBConnection.getConnection();
-	         PreparedStatement stmt = connection.prepareStatement(query)) {
-	        stmt.setString(1, product.getProductName());
-	        stmt.setString(2, product.getCategoryName());
-	        stmt.setDouble(3, product.getUnitPrice());
-	        stmt.setDouble(4, product.getSalePrice());
-	        return stmt.executeUpdate() > 0;
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
+    private StockDAO stockDAO = new StockDAO();
 
+    // Create Product
+    public boolean createProduct(Product product) {
+        String query = "INSERT INTO product (product_name, category_name, unit_price, sale_price) VALUES (?, ?, ?, ?)";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, product.getProductName());
+            stmt.setString(2, product.getCategoryName());
+            stmt.setDouble(3, product.getUnitPrice());
+            stmt.setDouble(4, product.getSalePrice());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-    // Get Product by ID
+    // Get Product by ID with stock info
     public Product getProduct(int id) {
         String query = "SELECT * FROM product WHERE product_id = ?";
         try (Connection connection = DBConnection.getConnection();
@@ -40,6 +42,11 @@ public class ProductService {
                 product.setCategoryName(rs.getString("category_name"));
                 product.setUnitPrice(rs.getDouble("unit_price"));
                 product.setSalePrice(rs.getDouble("sale_price"));
+
+                // Get stock info
+                product.setStockQuantity(stockDAO.getCurrentStockQuantity(product.getProductName()));
+                product.setStockValue(stockDAO.getCurrentStockValue(product.getProductName()));
+
                 return product;
             }
         } catch (SQLException e) {
@@ -48,7 +55,7 @@ public class ProductService {
         return null;
     }
 
-    // Get All Products
+    // Get All Products with stock info
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM product";
@@ -62,6 +69,11 @@ public class ProductService {
                 product.setCategoryName(rs.getString("category_name"));
                 product.setUnitPrice(rs.getDouble("unit_price"));
                 product.setSalePrice(rs.getDouble("sale_price"));
+
+                // Get stock info
+                product.setStockQuantity(stockDAO.getCurrentStockQuantity(product.getProductName()));
+                product.setStockValue(stockDAO.getCurrentStockValue(product.getProductName()));
+
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -86,7 +98,6 @@ public class ProductService {
         }
         return false;
     }
-
 
     // Delete Product
     public boolean deleteProduct(int id) {

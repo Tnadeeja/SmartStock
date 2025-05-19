@@ -78,7 +78,7 @@
     dropdown.classList.toggle("hidden");
   }
 </script>
-	
+  
   <!-- Product Table -->
       <div class="bg-white shadow rounded overflow-x-auto mt-6">
         <table class="min-w-full text-sm text-dark-blue">
@@ -89,6 +89,8 @@
               <th class="px-4 py-3 text-center">Category</th>
               <th class="px-4 py-3 text-center">Unit Price</th>
               <th class="px-4 py-3 text-center">Sale Price</th>
+              <th class="px-4 py-3 text-center">Stock Quantity</th>
+              <th class="px-4 py-3 text-center">Stock Value</th>
               <c:if test="${sessionScope.role == 'admin'}">
               <th class="px-4 py-3 text-center">Action</th>
               </c:if>
@@ -106,8 +108,10 @@
                   <td class="px-4 py-3">${product.productId}</td>
                   <td class="px-4 py-3">${product.productName}</td>
                   <td class="px-4 py-3">${product.categoryName}</td>
-                  <td class="px-4 py-3">${product.unitPrice}</td>
-                  <td class="px-4 py-3">${product.salePrice}</td>
+                  <td class="px-4 py-3"><fmt:formatNumber value="${product.unitPrice}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+                  <td class="px-4 py-3"><fmt:formatNumber value="${product.salePrice}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+                  <td class="px-4 py-3">${product.stockQuantity}</td>
+                  <td class="px-4 py-3"><fmt:formatNumber value="${product.stockValue}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
                   <c:if test="${sessionScope.role == 'admin'}">
                   <td class="px-4 py-3">
                     <div class="flex justify-center gap-2">
@@ -121,7 +125,7 @@
             </c:forEach>
             <c:if test="${empty productList}">
               <tr>
-                <td colspan="7" class="text-center text-gray-500 py-6">No products found.</td>
+                <td colspan="8" class="text-center text-gray-500 py-6">No products found.</td>
               </tr>
             </c:if>
           </tbody>
@@ -152,6 +156,8 @@
             <th>Category</th>
             <th>Unit Price</th>
             <th>Sale Price</th>
+            <th>Stock Quantity</th>
+            <th>Stock Value</th>
           </tr>
         </thead>
         <tbody>
@@ -160,8 +166,10 @@
               <td>${product.productId}</td>
               <td>${product.productName}</td>
               <td>${product.categoryName}</td>
-              <td>${product.unitPrice}</td>
-              <td>${product.salePrice}</td>
+              <td><fmt:formatNumber value="${product.unitPrice}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+              <td><fmt:formatNumber value="${product.salePrice}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+              <td>${product.stockQuantity}</td>
+              <td><fmt:formatNumber value="${product.stockValue}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
             </tr>
           </c:forEach>
         </tbody>
@@ -176,21 +184,17 @@
     async function exportTableToPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      doc.autoTable({
-        html: '#exportTable',
-        theme: 'grid',
-        headStyles: { fillColor: [41, 85, 217] },
-        styles: { fontSize: 9 }
-      });
-      doc.save('product_data.pdf');
-    }
+        const exportTable = document.getElementById('exportTable');
+  
+  doc.autoTable({ html: '#exportTable' });
+  doc.save('products.pdf');
+}
 
-    function exportTableToExcel() {
-      var table = document.getElementById('exportTable');
-      var wb = XLSX.utils.table_to_book(table, { sheet: "Products" });
-      XLSX.writeFile(wb, 'product_data.xlsx');
-    }
-  </script>
-
+function exportTableToExcel() {
+  const exportTable = document.getElementById('exportTable');
+  const workbook = XLSX.utils.table_to_book(exportTable, { sheet: "Products" });
+  XLSX.writeFile(workbook, 'products.xlsx');
+}
+</script>
 </body>
 </html>
