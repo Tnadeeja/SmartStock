@@ -123,6 +123,19 @@
   function allowOnlyPhoneChars(event) {
     const char = String.fromCharCode(event.which || event.keyCode); // Get the character pressed
     const regex = /^[0-9\s\+\-\(\)]*$/; // Regex to allow numbers, spaces, +, -, (, and )
+
+    const input = event.target;
+    const currentValue = input.value;
+    const digitCount = (currentValue.match(/\d/g) || []).length;
+
+    const maxDigits = 15;  // Maximum number of digits allowed
+
+    // If char is a digit and max is reached, prevent input
+    if (/\d/.test(char) && digitCount >= maxDigits) {
+      event.preventDefault();
+      return;
+    }
+
     if (!regex.test(char)) {
       event.preventDefault(); // Prevent the input if it's not allowed
     }
@@ -135,6 +148,22 @@
 
     // Phone input field (numbers, spaces, and phone symbols only)
     document.querySelector('[name="phone"]').addEventListener('keypress', allowOnlyPhoneChars);
+
+    // Add form submit validation for minimum digits
+    const form = document.querySelector('form'); // Assumes there's a <form> element
+    const minDigits = 7; // Minimum number of digits required
+
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        const phoneInput = form.querySelector('[name="phone"]');
+        const digitCount = (phoneInput.value.match(/\d/g) || []).length;
+
+        if (digitCount < minDigits) {
+          event.preventDefault();
+          alert(`Phone number must contain at least ${minDigits} digits.`);
+        }
+      });
+    }
   };
 </script>
 

@@ -269,6 +269,6 @@
     	  XLSX.writeFile(wb, 'customer_data.xlsx');
     	}
   </script>
-
+  
 </body>
 </html>
