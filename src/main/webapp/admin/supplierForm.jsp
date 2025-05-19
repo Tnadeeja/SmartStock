@@ -98,18 +98,69 @@
   <script>
   // Function to allow only letters and spaces in the input fields
   function allowOnlyLetters(event) {
-    const char = String.fromCharCode(event.which || event.keyCode); // Get the character pressed
-    const regex = /^[A-Za-z\s]*$/; // Regex that allows only letters and spaces
+    const char = String.fromCharCode(event.which || event.keyCode);
+    const regex = /^[A-Za-z\s]*$/;
     if (!regex.test(char)) {
-      event.preventDefault(); // Prevent the input if it's not a letter or space
+      event.preventDefault();
     }
   }
 
-  // Attach the event listeners to the input fields
-  window.onload = function() {
-    // Supplier Name input
-    document.querySelector('[name="name"][value="${supplier.name}"]').addEventListener('keypress', allowOnlyLetters);
+  // Function to allow only valid phone number characters
+  function allowOnlyPhoneChars(event) {
+    const char = String.fromCharCode(event.which || event.keyCode);
+    const regex = /^[0-9\s\+\-\(\)]*$/;
+
+    const input = event.target;
+    const currentValue = input.value;
+    const digitCount = (currentValue.match(/\d/g) || []).length;
+
+    const maxDigits = 15;
+
+    if (/\d/.test(char) && digitCount >= maxDigits) {
+      event.preventDefault();
+      return;
+    }
+
+    if (!regex.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  // Attach the event listeners when the page loads
+  window.onload = function () {
+    const nameInput = document.querySelector('[name="name"]');
+    const phoneInput = document.querySelector('[name="phone"]');
+    const form = document.querySelector('form');
+    const minDigits = 7;
+
+    if (nameInput) {
+      nameInput.addEventListener('keypress', allowOnlyLetters);
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('keypress', allowOnlyPhoneChars);
+    }
+
+    if (form && phoneInput) {
+      form.addEventListener('submit', function (event) {
+        const digitCount = (phoneInput.value.match(/\d/g) || []).length;
+        if (digitCount < minDigits) {
+          event.preventDefault();
+          alert(`Phone number must contain at least ${minDigits} digits.`);
+        }
+      });
+    }
   };
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const createdAtInput = document.querySelector('input[name="createdAt"]');
+    if (createdAtInput) {
+      const today = new Date().toISOString().split("T")[0]; // Format: yyyy-MM-dd
+      createdAtInput.value = today;
+    }
+  });
 </script>
 
 </body>
