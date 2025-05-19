@@ -135,7 +135,7 @@
     </main>
   </div>
 
-  <!-- JS for auto-calculating total -->
+  <!-- auto-calculating total -->
   <script>
     const quantityInput = document.getElementById("quantity");
     const unitPriceInput = document.getElementById("unitPrice");
