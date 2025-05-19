@@ -161,5 +161,47 @@
 
     updateTotal(); // Initial
   </script>
+  
+  <script>
+  const form = document.querySelector("form");
+  const manufactureDateInput = form.querySelector("input[name='manufactureDate']");
+  const expireDateInput = form.querySelector("input[name='expireDate']");
+  const outgoingDateInput = form.querySelector("input[name='purchaseDate']");
+
+  form.addEventListener("submit", function(event) {
+    const manufactureDate = new Date(manufactureDateInput.value);
+    const expireDate = new Date(expireDateInput.value);
+    const outgoingDate = new Date(outgoingDateInput.value);
+
+    // Only validate if dates are filled
+    if (manufactureDateInput.value && expireDateInput.value) {
+      if (expireDate <= manufactureDate) {
+        alert("Expire Date must be after Manufacture Date.");
+        expireDateInput.focus();
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (manufactureDateInput.value && outgoingDateInput.value) {
+      if (outgoingDate < manufactureDate) {
+        alert("Purchasing Date cannot be before Manufacture Date.");
+        outgoingDateInput.focus();
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (expireDateInput.value && outgoingDateInput.value) {
+      if (outgoingDate > expireDate) {
+        alert("Purchasing Date cannot be after Expire Date.");
+        outgoingDateInput.focus();
+        event.preventDefault();
+        return false;
+      }
+    }
+  });
+</script>
+  
 </body>
 </html>

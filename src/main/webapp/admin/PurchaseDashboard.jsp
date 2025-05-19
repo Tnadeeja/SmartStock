@@ -145,16 +145,6 @@
   </c:forEach>
 </select>
 
-  <label class="flex items-center gap-1 text-dark-blue">
-    From:
-    <input type="date" name="startDate" value="${param.startDate}" class="border border-primary rounded px-2 py-1 text-dark-blue" />
-  </label>
-
-  <label class="flex items-center gap-1 text-dark-blue">
-    To:
-    <input type="date" name="endDate" value="${param.endDate}" class="border border-primary rounded px-2 py-1 text-dark-blue" />
-  </label>
-
   <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
   <button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
 </form>
@@ -204,7 +194,7 @@
                         </thead>
                         <tbody>
                         
-                        <c:set var="pageSize" value="9" />
+                        <c:set var="pageSize" value="7" />
 						<c:set var="currentPage" value="${param.page != null ? param.page + 0 : 1}" />
 						<c:set var="start" value="${(currentPage - 1) * pageSize}" />
 						<c:set var="end" value="${start + pageSize}" />
