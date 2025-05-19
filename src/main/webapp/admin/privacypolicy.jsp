@@ -2,97 +2,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Privacy Policy</title>
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
-    <style>
-        /* Custom color palette */
-        :root {
-            --primary-color: #2955D9;
-            --secondary-color: #2964D9;
-            --tertiary-color: #142B59;
-            --accent-color: #0A4DA6;
-            --dark-color: #0D448C;
-            --danger-color: #dc2626;
-        }
-    </style>
+    
+    <!-- Tailwind CDN (Proper link) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Theme (optional colors override) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2955D9',
+                        secondary: '#2964D9',
+                        tertiary: '#142B59',
+                        accent: '#0A4DA6',
+                        dark: '#0D448C',
+                        danger: '#dc2626',
+                    },
+                },
+            },
+        };
+    </script>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
+<body class="bg-gray-50 text-gray-800 font-sans">
 
     <!-- Container -->
-    <div class="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
+    <main class="max-w-4xl mx-auto px-6 py-12 bg-white shadow-xl rounded-xl mt-12 mb-16 transition-all duration-300">
+
+        <!-- Back Button -->
+        <div class="mb-6">
+            <button 
+                onclick="history.back()" 
+                class="inline-flex items-center px-4 py-2 bg-primary text-white font-medium rounded-md shadow hover:bg-dark transition duration-200"
+            >
+                ← Back
+            </button>
+        </div>
 
         <!-- Title -->
-        <h1 class="text-3xl font-semibold text-center text-primary-color mb-4">Privacy Policy</h1>
-        <p class="text-sm text-gray-500 text-center">Last updated: May 19, 2025</p>
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-primary mb-2">Privacy Policy</h1>
+            <p class="text-sm text-gray-500">Last updated: May 19, 2025</p>
+        </header>
 
-        <!-- Introduction Section -->
-        <section class="mt-8">
-            <p class="leading-relaxed text-gray-700">This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
+        <!-- Introduction -->
+        <section class="space-y-4 border-l-4 border-primary pl-4 bg-gray-50 rounded-md p-4">
+            <p class="text-lg leading-relaxed text-gray-700">
+                This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.
+            </p>
         </section>
 
-        <!-- Section Title -->
-        <h2 class="text-2xl font-semibold text-primary-color mt-8">Interpretation and Definitions</h2>
-        
-        <section class="mt-4">
-            <h3 class="text-xl font-semibold text-tertiary-color">Interpretation</h3>
-            <p class="leading-relaxed text-gray-700">The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
+        <!-- Section -->
+        <section class="mt-10">
+            <h2 class="text-2xl font-semibold text-primary border-b pb-2 mb-4">Interpretation and Definitions</h2>
 
-            <h3 class="text-xl font-semibold text-tertiary-color mt-6">Definitions</h3>
-            <p class="leading-relaxed text-gray-700">For the purposes of this Privacy Policy:</p>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-tertiary mb-2">Interpretation</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The words of which the initial letter is capitalized have meanings defined under the following conditions...
+                    </p>
+                </div>
 
-            <!-- Definitions List -->
+                <div>
+                    <h3 class="text-xl font-semibold text-tertiary mb-2">Definitions</h3>
+                    <p class="text-gray-700 mb-2">For the purposes of this Privacy Policy:</p>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                        <li><strong>Account</strong> – a unique account created for You...</li>
+                        <li><strong>Affiliate</strong> – an entity that controls, is controlled by...</li>
+                        <li><strong>Company</strong> – refers to Limited, online...</li>
+                        <li><strong>Cookies</strong> – small files placed on Your device...</li>
+                        <li><strong>Country</strong> – Sri Lanka</li>
+                        <li><strong>Device</strong> – any device that can access the Service...</li>
+                        <li><strong>Personal Data</strong> – any information that relates to an identifiable individual.</li>
+                        <li><strong>Service</strong> – refers to the Website.</li>
+                        <li><strong>Service Provider</strong> – a person who processes data for the Company.</li>
+                        <li><strong>Usage Data</strong> – data collected automatically when using the Service.</li>
+                        <li><strong>You</strong> – the individual accessing the Service...</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collecting Data -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-semibold text-primary border-b pb-2 mb-4">Collecting and Using Your Personal Data</h2>
+
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-tertiary mb-2">Types of Data Collected</h3>
+
+                    <div class="mt-2 space-y-6">
+                        <div class="bg-gray-50 rounded-md p-4 border-l-4 border-accent">
+                            <h4 class="text-lg font-semibold text-primary mb-1">Personal Data</h4>
+                            <p class="text-gray-700 leading-relaxed">We may ask You to provide certain personally identifiable information...</p>
+                            <ul class="list-disc pl-6 space-y-2 text-gray-700 mt-2">
+                                <li>Email address</li>
+                                <li>First name and last name</li>
+                                <li>Phone number</li>
+                                <li>Address, State, ZIP/Postal code, City</li>
+                                <li>Usage Data</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-md p-4 border-l-4 border-accent">
+                            <h4 class="text-lg font-semibold text-primary mb-1">Usage Data</h4>
+                            <p class="text-gray-700 leading-relaxed">Usage Data is collected automatically...</p>
+                            <p class="text-gray-700 leading-relaxed">This may include information such as your IP address, browser type, time spent, etc.</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-md p-4 border-l-4 border-accent">
+                            <h4 class="text-lg font-semibold text-primary mb-1">Tracking Technologies and Cookies</h4>
+                            <p class="text-gray-700 leading-relaxed">We use Cookies and similar technologies to track activity and store certain data.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Info -->
+        <section class="mt-12 border-t pt-6">
+            <h2 class="text-2xl font-semibold text-primary mb-4">Contact Us</h2>
+            <p class="text-gray-700 mb-2">If you have any questions about this Privacy Policy, you can contact us:</p>
             <ul class="list-disc pl-6 space-y-2">
-                <li><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</li>
-                <li><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</li>
-                <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Limited, online.</li>
-                <li><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.</li>
-                <li><strong>Country</strong> refers to: Sri Lanka</li>
-                <li><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone, or a digital tablet.</li>
-                <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
-                <li><strong>Service</strong> refers to the Website.</li>
-                <li><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company.</li>
-                <li><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</li>
-                <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
+                <li>
+                    By email: 
+                    <a href="mailto:smartstock@gmail.com" class="text-primary hover:underline transition duration-200">
+                        smartstock@gmail.com
+                    </a>
+                </li>
             </ul>
         </section>
-
-        <!-- Types of Data Collected Section -->
-        <h2 class="text-2xl font-semibold text-primary-color mt-8">Collecting and Using Your Personal Data</h2>
-
-        <h3 class="text-xl font-semibold text-tertiary-color mt-4">Types of Data Collected</h3>
-
-        <section class="mt-4">
-            <h4 class="font-semibold text-primary-color">Personal Data</h4>
-            <p class="leading-relaxed text-gray-700">While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
-            <ul class="list-disc pl-6 space-y-2 text-gray-700">
-                <li>Email address</li>
-                <li>First name and last name</li>
-                <li>Phone number</li>
-                <li>Address, State, Province, ZIP/Postal code, City</li>
-                <li>Usage Data</li>
-            </ul>
-        </section>
-
-        <section class="mt-4">
-            <h4 class="font-semibold text-primary-color">Usage Data</h4>
-            <p class="leading-relaxed text-gray-700">Usage Data is collected automatically when using the Service.</p>
-            <p class="leading-relaxed text-gray-700">Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
-            <p class="leading-relaxed text-gray-700">When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers, and other diagnostic data.</p>
-        </section>
-
-        <!-- Tracking Technologies Section -->
-        <h4 class="font-semibold text-primary-color mt-6">Tracking Technologies and Cookies</h4>
-        <p class="leading-relaxed text-gray-700">We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. The technologies we use include cookies, web beacons, tags, and scripts.</p>
-
-        <!-- Footer Contact Section -->
-        <h2 class="text-2xl font-semibold text-primary-color mt-8">Contact Us</h2>
-        <p class="mt-4">If you have any questions about this Privacy Policy, You can contact us:</p>
-        <ul class="list-disc pl-6 space-y-2">
-            <li>By email: <a href="mailto:smartstock@gmail.com" class="text-primary-color hover:underline">smartstock@gmail.com</a></li>
-        </ul>
-    </div>
-
+    </main>
 </body>
 </html>
