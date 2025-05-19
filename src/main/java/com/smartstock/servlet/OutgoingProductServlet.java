@@ -86,10 +86,10 @@ public class OutgoingProductServlet extends HttpServlet {
                 request.getRequestDispatcher("/admin/outgoingForm.jsp").forward(request, response);
 
             } else {
-                // 🔍 Filtering logic
+                // Filtering logic
                 String search = request.getParameter("search");
                 String category = request.getParameter("category");
-                String customer = request.getParameter("customer"); // ✅ Get customer
+                String customer = request.getParameter("customer"); 
                 String fromDateStr = request.getParameter("fromDate");
                 String toDateStr = request.getParameter("toDate");
 
@@ -104,21 +104,21 @@ public class OutgoingProductServlet extends HttpServlet {
                     toDate = sdf.parse(toDateStr);
                 }
 
-                // ✅ Filtered outgoing products
+                // Filtered outgoing products
                 List<OutgoingProduct> outgoingList = outgoingProductService.getFilteredOutgoingProducts(search, category, customer, fromDate, toDate);
 
-                // ✅ Fetch supporting lists
+                // Fetch supporting lists
                 List<Category> categoryList = new CategoryService().getAllcategory();
                 List<Product> productList = productService.getAllProducts();
                 List<Customer> customerList = customerService.getAllCustomers();
 
-                // ✅ Set all attributes needed in JSP
+                // Set all attributes needed in JSP
                 request.setAttribute("outgoingList", outgoingList);
                 request.setAttribute("categoryList", categoryList);
                 request.setAttribute("productList", productList);
                 request.setAttribute("customerList", customerList);
 
-                // ✅ Preserve filter values
+                // Preserve filter values
                 request.setAttribute("search", search);
                 request.setAttribute("selectedCategory", category);
                 request.setAttribute("selectedCustomer", customer);

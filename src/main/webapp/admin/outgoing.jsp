@@ -231,9 +231,8 @@
   function showAddForm() {
     window.location.href = '<c:url value="outgoingForm.jsp?action=add" />';
   }
+  
 </script>
-<!-- End -->
-    
     <div class="mt-auto flex justify-center space-x-2">
   <c:set var="totalItems" value="${fn:length(outgoingList)}" />
   <c:set var="totalPages" value="${(totalItems / pageSize) + (totalItems % pageSize > 0 ? 1 : 0)}" />
@@ -264,7 +263,7 @@
         // Get headers (excluding last column)
         const headerCells = table.querySelectorAll('thead tr th');
         headerCells.forEach((th, index) => {
-          if (index < headerCells.length - 1) { // exclude last column
+          if (index < headerCells.length - 1) { 
             headers.push(th.innerText.trim());
           }
         });
@@ -275,7 +274,7 @@
           const rowData = [];
           const cells = row.querySelectorAll('td');
           cells.forEach((td, index) => {
-            if (index < cells.length - 1) { // exclude last column
+            if (index < cells.length - 1) { 
               rowData.push(td.innerText.trim());
             }
           });
