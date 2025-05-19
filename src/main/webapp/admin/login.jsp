@@ -93,7 +93,7 @@
         </button>
       </div>
     </form>
-	<p class="text-center text-xs text-gray-300 mt-4">By logging in, you agree to our <a href="#" class="underline hover:text-white">Privacy Policy</a>.</p>
+	<p class="text-center text-xs text-gray-300 mt-4">By logging in, you agree to our <a href="${pageContext.request.contextPath}/admin/privacypolicy.jsp" class="underline hover:text-white">Privacy Policy</a>.</p>
   </div>
 
 </body>
