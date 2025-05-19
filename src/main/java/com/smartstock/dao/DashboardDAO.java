@@ -56,7 +56,7 @@ public int getTotalSuppliers() {
 }
 
 public int getTotalAlerts() {
-    String query = "SELECT COUNT(*) FROM support_requests WHERE status = 'alert'";
+    String query = "SELECT * FROM smartstock.support_requests";
     try (Statement stmt = connection.createStatement()) {
         ResultSet rs = stmt.executeQuery(query);
         if (rs.next()) return rs.getInt(1);

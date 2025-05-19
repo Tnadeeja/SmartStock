@@ -165,7 +165,7 @@
     </thead>
     <tbody>
     
-    	<c:set var="pageSize" value="9" />
+    	<c:set var="pageSize" value="10" />
 		<c:set var="currentPage" value="${param.page != null ? param.page + 0 : 1}" />
 		<c:set var="start" value="${(currentPage - 1) * pageSize}" />
 		<c:set var="end" value="${start + pageSize}" />
