@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class Customer {
 
-    public int customerId;
-    public String name;
-    public String email;
-    public String phone;
-    public String address;
-    public Date createdAt;
+    private int customerId;
+    private String name;
+    private String email;
+    private String phone;
+    private String address;
+    private Date createdAt;
 
     // Getters
     public int getCustomerId() {

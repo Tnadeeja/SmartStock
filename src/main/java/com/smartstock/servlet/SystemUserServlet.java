@@ -11,7 +11,8 @@ import java.util.List;
 
 @WebServlet("/admin/systemUser")
 public class SystemUserServlet extends HttpServlet {
-
+	private static final long serialVersionUID = 1L;
+	
     private SystemUserService userService = new SystemUserService();
 
     @Override

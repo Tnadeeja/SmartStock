@@ -14,6 +14,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+	<style>
+    @keyframes moveFromLeftToRight {
+        0% { opacity: 0; transform: translateX(-100%); }
+        80% { opacity: 1; transform: translateX(5%); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; transform: translateX(100%); }
+    }
+
+    .animate-move-right {
+        animation: moveFromLeftToRight 1s ease-out forwards;
+    }
+
+    .animate-fade-out {
+        animation: fadeOut 1s ease-in forwards;
+    }
+</style>
 </head>
 <body class="bg-gray-100 text-dark-blue">
 
@@ -46,26 +66,7 @@
     }
 %>
 
-<style>
-    @keyframes moveFromLeftToRight {
-        0% { opacity: 0; transform: translateX(-100%); }
-        80% { opacity: 1; transform: translateX(5%); }
-        100% { opacity: 1; transform: translateX(0); }
-    }
 
-    @keyframes fadeOut {
-        0% { opacity: 1; }
-        100% { opacity: 0; transform: translateX(100%); }
-    }
-
-    .animate-move-right {
-        animation: moveFromLeftToRight 1s ease-out forwards;
-    }
-
-    .animate-fade-out {
-        animation: fadeOut 1s ease-in forwards;
-    }
-</style>
 
 <% if (message != null) { %>
 <div id="flashMessage" class="fixed bottom-0 left-0 z-50 flex items-center justify-center w-full bg-black bg-opacity-30 transition-opacity duration-300">

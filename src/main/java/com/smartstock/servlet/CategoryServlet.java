@@ -11,7 +11,8 @@ import java.util.List;
 
 @WebServlet("/admin/category")
 public class CategoryServlet extends HttpServlet {
-
+	private static final long serialVersionUID = 1L;
+	
     private CategoryService categoryService = new CategoryService();
 
     @Override

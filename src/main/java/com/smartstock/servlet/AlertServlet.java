@@ -11,6 +11,7 @@ import java.util.List;
 
 @WebServlet("/admin/alert")
 public class AlertServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     private AlertService service;
 
     @Override

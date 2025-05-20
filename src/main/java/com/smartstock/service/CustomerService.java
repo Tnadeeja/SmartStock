@@ -14,10 +14,10 @@ public class CustomerService {
         String query = "INSERT INTO customer (name, email, phone, address) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, customer.name);
-            stmt.setString(2, customer.email);
-            stmt.setString(3, customer.phone);
-            stmt.setString(4, customer.address);
+            stmt.setString(1, customer.getName());
+            stmt.setString(2, customer.getEmail());
+            stmt.setString(3, customer.getPhone());
+            stmt.setString(4, customer.getAddress());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,12 +34,12 @@ public class CustomerService {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Customer customer = new Customer();
-                customer.customerId = rs.getInt("customer_id");
-                customer.name = rs.getString("name");
-                customer.email = rs.getString("email");
-                customer.phone = rs.getString("phone");
-                customer.address = rs.getString("address");
-                customer.createdAt = rs.getTimestamp("created_at");
+                customer.setCustomerId(rs.getInt("customer_id"));
+                customer.setName(rs.getString("name"));
+                customer.setEmail(rs.getString("email"));
+                customer.setPhone(rs.getString("phone"));
+                customer.setAddress(rs.getString("address"));
+                customer.setCreatedAt(rs.getTimestamp("created_at"));
                 return customer;
             }
         } catch (SQLException e) {
@@ -57,12 +57,12 @@ public class CustomerService {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Customer customer = new Customer();
-                customer.customerId = rs.getInt("customer_id");
-                customer.name = rs.getString("name");
-                customer.email = rs.getString("email");
-                customer.phone = rs.getString("phone");
-                customer.address = rs.getString("address");
-                customer.createdAt = rs.getTimestamp("created_at");
+                customer.setCustomerId(rs.getInt("customer_id"));
+                customer.setName(rs.getString("name"));
+                customer.setEmail(rs.getString("email"));
+                customer.setPhone(rs.getString("phone"));
+                customer.setAddress(rs.getString("address"));
+                customer.setCreatedAt(rs.getTimestamp("created_at"));
                 customers.add(customer);
             }
         } catch (SQLException e) {
@@ -97,12 +97,12 @@ public class CustomerService {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Customer customer = new Customer();
-                customer.customerId = rs.getInt("customer_id");
-                customer.name = rs.getString("name");
-                customer.email = rs.getString("email");
-                customer.phone = rs.getString("phone");
-                customer.address = rs.getString("address");
-                customer.createdAt = rs.getTimestamp("created_at");
+                customer.setCustomerId(rs.getInt("customer_id"));
+                customer.setName(rs.getString("name"));
+                customer.setEmail(rs.getString("email"));
+                customer.setPhone(rs.getString("phone"));
+                customer.setAddress(rs.getString("address"));
+                customer.setCreatedAt(rs.getTimestamp("created_at"));
                 customers.add(customer);
             }
         } catch (SQLException e) {
@@ -133,11 +133,11 @@ public class CustomerService {
         String query = "UPDATE customer SET name = ?, email = ?, phone = ?, address = ? WHERE customer_id = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, customer.name);
-            stmt.setString(2, customer.email);
-            stmt.setString(3, customer.phone);
-            stmt.setString(4, customer.address);
-            stmt.setInt(5, customer.customerId);
+            stmt.setString(1, customer.getName());
+            stmt.setString(2, customer.getEmail());
+            stmt.setString(3, customer.getPhone());
+            stmt.setString(4, customer.getAddress());
+            stmt.setInt(5, customer.getCustomerId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

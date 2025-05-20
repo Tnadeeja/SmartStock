@@ -21,10 +21,11 @@ import java.util.List;
 
 @WebServlet("/admin/outgoing")
 public class OutgoingProductServlet extends HttpServlet {
-
-    private OutgoingProductService outgoingProductService = new OutgoingProductService();
-    private ProductService productService = new ProductService();
-    private CustomerService customerService = new CustomerService();
+	private static final long serialVersionUID = 1L;
+	
+    private final OutgoingProductService outgoingProductService = new OutgoingProductService();
+    private final ProductService productService = new ProductService();
+    private final CustomerService customerService = new CustomerService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -64,10 +65,10 @@ public class OutgoingProductServlet extends HttpServlet {
 
                 if (outgoingProduct != null) {
                     ReturnProduct returnProduct = new ReturnProduct();
-                    returnProduct.productName = outgoingProduct.productName;
-                    returnProduct.quantity = outgoingProduct.quantity;
-                    returnProduct.returnDate = new Date();
-                    returnProduct.reason = "";
+                    returnProduct.setProductName(outgoingProduct.getProductName());
+                    returnProduct.setQuantity(outgoingProduct.getQuantity());
+                    returnProduct.setReturnDate(new Date());
+                    returnProduct.setReason("");
 
                     ReturnProductService returnService = new ReturnProductService();
                     returnService.createReturnProduct(returnProduct);
@@ -89,7 +90,7 @@ public class OutgoingProductServlet extends HttpServlet {
                 // Filtering logic
                 String search = request.getParameter("search");
                 String category = request.getParameter("category");
-                String customer = request.getParameter("customer"); 
+                String customer = request.getParameter("customer");
                 String fromDateStr = request.getParameter("fromDate");
                 String toDateStr = request.getParameter("toDate");
 
@@ -104,21 +105,17 @@ public class OutgoingProductServlet extends HttpServlet {
                     toDate = sdf.parse(toDateStr);
                 }
 
-                // Filtered outgoing products
                 List<OutgoingProduct> outgoingList = outgoingProductService.getFilteredOutgoingProducts(search, category, customer, fromDate, toDate);
 
-                // Fetch supporting lists
                 List<Category> categoryList = new CategoryService().getAllcategory();
                 List<Product> productList = productService.getAllProducts();
                 List<Customer> customerList = customerService.getAllCustomers();
 
-                // Set all attributes needed in JSP
                 request.setAttribute("outgoingList", outgoingList);
                 request.setAttribute("categoryList", categoryList);
                 request.setAttribute("productList", productList);
                 request.setAttribute("customerList", customerList);
 
-                // Preserve filter values
                 request.setAttribute("search", search);
                 request.setAttribute("selectedCategory", category);
                 request.setAttribute("selectedCustomer", customer);
@@ -170,16 +167,16 @@ public class OutgoingProductServlet extends HttpServlet {
             }
 
             OutgoingProduct product = new OutgoingProduct();
-            product.outgoingId = outgoingId;
-            product.productName = productName;
-            product.categoryName = categoryName;
-            product.customerName = customerName;
-            product.quantity = quantity;
-            product.salePrice = salePrice;
-            product.totalAmount = totalAmount;
-            product.manufactureDate = manufactureDate;
-            product.expireDate = expireDate;
-            product.outgoingDate = outgoingDate;
+            product.setOutgoingId(outgoingId);
+            product.setProductName(productName);
+            product.setCategoryName(categoryName);
+            product.setCustomerName(customerName);
+            product.setQuantity(quantity);
+            product.setSalePrice(salePrice);
+            product.setTotalAmount(totalAmount);
+            product.setManufactureDate(manufactureDate);
+            product.setExpireDate(expireDate);
+            product.setOutgoingDate(outgoingDate);
 
             boolean success;
             if (outgoingId > 0) {
