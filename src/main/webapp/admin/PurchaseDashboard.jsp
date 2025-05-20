@@ -8,17 +8,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>purchase</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/admin/assets/picture/favicon-white.png" type="image/png" />
-    <!-- TailwindCSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body class="bg-gray-100 text-dark-blue">
+
+
+<%
+    String message = (String) request.getAttribute("message");
+    String status = (String) request.getAttribute("status");
+
+    String bgColor = "bg-[#0A4DA6]";
+    String iconSVG = "<svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M12 20.5C6.753 20.5 2.5 16.247 2.5 11S6.753 1.5 12 1.5 21.5 5.753 21.5 11 17.247 20.5 12 20.5z' /></svg>";
+
+    if (status != null) {
+        switch (status) {
+            case "success-add":
+                bgColor = "bg-green-600";
+                iconSVG = "<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7' /></svg>";
+                break;
+            case "success-update":
+                bgColor = "bg-yellow-500";
+                iconSVG = "<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 4v6h6M20 20v-6h-6M4 20l6-6M20 4l-6 6' /></svg>";
+                break;
+            case "success-delete":
+                bgColor = "bg-red-600";
+                iconSVG = "<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg>";
+                break;
+            case "error":
+                bgColor = "bg-red-700";
+                iconSVG = "<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z' /></svg>";
+                break;
+        }
+%>
 
     <style>
         @keyframes moveFromLeftToRight {
@@ -69,32 +96,29 @@
                 const box = msg.querySelector(".message-box");
                 box.classList.remove("animate-move-right");
                 box.classList.add("animate-fade-out");
-                setTimeout(() => msg.remove(), 1000); // Remove after fade-out
+                setTimeout(() => msg.remove(), 1000);
             }
-        }, 3000);  // Message disappears after 3 seconds
+        }, 3000);
     </script>
 <%
     }
 
 
     <div class="flex">
-        <!-- Include sidebar -->
-        <jsp:include page="slideBar.jsp" />
 
-        <!-- Main content section -->
+        <jsp:include page="partials/slideBar.jsp" />
+
         
         <main class="flex-1 p-4 flex flex-col min-h-screen">
 
       <div class="mt-6 space-y-6 flex-grow">
 
   <div class="flex flex-wrap items-center gap-3 justify-between">
-    <!-- Left Section: Add Button -->
     <c:if test="${sessionScope.role == 'admin' || sessionScope.role == 'stock manager'}">
     <a href="PurchaseDashboard?action=add" class="bg-primary text-white px-3 py-2 rounded hover:bg-primary-dark flex items-center gap-2 transition">
       <i class="fas fa-plus"></i>
     </a>
 </c:if>
-    <!-- Center Section: Filter Form -->
     <form method="get" action="PurchaseDashboard" class="flex flex-wrap items-center gap-3 flex-grow">
   <input type="text" name="search" placeholder="Search by product or supplier..." value="${param.search}"
          class="border border-primary rounded px-4 py-2 text-dark-blue flex-grow min-w-[150px]" />
@@ -123,7 +147,6 @@
   <button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
 </form>
 
-    <!-- Export Dropdown -->
   <div class="relative">
     <button onclick="toggleExportDropdown()" class="bg-gray-600 text-white px-3 py-2 rounded hover:bg-gray-700 transition">
       <i class="fas fa-print"></i>
@@ -146,7 +169,6 @@
   }
 </script>
         
-                <!-- Purchase Table -->
                 <div class="bg-white shadow rounded overflow-x-auto mt-6">
                     <table class="min-w-full text-sm text-dark-blue" id="purchase-table">
                         <thead class="bg-primary text-white text-left font-semibold">
@@ -243,21 +265,19 @@
         const headers = [];
         const data = [];
 
-        // Get headers (excluding last column)
         const headerCells = table.querySelectorAll('thead tr th');
         headerCells.forEach((th, index) => {
-          if (index < headerCells.length - 1) { // exclude last column
+          if (index < headerCells.length - 1) {
             headers.push(th.innerText.trim());
           }
         });
 
-        // Get rows
         const rows = table.querySelectorAll('tbody tr');
         rows.forEach(row => {
           const rowData = [];
           const cells = row.querySelectorAll('td');
           cells.forEach((td, index) => {
-            if (index < cells.length - 1) { // exclude last column
+            if (index < cells.length - 1) {
               rowData.push(td.innerText.trim());
             }
           });
@@ -266,7 +286,6 @@
           }
         });
 
-        // Generate PDF
         doc.autoTable({
           head: [headers],
           body: data,

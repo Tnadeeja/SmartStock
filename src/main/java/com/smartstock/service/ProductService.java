@@ -12,7 +12,6 @@ public class ProductService {
 
     private StockDAO stockDAO = new StockDAO();
 
-    // Create Product
     public boolean createProduct(Product product) {
         String query = "INSERT INTO product (product_name, category_name, unit_price, sale_price) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
@@ -28,7 +27,6 @@ public class ProductService {
         return false;
     }
 
-    // Get Product by ID with stock info
     public Product getProduct(int id) {
         String query = "SELECT * FROM product WHERE product_id = ?";
         try (Connection connection = DBConnection.getConnection();
@@ -43,7 +41,6 @@ public class ProductService {
                 product.setUnitPrice(rs.getDouble("unit_price"));
                 product.setSalePrice(rs.getDouble("sale_price"));
 
-                // Get stock info
                 product.setStockQuantity(stockDAO.getCurrentStockQuantity(product.getProductName()));
                 product.setStockValue(stockDAO.getCurrentStockValue(product.getProductName()));
 
@@ -55,7 +52,6 @@ public class ProductService {
         return null;
     }
 
-    // Get All Products with stock info
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM product";
@@ -70,7 +66,6 @@ public class ProductService {
                 product.setUnitPrice(rs.getDouble("unit_price"));
                 product.setSalePrice(rs.getDouble("sale_price"));
 
-                // Get stock info
                 product.setStockQuantity(stockDAO.getCurrentStockQuantity(product.getProductName()));
                 product.setStockValue(stockDAO.getCurrentStockValue(product.getProductName()));
 
@@ -82,7 +77,6 @@ public class ProductService {
         return products;
     }
 
-    // Update Product
     public boolean updateProduct(Product product) {
         String query = "UPDATE product SET product_name = ?, category_name = ?, unit_price = ?, sale_price = ? WHERE product_id = ?";
         try (Connection connection = DBConnection.getConnection();
@@ -99,7 +93,6 @@ public class ProductService {
         return false;
     }
 
-    // Delete Product
     public boolean deleteProduct(int id) {
         String query = "DELETE FROM product WHERE product_id = ?";
         try (Connection connection = DBConnection.getConnection();

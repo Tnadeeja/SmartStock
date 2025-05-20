@@ -73,7 +73,6 @@ public class PurchaseProductServlet extends HttpServlet {
                 request.getRequestDispatcher("/admin/PurchaseForm.jsp").forward(request, response);
 
             } else {
-                // Handle filter parameters
                 String search = request.getParameter("search");
                 String category = request.getParameter("category");
                 String supplier = request.getParameter("supplier");
@@ -88,7 +87,6 @@ public class PurchaseProductServlet extends HttpServlet {
                 if (endDateStr != null && !endDateStr.isEmpty())
                     endDate = sdf.parse(endDateStr);
 
-                // Flash messages (show once)
                 if (session.getAttribute("message") != null) {
                     request.setAttribute("message", session.getAttribute("message"));
                     request.setAttribute("status", session.getAttribute("status"));
@@ -100,7 +98,6 @@ public class PurchaseProductServlet extends HttpServlet {
                         search, category, supplier, startDate, endDate
                 );
 
-                // Always load lists here to pass to dashboard JSP
                 List<Category> categoryList = new CategoryService().getAllcategory();
                 List<Product> productList = productService.getAllProducts();
                 List<Supplier> supplierList = supplierService.getAllSuppliers();
@@ -188,7 +185,6 @@ public class PurchaseProductServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
-            // On error, load necessary lists and forward back to form with error message and original input
 
             List<Category> categoryList = new CategoryService().getAllcategory();
             List<Product> productList = productService.getAllProducts();
@@ -199,7 +195,7 @@ public class PurchaseProductServlet extends HttpServlet {
             request.setAttribute("supplierList", supplierList);
 
             request.setAttribute("errorMessage", "Invalid input or error occurred: " + e.getMessage());
-            request.setAttribute("purchaseProduct", new PurchaseProduct()); // Optionally, fill with submitted data if you want
+            request.setAttribute("purchaseProduct", new PurchaseProduct());
 
             e.printStackTrace();
 
