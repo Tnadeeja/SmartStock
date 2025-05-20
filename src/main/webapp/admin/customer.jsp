@@ -169,7 +169,7 @@
                     
                     	<c:choose>
     						<c:when test="${user.role ne 'admin'}">
-        						<c:set var="pageSize" value="11" />
+        						<c:set var="pageSize" value="9" />
     						</c:when>
     						<c:otherwise>
         						<c:set var="pageSize" value="9" />
