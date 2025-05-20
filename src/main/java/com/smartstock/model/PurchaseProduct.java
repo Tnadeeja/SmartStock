@@ -4,16 +4,16 @@ import java.util.Date;
 
 public class PurchaseProduct {
 
-    public int purchaseId;
-    public String productName;
-    public String categoryName;
-    public String supplierName;
-    public int quantity;
-    public double unitPrice;
-    public double totalAmount;
-    public Date manufactureDate;
-    public Date expireDate;
-    public Date purchaseDate;
+    private int purchaseId;
+    private String productName;
+    private String categoryName;
+    private String supplierName;
+    private int quantity;
+    private double unitPrice;
+    private double totalAmount;
+    private Date manufactureDate;
+    private Date expireDate;
+    private Date purchaseDate;
 
     public int getPurchaseId() {
         return purchaseId;

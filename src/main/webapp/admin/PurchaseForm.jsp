@@ -16,11 +16,9 @@
   <div class="flex h-full">
     <jsp:include page="partials/slideBar.jsp" />
 
-    <!-- Main Content -->
     <main class="flex-1 flex items-center justify-center overflow-auto px-6 py-12">
       <div class="w-full max-w-5xl space-y-12">
 
-        <!-- Header -->
         <h1 class="text-3xl font-semibold text-[#142B59] border-b-2 border-[#2955D9] pb-3 text-center">
           Purchase Product
         </h1>
@@ -31,7 +29,6 @@
             <input type="hidden" name="id" value="${product.purchaseId}" />
           </c:if>
 
-          <!-- Product Selection -->
           <div>
             <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Product Name</label>
             <select name="productName" id="productName" required
@@ -46,7 +43,6 @@
             </select>
           </div>
 
-          <!-- Category & Supplier -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Category</label>
@@ -77,7 +73,6 @@
             </div>
           </div>
 
-          <!-- Quantity, Unit Price, Total -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <label class="block text-sm font-medium text-[#0A4DA6] mb-2">Quantity</label>
@@ -98,10 +93,8 @@
             </div>
           </div>
 
-          <!-- Hidden total -->
           <input type="hidden" name="totalAmount" id="totalAmount" value="${product.totalAmount}" />
 
-          <!-- Date Fields -->
           <fmt:formatDate value="${product.manufactureDate}" pattern="yyyy-MM-dd" var="mfgDate" />
           <fmt:formatDate value="${product.expireDate}" pattern="yyyy-MM-dd" var="expDate" />
           <fmt:formatDate value="${product.purchaseDate}" pattern="yyyy-MM-dd" var="purDate" />
@@ -124,7 +117,6 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
           <div class="flex justify-end space-x-6 pt-4">
             <button type="submit"
                     class="bg-[#0A4DA6] hover:bg-[#0D448C] text-white font-medium px-6 py-2 rounded-full shadow transition">
@@ -141,7 +133,6 @@
     </main>
   </div>
 
-  <!-- Auto Calculate Total JS -->
   <script>
     const quantityInput = document.getElementById("quantity");
     const unitPriceInput = document.getElementById("unitPrice");
@@ -159,7 +150,7 @@
     quantityInput.addEventListener("input", updateTotal);
     unitPriceInput.addEventListener("input", updateTotal);
 
-    updateTotal(); // Initial
+    updateTotal();
   </script>
   
   <script>
@@ -173,7 +164,6 @@
     const expireDate = new Date(expireDateInput.value);
     const outgoingDate = new Date(outgoingDateInput.value);
 
-    // Only validate if dates are filled
     if (manufactureDateInput.value && expireDateInput.value) {
       if (expireDate <= manufactureDate) {
         alert("Expire Date must be after Manufacture Date.");
