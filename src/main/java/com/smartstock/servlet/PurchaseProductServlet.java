@@ -19,6 +19,7 @@ import java.util.List;
 
 @WebServlet("/admin/PurchaseDashboard")
 public class PurchaseProductServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	
     private final PurchaseProductService PurchaseProductService = new PurchaseProductService();
     private final ProductService productService = new ProductService();
