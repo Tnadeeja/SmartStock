@@ -13,7 +13,8 @@ import java.util.List;
 
 @WebServlet("/admin/return")
 public class ReturnProductServlet extends HttpServlet {
-
+	private static final long serialVersionUID = 1L;
+	
     private ReturnProductService returnProductService = new ReturnProductService();
 
     @Override

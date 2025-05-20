@@ -11,7 +11,8 @@ import java.util.List;
 
 @WebServlet("/admin/customer")
 public class CustomerServlet extends HttpServlet {
-
+	private static final long serialVersionUID = 1L;
+	
     private final CustomerService customerService = new CustomerService();
 
     @Override
@@ -23,13 +24,40 @@ public class CustomerServlet extends HttpServlet {
 
         try {
             if ("edit".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
+                String idParam = request.getParameter("id");
+                int id = 0;
+                try {
+                    id = Integer.parseInt(idParam);
+                } catch (NumberFormatException e) {
+                    session.setAttribute("message", "Invalid Customer ID.");
+                    session.setAttribute("status", "error");
+                    response.sendRedirect(request.getContextPath() + "/admin/customer");
+                    return;
+                }
+
                 Customer customer = customerService.getCustomer(id);
+                if (customer == null) {
+                    session.setAttribute("message", "Customer not found.");
+                    session.setAttribute("status", "error");
+                    response.sendRedirect(request.getContextPath() + "/admin/customer");
+                    return;
+                }
+
                 request.setAttribute("customer", customer);
                 request.getRequestDispatcher("/admin/customerForm.jsp").forward(request, response);
 
             } else if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
+                String idParam = request.getParameter("id");
+                int id = 0;
+                try {
+                    id = Integer.parseInt(idParam);
+                } catch (NumberFormatException e) {
+                    session.setAttribute("message", "Invalid Customer ID.");
+                    session.setAttribute("status", "error");
+                    response.sendRedirect(request.getContextPath() + "/admin/customer");
+                    return;
+                }
+
                 boolean deleted = customerService.deleteCustomer(id);
 
                 if (deleted) {
@@ -40,13 +68,15 @@ public class CustomerServlet extends HttpServlet {
                     session.setAttribute("status", "error");
                 }
 
-                response.sendRedirect("customer");
+                response.sendRedirect(request.getContextPath() + "/admin/customer");
 
             } else if ("add".equals(action)) {
+                // For new customer form, clear any existing customer attribute
+                request.removeAttribute("customer");
                 request.getRequestDispatcher("/admin/customerForm.jsp").forward(request, response);
 
             } else {
-                // Retrieve search parameters for filtering
+                // Default: list customers, possibly with filters
                 String searchName = request.getParameter("searchName");
                 String filterAddress = request.getParameter("filterAddress");
 
@@ -71,7 +101,7 @@ public class CustomerServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An internal error occurred.");
         }
     }
 
@@ -79,24 +109,41 @@ public class CustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
 
         try {
-            int customerId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
-                    ? Integer.parseInt(request.getParameter("id"))
-                    : 0;
+            String idParam = request.getParameter("id");
+            int customerId = 0;
+            if (idParam != null && !idParam.isEmpty()) {
+                try {
+                    customerId = Integer.parseInt(idParam);
+                } catch (NumberFormatException e) {
+                    session.setAttribute("message", "Invalid Customer ID.");
+                    session.setAttribute("status", "error");
+                    response.sendRedirect(request.getContextPath() + "/admin/customer");
+                    return;
+                }
+            }
 
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
 
+            // Simple validation example, you can extend
+            if (name == null || name.trim().isEmpty()) {
+                request.setAttribute("error", "Name is required.");
+                request.getRequestDispatcher("/admin/customerForm.jsp").forward(request, response);
+                return;
+            }
+
             Customer customer = new Customer();
-            customer.customerId = customerId;
-            customer.name = name;
-            customer.email = email;
-            customer.phone = phone;
-            customer.address = address;
+            customer.setCustomerId(customerId);
+            customer.setName(name);
+            customer.setEmail(email);
+            customer.setPhone(phone);
+            customer.setAddress(address);
 
             boolean success;
             if (customerId > 0) {
@@ -119,7 +166,7 @@ public class CustomerServlet extends HttpServlet {
                 }
             }
 
-            response.sendRedirect("customer");
+            response.sendRedirect(request.getContextPath() + "/admin/customer");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -15,15 +15,15 @@ public class OutgoingProductService {
         String query = "INSERT INTO outgoing_product (product_name, category_name, customer_name, quantity, sale_price, total_amount, manufacture_date, expire_date, outgoing_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, product.productName);
-            stmt.setString(2, product.categoryName);
-            stmt.setString(3, product.customerName);
-            stmt.setInt(4, product.quantity);
-            stmt.setDouble(5, product.salePrice);
-            stmt.setDouble(6, product.totalAmount);
-            stmt.setDate(7, new java.sql.Date(product.manufactureDate.getTime()));
-            stmt.setDate(8, new java.sql.Date(product.expireDate.getTime()));
-            stmt.setTimestamp(9, new java.sql.Timestamp(product.outgoingDate.getTime()));
+            stmt.setString(1, product.getProductName());
+            stmt.setString(2, product.getCategoryName());
+            stmt.setString(3, product.getCustomerName());
+            stmt.setInt(4, product.getQuantity());
+            stmt.setDouble(5, product.getSalePrice());
+            stmt.setDouble(6, product.getTotalAmount());
+            stmt.setDate(7, new java.sql.Date(product.getManufactureDate().getTime()));
+            stmt.setDate(8, new java.sql.Date(product.getExpireDate().getTime()));
+            stmt.setTimestamp(9, new java.sql.Timestamp(product.getOutgoingDate().getTime()));
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,16 +40,16 @@ public class OutgoingProductService {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 OutgoingProduct product = new OutgoingProduct();
-                product.outgoingId = rs.getInt("outgoing_id");
-                product.productName = rs.getString("product_name");
-                product.categoryName = rs.getString("category_name");
-                product.customerName = rs.getString("customer_name");
-                product.quantity = rs.getInt("quantity");
-                product.salePrice = rs.getDouble("sale_price");
-                product.totalAmount = rs.getDouble("total_amount");
-                product.manufactureDate = rs.getDate("manufacture_date");
-                product.expireDate = rs.getDate("expire_date");
-                product.outgoingDate = rs.getTimestamp("outgoing_date");
+                product.setOutgoingId(rs.getInt("outgoing_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setCategoryName(rs.getString("category_name"));
+                product.setCustomerName(rs.getString("customer_name"));
+                product.setQuantity(rs.getInt("quantity"));
+                product.setSalePrice(rs.getDouble("sale_price"));
+                product.setTotalAmount(rs.getDouble("total_amount"));
+                product.setManufactureDate(rs.getDate("manufacture_date"));
+                product.setExpireDate(rs.getDate("expire_date"));
+                product.setOutgoingDate(rs.getTimestamp("outgoing_date"));
                 return product;
             }
         } catch (SQLException e) {
@@ -67,16 +67,16 @@ public class OutgoingProductService {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 OutgoingProduct product = new OutgoingProduct();
-                product.outgoingId = rs.getInt("outgoing_id");
-                product.productName = rs.getString("product_name");
-                product.categoryName = rs.getString("category_name");
-                product.customerName = rs.getString("customer_name");
-                product.quantity = rs.getInt("quantity");
-                product.salePrice = rs.getDouble("sale_price");
-                product.totalAmount = rs.getDouble("total_amount");
-                product.manufactureDate = rs.getDate("manufacture_date");
-                product.expireDate = rs.getDate("expire_date");
-                product.outgoingDate = rs.getTimestamp("outgoing_date");
+                product.setOutgoingId(rs.getInt("outgoing_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setCategoryName(rs.getString("category_name"));
+                product.setCustomerName(rs.getString("customer_name"));
+                product.setQuantity(rs.getInt("quantity"));
+                product.setSalePrice(rs.getDouble("sale_price"));
+                product.setTotalAmount(rs.getDouble("total_amount"));
+                product.setManufactureDate(rs.getDate("manufacture_date"));
+                product.setExpireDate(rs.getDate("expire_date"));
+                product.setOutgoingDate(rs.getTimestamp("outgoing_date"));
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -90,16 +90,16 @@ public class OutgoingProductService {
         String query = "UPDATE outgoing_product SET product_name = ?, category_name = ?, customer_name = ?, quantity = ?, sale_price = ?, total_amount = ?, manufacture_date = ?, expire_date = ?, outgoing_date = ? WHERE outgoing_id = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, product.productName);
-            stmt.setString(2, product.categoryName);
-            stmt.setString(3, product.customerName);
-            stmt.setInt(4, product.quantity);
-            stmt.setDouble(5, product.salePrice);
-            stmt.setDouble(6, product.totalAmount);
-            stmt.setDate(7, new java.sql.Date(product.manufactureDate.getTime()));
-            stmt.setDate(8, new java.sql.Date(product.expireDate.getTime()));
-            stmt.setTimestamp(9, new java.sql.Timestamp(product.outgoingDate.getTime()));
-            stmt.setInt(10, product.outgoingId);
+            stmt.setString(1, product.getProductName());
+            stmt.setString(2, product.getCategoryName());
+            stmt.setString(3, product.getCustomerName());
+            stmt.setInt(4, product.getQuantity());
+            stmt.setDouble(5, product.getSalePrice());
+            stmt.setDouble(6, product.getTotalAmount());
+            stmt.setDate(7, new java.sql.Date(product.getManufactureDate().getTime()));
+            stmt.setDate(8, new java.sql.Date(product.getExpireDate().getTime()));
+            stmt.setTimestamp(9, new java.sql.Timestamp(product.getOutgoingDate().getTime()));
+            stmt.setInt(10, product.getOutgoingId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,7 +125,6 @@ public class OutgoingProductService {
         List<OutgoingProduct> products = new ArrayList<>();
         StringBuilder query = new StringBuilder("SELECT * FROM outgoing_product WHERE 1=1");
 
-        // Dynamic conditions
         if (search != null && !search.trim().isEmpty()) {
             query.append(" AND product_name LIKE ?");
         }
@@ -166,16 +165,16 @@ public class OutgoingProductService {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 OutgoingProduct product = new OutgoingProduct();
-                product.outgoingId = rs.getInt("outgoing_id");
-                product.productName = rs.getString("product_name");
-                product.categoryName = rs.getString("category_name");
-                product.customerName = rs.getString("customer_name");
-                product.quantity = rs.getInt("quantity");
-                product.salePrice = rs.getDouble("sale_price");
-                product.totalAmount = rs.getDouble("total_amount");
-                product.manufactureDate = rs.getDate("manufacture_date");
-                product.expireDate = rs.getDate("expire_date");
-                product.outgoingDate = rs.getTimestamp("outgoing_date");
+                product.setOutgoingId(rs.getInt("outgoing_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setCategoryName(rs.getString("category_name"));
+                product.setCustomerName(rs.getString("customer_name"));
+                product.setQuantity(rs.getInt("quantity"));
+                product.setSalePrice(rs.getDouble("sale_price"));
+                product.setTotalAmount(rs.getDouble("total_amount"));
+                product.setManufactureDate(rs.getDate("manufacture_date"));
+                product.setExpireDate(rs.getDate("expire_date"));
+                product.setOutgoingDate(rs.getTimestamp("outgoing_date"));
                 products.add(product);
             }
         } catch (SQLException e) {

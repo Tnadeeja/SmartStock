@@ -11,7 +11,8 @@ import java.util.List;
 
 @WebServlet("/admin/supplier")
 public class SupplierServlet extends HttpServlet {
-
+	private static final long serialVersionUID = 1L;
+	
     private final SupplierService supplierService = new SupplierService();
 
     @Override

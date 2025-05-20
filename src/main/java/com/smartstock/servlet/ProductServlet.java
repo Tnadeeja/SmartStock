@@ -13,7 +13,8 @@ import java.util.List;
 
 @WebServlet("/admin/product")
 public class ProductServlet extends HttpServlet {
-
+	private static final long serialVersionUID = 1L;
+	
     private ProductService productService = new ProductService();
     private CategoryService categoryService = new CategoryService();
 
