@@ -193,10 +193,10 @@
                         
                         <c:choose>
     						<c:when test="${user.role ne 'admin'}">
-        						<c:set var="pageSize" value="11" />
+        						<c:set var="pageSize" value="7" />
     						</c:when>
     						<c:otherwise>
-        						<c:set var="pageSize" value="9" />
+        						<c:set var="pageSize" value="7" />
     						</c:otherwise>
 						</c:choose>
 						<c:set var="currentPage" value="${param.page != null ? param.page + 0 : 1}" />
