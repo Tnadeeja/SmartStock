@@ -1,5 +1,7 @@
-
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,10 +16,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
     
      <style>
-
         @keyframes moveFromLeftToRight {
             0% {
                 opacity: 0;
@@ -103,12 +103,10 @@
     </script>
 <%
     }
-
+%>
 
     <div class="flex">
-
         <jsp:include page="partials/slideBar.jsp" />
-
         
         <main class="flex-1 p-4 flex flex-col min-h-screen">
 
@@ -133,7 +131,6 @@
     </c:forEach>
   </select>
 
-
   <select name="supplier" class="border border-primary px-3 py-2 rounded text-dark-blue">
   <option value="">All Suppliers</option>
   <c:forEach var="sup" items="${supplierList}">
@@ -142,7 +139,6 @@
     </option>
   </c:forEach>
 </select>
-
 
   <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">Apply</button>
   <button type="button" onclick="window.location.href='PurchaseDashboard'" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
@@ -191,14 +187,7 @@
                         </thead>
                         <tbody>
                         
-                        <c:choose>
-    						<c:when test="${user.role ne 'admin'}">
-        						<c:set var="pageSize" value="7" />
-    						</c:when>
-    						<c:otherwise>
-        						<c:set var="pageSize" value="7" />
-    						</c:otherwise>
-						</c:choose>
+                        <c:set var="pageSize" value="7" />
 						<c:set var="currentPage" value="${param.page != null ? param.page + 0 : 1}" />
 						<c:set var="start" value="${(currentPage - 1) * pageSize}" />
 						<c:set var="end" value="${start + pageSize}" />
