@@ -187,6 +187,7 @@
                         </thead>
                         <tbody>
                         
+<<<<<<< HEAD
                         <c:choose>
     						<c:when test="${user.role ne 'admin'}">
         						<c:set var="pageSize" value="7" />
@@ -195,6 +196,9 @@
         						<c:set var="pageSize" value="7" />
     						</c:otherwise>
 						</c:choose>
+=======
+                        <c:set var="pageSize" value="7" />
+>>>>>>> e8b1ef3afb44484f47f7f7d86acd08a55f63aaf3
 						<c:set var="currentPage" value="${param.page != null ? param.page + 0 : 1}" />
 						<c:set var="start" value="${(currentPage - 1) * pageSize}" />
 						<c:set var="end" value="${start + pageSize}" />
